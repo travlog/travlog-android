@@ -1,0 +1,24 @@
+<resources>
+
+    <style name="TravlogTheme" parent="TravlogBaseTheme" />
+
+    <!-- Base application theme. -->
+    <style name="TravlogBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowAnimationStyle">@null</item>
+
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
+
+        <item name="android:windowBackground">@color/window_background</item>
+    </style>
+
+    <style name="TravlogTheme.Splash" parent="TravlogTheme">
+        <item name="android:windowBackground">@mipmap/ic_launcher</item>
+    </style>
+
+    <style name="TravlogTheme.SignIn" parent="TravlogTheme"></style>
+</resources>

@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">Travlog</string>
+
+    <string name="hint_email">email</string>
+    <string name="hint_password">password</string>
+    <string name="hint_name">name</string>
+    <string name="hint_title">title</string>
+    <string name="hint_destination">destination</string>
+
+    <string name="sign_in">sign in</string>
+    <string name="sign_up">sign up</string>
+    <string name="forgot_password">forgot password?</string>
+    <string name="background">background</string>
+    <string name="photo">photo</string>
+    <string name="add_member">add member</string>
+    <string name="add_date">add date</string>
+    <string name="add_cost">add cost</string>
+    <string name="reset_my_password">reset my password</string>
+    <string name="save">save</string>
+    <string name="sync">sync</string>
+    <string name="add_destination">add destination</string>
+    <string name="delete">delete</string>
+    <string name="untitled">untitled</string>
+    <string name="settings">settings</string>
+    <string name="sign_out">sign out</string>
+    <string name="note_deleted">note deleted</string>
+    <string name="undo">undo</string>
+    <string name="cancel">cancel</string>
+    <string name="close">close</string>
+</resources>

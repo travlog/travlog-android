@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="sign_in_with_facebook_button" type="id" />
+    <item name="sign_in_with_google_button" type="id" />
+    <item name="email" type="id" />
+    <item name="password" type="id" />
+    <item name="sign_in_button" type="id" />
+    <item name="forgot_password_button" type="id" />
+    <item name="sign_up_button" type="id" />
+
+    <item name="confirm_password" type="id" />
+    <item name="name" type="id" />
+
+    <item name="title" type="id" />
+
+    <item name="root" type="id" />
+    <item name="toolbar" type="id" />
+    <item name="note_recycler_view" type="id" />
+    <item name="add_note_button" type="id" />
+    <item name="period" type="id" />
+    <item name="background" type="id" />
+    <item name="destination" type="id" />
+    <item name="member_root" type="id" />
+    <item name="member_horizontal_scroll" type="id" />
+    <item name="member_container" type="id" />
+    <item name="date_container" type="id" />
+    <item name="memo" type="id" />
+    <item name="date" type="id" />
+    <item name="photo" type="id" />
+    <item name="photo_container" type="id" />
+    <item name="cost_root" type="id" />
+    <item name="cost" type="id" />
+    <item name="cost_container" type="id" />
+    <item name="add_cost_button" type="id" />
+
+    <item name="period_start" type="id" />
+    <item name="period_end" type="id" />
+    <item name="add_member_button" type="id" />
+
+    <item name="reset_password_button" type="id" />
+    <item name="save" type="id" />
+    <item name="sync_button" type="id" />
+    <item name="floating_search_view" type="id" />
+    <item name="destination_container" type="id" />
+    <item name="add_destination_button" type="id" />
+    <item name="delete_button" type="id" />
+    <item name="settings" type="id" />
+    <item name="profile_container" type="id" />
+    <item name="sign_out_button" type="id" />
+    <item name="close_button" type="id" />
+</resources>

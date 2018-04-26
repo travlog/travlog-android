@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Theme colors -->
+    <color name="primary">@color/white</color>
+    <color name="primary_dark">@color/black_alpha_17</color>
+    <color name="accent">@color/ksr_green_700</color>
+    <color name="window_background">@color/white</color>
+    <color name="status_bar">@color/primary_dark</color>
+
+    <!-- Travelog colors. NB: we should be transitioning to using this color palette. -->
+    <color name="white">@android:color/white</color>
+    <color name="ksr_green_700">#037362</color>
+
+    <!-- Colors with hex opacity:
+   http://stackoverflow.com/questions/5445085/understanding-colors-in-android-6-characters/11019879#11019879 -->
+    <color name="black_alpha_17">#2B000000</color>
+</resources>
