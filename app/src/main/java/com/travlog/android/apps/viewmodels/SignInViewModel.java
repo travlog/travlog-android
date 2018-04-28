@@ -2,7 +2,11 @@ package com.travlog.android.apps.viewmodels;
 
 import android.support.annotation.NonNull;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import com.travlog.android.apps.libs.ActivityViewModel;
 import com.travlog.android.apps.libs.CurrentUserType;
 import com.travlog.android.apps.libs.Environment;
@@ -16,18 +20,48 @@ import com.travlog.android.apps.viewmodels.outputs.SignInViewModelOutputs;
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.PublishSubject;
+import timber.log.Timber;
 
 public class SignInViewModel extends ActivityViewModel<SignInActivity> implements
         SignInViewModelInputs, SignInViewModelOutputs, SignInViewModelErrors {
 
     private final ApiClientType client;
     private final CurrentUserType currentUser;
+    private final CallbackManager callbackManager;
 
     public SignInViewModel(final @NonNull Environment environment) {
         super(environment);
 
         client = environment.apiClient;
         currentUser = environment.currentUser;
+        callbackManager = CallbackManager.Factory.create();
+
+        activityResult()
+                .compose(bindToLifecycle())
+                .subscribe(activityResult -> {
+                    Timber.d("SignInViewModel: activityResult? %s", activityResult);
+                    callbackManager.onActivityResult(activityResult.requestCode, activityResult.resultCode, activityResult.intent);
+                });
+
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                Timber.d("facebook onSuccess: %s", loginResult.getAccessToken().getToken());
+
+                facebookAccessToken.onNext(loginResult.getAccessToken().getToken());
+            }
+
+            @Override
+            public void onCancel() {
+                Timber.d("facebook onCancel: ");
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Timber.w(error.getCause(), "facebook onError: %s" + error.toString());
+                facebookAuthorizationError.onNext(error);
+            }
+        });
     }
 
     private final PublishSubject<String> facebookAccessToken = PublishSubject.create();

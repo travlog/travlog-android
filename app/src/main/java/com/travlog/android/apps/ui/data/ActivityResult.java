@@ -21,4 +21,12 @@ public class ActivityResult {
         return activityResult;
     }
 
+    @Override
+    public String toString() {
+        return "ActivityResult{" +
+                "requestCode=" + requestCode +
+                ", resultCode=" + resultCode +
+                ", intent=" + intent +
+                '}';
+    }
 }
