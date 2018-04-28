@@ -1,5 +1,6 @@
 package com.travlog.android.apps.ui.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -48,6 +49,7 @@ public class SignInActivity extends BaseActivity<SignInViewModel> {
 
     GoogleApiClient googleApiClient;
 
+    @SuppressLint("CheckResult")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,10 +96,9 @@ public class SignInActivity extends BaseActivity<SignInViewModel> {
                 .subscribe(__ -> startSignUp());
 
         viewModel.outputs.signInSuccess()
-                .doOnNext(__ -> Timber.d("onCreate: signInSuccess"))
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(bindToLifecycle())
-                .subscribe(__ -> finish());
+                .subscribe(__ -> this.finish());
 
         viewModel.outputs.setSignInButtonEnabled()
                 .compose(bindToLifecycle())
