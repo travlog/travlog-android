@@ -5,8 +5,8 @@ import android.support.annotation.NonNull;
 import com.travlog.android.apps.services.ApiException;
 import com.travlog.android.apps.services.apiresponses.ErrorEnvelope;
 
-import rx.Observable;
-import rx.subjects.PublishSubject;
+import io.reactivex.Observable;
+import io.reactivex.subjects.PublishSubject;
 
 public final class Transformers {
     private Transformers() {

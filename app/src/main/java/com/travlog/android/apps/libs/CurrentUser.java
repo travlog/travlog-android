@@ -7,11 +7,12 @@ import com.facebook.login.LoginManager;
 import com.google.gson.Gson;
 import com.travlog.android.apps.libs.db.realm.RealmHelper;
 import com.travlog.android.apps.libs.perferences.StringPreferenceType;
+import com.travlog.android.apps.libs.rx.Optional;
 import com.travlog.android.apps.libs.utils.ObjectUtils;
 import com.travlog.android.apps.models.User;
 
-import rx.Observable;
-import rx.subjects.BehaviorSubject;
+import io.reactivex.Observable;
+import io.reactivex.subjects.BehaviorSubject;
 import timber.log.Timber;
 
 public class CurrentUser extends CurrentUserType {
@@ -19,7 +20,7 @@ public class CurrentUser extends CurrentUserType {
     private final StringPreferenceType accessTokenPreference;
     private final StringPreferenceType userPreference;
 
-    private final BehaviorSubject<User> user = BehaviorSubject.create();
+    private final BehaviorSubject<Optional<User>> user = BehaviorSubject.create();
 
     public CurrentUser(final @NonNull StringPreferenceType accessTokenPreference,
                        final @NonNull StringPreferenceType userPreference) {
@@ -30,21 +31,22 @@ public class CurrentUser extends CurrentUserType {
 
         this.user
                 .skip(1)
-                .filter(ObjectUtils::isNotNull)
+                .filter(Optional::isNotEmpty)
+                .map(Optional::get)
                 .subscribe(u -> userPreference.set(gson.toJson(u, User.class)));
 
-        this.user.onNext(gson.fromJson(userPreference.get(), User.class));
+        this.user.onNext(new Optional<>(gson.fromJson(userPreference.get(), User.class)));
     }
 
     @Override
-    public @Nullable
-    User getUser() {
+    public @NonNull
+    Optional<User> getUser() {
         return this.user.getValue();
     }
 
     @Override
     public boolean exists() {
-        return getUser() != null;
+        return getUser().isNotEmpty();
     }
 
     public String getAccessToken() {
@@ -56,7 +58,7 @@ public class CurrentUser extends CurrentUserType {
         Timber.d("Login user %s", newUser.name);
 
         this.accessTokenPreference.set(accessToken);
-        this.user.onNext(newUser);
+        this.user.onNext(new Optional<>(newUser));
     }
 
     @Override
@@ -65,19 +67,19 @@ public class CurrentUser extends CurrentUserType {
 
         this.userPreference.delete();
         this.accessTokenPreference.delete();
-        this.user.onNext(null);
+        this.user.onNext(new Optional<>(null));
         LoginManager.getInstance().logOut();
         RealmHelper.getInstance().deleteAllAsync();
     }
 
     @Override
     public void refresh(final @NonNull User freshUser) {
-        this.user.onNext(freshUser);
+        this.user.onNext(new Optional<>(freshUser));
     }
 
     @Override
     public @NonNull
-    Observable<User> observable() {
+    Observable<Optional<User>> observable() {
         return this.user;
     }
 }

@@ -6,7 +6,7 @@ import com.google.gson.Gson;
 import com.travlog.android.apps.services.ApiException;
 import com.travlog.android.apps.services.ResponseException;
 
-import rx.Subscriber;
+import org.reactivestreams.Subscriber;
 
 public final class Operators {
 

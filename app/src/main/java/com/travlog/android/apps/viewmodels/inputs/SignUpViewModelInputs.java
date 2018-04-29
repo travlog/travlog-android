@@ -1,4 +1,4 @@
-package com.travlog.android.apps.viewmodels.outputs;
+package com.travlog.android.apps.viewmodels.inputs;
 
 public interface SignUpViewModelInputs {
 

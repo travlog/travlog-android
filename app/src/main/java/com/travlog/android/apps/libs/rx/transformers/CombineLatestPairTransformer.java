@@ -3,9 +3,11 @@ package com.travlog.android.apps.libs.rx.transformers;
 import android.support.annotation.NonNull;
 import android.util.Pair;
 
-import rx.Observable;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.ObservableTransformer;
 
-public final class CombineLatestPairTransformer<S, T> implements Observable.Transformer<S, Pair<S, T>> {
+public final class CombineLatestPairTransformer<S, T> implements ObservableTransformer<S, Pair<S, T>> {
 
     @NonNull
     private final Observable<T> second;
@@ -16,8 +18,8 @@ public final class CombineLatestPairTransformer<S, T> implements Observable.Tran
 
     @Override
     @NonNull
-    public Observable<Pair<S, T>> call(final @NonNull Observable<S> first) {
-        return Observable.combineLatest(first, second, Pair::new);
+    public ObservableSource<Pair<S, T>> apply(Observable<S> upstream) {
+        return Observable.combineLatest(upstream, second, Pair::new);
     }
 }
 

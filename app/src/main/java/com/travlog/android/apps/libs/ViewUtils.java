@@ -3,7 +3,7 @@ package com.travlog.android.apps.libs;
 import android.support.annotation.NonNull;
 import android.view.View;
 
-import rx.functions.Action1;
+import java.util.function.Consumer;
 
 public final class ViewUtils {
 
@@ -22,7 +22,7 @@ public final class ViewUtils {
         }
     }
 
-    public static Action1<Boolean> setGone(final @NonNull View view) {
+    public static Consumer<Boolean> setGone(final @NonNull View view) {
         return (gone) -> setGone(view, gone);
     }
 }

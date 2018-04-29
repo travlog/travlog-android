@@ -3,10 +3,11 @@ package com.travlog.android.apps.libs;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.travlog.android.apps.libs.rx.Optional;
 import com.travlog.android.apps.libs.utils.ObjectUtils;
 import com.travlog.android.apps.models.User;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 public abstract class CurrentUserType {
 
@@ -37,7 +38,7 @@ public abstract class CurrentUserType {
      * with the current user, and then again each time the user is updated.
      */
     public abstract @NonNull
-    Observable<User> observable();
+    Observable<Optional<User>> observable();
 
     /**
      * Returns the most recently emitted user from the user observable.
@@ -45,8 +46,8 @@ public abstract class CurrentUserType {
      * @deprecated Prefer {@link #observable()}
      */
     @Deprecated
-    public abstract @Nullable
-    User getUser();
+    public abstract @NonNull
+    Optional<User> getUser();
 
     /**
      * Returns a boolean that determines if there is a currently logged in user or not.
@@ -73,14 +74,14 @@ public abstract class CurrentUserType {
      */
     public @NonNull
     Observable<User> loggedInUser() {
-        return observable().filter(ObjectUtils::isNotNull);
+        return observable().filter(Optional::isNotEmpty).map(Optional::get);
     }
 
     /**
      * Emits only values of a logged out user. The returned observable may never emit.
      */
     public @NonNull
-    Observable<User> loggedOutUser() {
-        return observable().filter(ObjectUtils::isNull);
+    Observable<Optional<User>> loggedOutUser() {
+        return observable().filter(Optional::isEmpty);
     }
 }

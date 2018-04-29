@@ -5,6 +5,11 @@ import android.support.annotation.NonNull;
 import com.google.gson.Gson;
 import com.travlog.android.apps.libs.rx.operators.ApiErrorOperator;
 import com.travlog.android.apps.libs.rx.operators.Operators;
+import com.travlog.android.apps.services.apirequests.XauthBody;
+import com.travlog.android.apps.services.apiresponses.AccessTokenEnvelope;
+
+import io.reactivex.Flowable;
+import io.reactivex.schedulers.Schedulers;
 
 public final class ApiClient implements ApiClientType {
 
@@ -12,6 +17,13 @@ public final class ApiClient implements ApiClientType {
 
     public ApiClient(final @NonNull ApiService service) {
         this.service = service;
+    }
+
+    @Override
+    public Flowable<AccessTokenEnvelope> signup(@NonNull XauthBody body) {
+        return service.signup(body)
+                .lift(apiErrorOperator())
+                .subscribeOn(Schedulers.io());
     }
 
     /**

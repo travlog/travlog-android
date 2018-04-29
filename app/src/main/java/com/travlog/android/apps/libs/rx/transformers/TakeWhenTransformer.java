@@ -2,9 +2,11 @@ package com.travlog.android.apps.libs.rx.transformers;
 
 import android.support.annotation.NonNull;
 
-import rx.Observable;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.ObservableTransformer;
 
-public final class TakeWhenTransformer<S, T> implements Observable.Transformer<S, S> {
+public final class TakeWhenTransformer<S, T> implements ObservableTransformer<S, S> {
 
     @NonNull
     private final Observable<T> when;
@@ -15,7 +17,7 @@ public final class TakeWhenTransformer<S, T> implements Observable.Transformer<S
 
     @Override
     @NonNull
-    public Observable<S> call(final @NonNull Observable<S> source) {
-        return when.withLatestFrom(source, (__, x) -> x);
+    public ObservableSource<S> apply(Observable<S> upstream) {
+        return when.withLatestFrom(upstream, (__, x) -> x);
     }
 }

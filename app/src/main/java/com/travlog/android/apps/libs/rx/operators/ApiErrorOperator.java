@@ -7,11 +7,13 @@ import com.travlog.android.apps.services.ApiException;
 import com.travlog.android.apps.services.ResponseException;
 import com.travlog.android.apps.services.apiresponses.ErrorEnvelope;
 
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
+
 import java.io.IOException;
 
+import io.reactivex.FlowableOperator;
 import retrofit2.Response;
-import rx.Observable;
-import rx.Subscriber;
 
 /**
  * Takes a {@link retrofit2.Response}, if it's successful send it to {@link Subscriber#onNext}, otherwise
@@ -22,7 +24,7 @@ import rx.Subscriber;
  *
  * @param <T> The response type.
  */
-public final class ApiErrorOperator<T> implements Observable.Operator<T, Response<T>> {
+public final class ApiErrorOperator<T> implements FlowableOperator<T, Response<T>> {
 
     private final Gson gson;
 
@@ -30,42 +32,40 @@ public final class ApiErrorOperator<T> implements Observable.Operator<T, Respons
         this.gson = gson;
     }
 
+
     @Override
-    public Subscriber<? super Response<T>> call(Subscriber<? super T> subscriber) {
+    public Subscriber<? super Response<T>> apply(Subscriber<? super T> observer) throws Exception {
         final Gson gson = this.gson;
 
-        return new Subscriber<retrofit2.Response<T>>() {
+        return new org.reactivestreams.Subscriber<Response<T>>() {
             @Override
-            public void onCompleted() {
-                if (!subscriber.isUnsubscribed()) {
-                    subscriber.onCompleted();
-                }
+            public void onSubscribe(Subscription s) {
+                observer.onSubscribe(s);
             }
 
             @Override
-            public void onError(final @NonNull Throwable e) {
-                if (!subscriber.isUnsubscribed()) {
-                    subscriber.onError(e);
-                }
-            }
-
-            @Override
-            public void onNext(final @NonNull retrofit2.Response<T> response) {
-                if (subscriber.isUnsubscribed()) {
-                    return;
-                }
-
-                if (!response.isSuccessful()) {
+            public void onNext(Response<T> tResponse) {
+                if (!tResponse.isSuccessful()) {
                     try {
-                        final ErrorEnvelope envelope = gson.fromJson(response.errorBody().string(), ErrorEnvelope.class);
-                        subscriber.onError(new ApiException(envelope, response));
+                        final ErrorEnvelope envelope = gson.fromJson(tResponse.errorBody().string(), ErrorEnvelope.class);
+                        observer.onError(new ApiException(envelope, tResponse));
                     } catch (final @NonNull IOException e) {
-                        subscriber.onError(new ResponseException(response));
+                        observer.onError(new ResponseException(tResponse));
                     }
                 } else {
-                    subscriber.onNext(response.body());
-                    subscriber.onCompleted();
+                    observer.onNext(tResponse.body());
+                    observer.onComplete();
                 }
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                observer.onError(t);
+            }
+
+            @Override
+            public void onComplete() {
+                observer.onComplete();
             }
         };
     }

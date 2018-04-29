@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -18,6 +19,8 @@ import com.travlog.android.apps.libs.CurrentUserType;
 import com.travlog.android.apps.libs.Environment;
 import com.travlog.android.apps.libs.rx.Optional;
 import com.travlog.android.apps.services.ApiClientType;
+import com.travlog.android.apps.services.apirequests.XauthBody;
+import com.travlog.android.apps.services.apiresponses.AccessTokenEnvelope;
 import com.travlog.android.apps.services.apiresponses.ErrorEnvelope;
 import com.travlog.android.apps.ui.activities.SignInActivity;
 import com.travlog.android.apps.viewmodels.errors.SignInViewModelErrors;
@@ -32,6 +35,7 @@ import io.reactivex.subjects.PublishSubject;
 import timber.log.Timber;
 
 import static com.travlog.android.apps.libs.ActivityRequestCodes.SIGN_IN_WITH_GOOGLE;
+import static com.travlog.android.apps.libs.rx.transformers.Transformers.neverError;
 
 public class SignInViewModel extends ActivityViewModel<SignInActivity> implements
         SignInViewModelInputs, SignInViewModelOutputs, SignInViewModelErrors {
@@ -63,29 +67,48 @@ public class SignInViewModel extends ActivityViewModel<SignInActivity> implement
                     Timber.d("getSignedInAccountFromIntent: %s", googleSignInAccount.toJson());
                 });
 
+        xauthBody
+                .switchMap(body -> this.signup(body)
+                        .doOnSubscribe(subscription -> {
+
+                        })
+                        .doAfterTerminate(() -> {
+
+                        }))
+                .compose(bindToLifecycle())
+                .subscribe(envelope -> {
+                    currentUser.login(envelope.user, envelope.accessToken);
+                    signInSuccess.onNext(new Optional<>(null));
+                });
+
+        facebookAuthorizationError
+                .compose(bindToLifecycle())
+                .subscribe(this::clearFacebookSession);
+
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
 
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Timber.d("facebook onSuccess: %s", loginResult.getAccessToken().getToken());
-
-                facebookAccessToken.onNext(loginResult.getAccessToken().getToken());
+                final AccessToken accessToken = loginResult.getAccessToken();
 
                 // Facebook Email address
-                GraphRequest request = GraphRequest.newMeRequest(
-                        loginResult.getAccessToken(), (object, response) -> {
+                GraphRequest request = GraphRequest.newMeRequest(accessToken, (obj, res) -> {
 
-                            Timber.d("onCompleted: %s", response);
+                    Timber.d("onCompleted: %s", res);
 
-                            try {
-                                final String name = object.getString("name");
-                                final String email = object.getString("email");
-                                Timber.d("onSuccess: %s,%s", name, email);
+                    try {
+                        final XauthBody body = new XauthBody();
+                        body.accessToken = accessToken.getToken();
+                        body.userId = accessToken.getUserId();
+                        body.name = obj.getString("name");
+                        body.email = obj.getString("email");
+                        body.type = "facebook";
 
-                            } catch (JSONException e) {
-                                Timber.w(e, "onSuccess: ");
-                            }
-                        });
+                        xauthBody.onNext(body);
+                    } catch (JSONException e) {
+                        Timber.w(e, "onSuccess: ");
+                    }
+                });
                 Bundle parameters = new Bundle();
                 parameters.putString("fields", "name,email");
                 request.setParameters(parameters);
@@ -105,7 +128,18 @@ public class SignInViewModel extends ActivityViewModel<SignInActivity> implement
         });
     }
 
-    private final PublishSubject<String> facebookAccessToken = PublishSubject.create();
+    private void clearFacebookSession(final @NonNull FacebookException e) {
+        LoginManager.getInstance().logOut();
+    }
+
+    final @NonNull
+    Observable<AccessTokenEnvelope> signup(final @NonNull XauthBody body) {
+        return client.signup(body)
+                .compose(neverError())
+                .toObservable();
+    }
+
+    private final PublishSubject<XauthBody> xauthBody = PublishSubject.create();
     private final PublishSubject<String> email = PublishSubject.create();
     private final PublishSubject<String> password = PublishSubject.create();
     private final PublishSubject<Optional> signInClick = PublishSubject.create();

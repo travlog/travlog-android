@@ -3,11 +3,14 @@ package com.travlog.android.apps.libs.rx.transformers;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import org.reactivestreams.Publisher;
+
 import java.util.function.Consumer;
 
-import rx.Observable;
+import io.reactivex.Flowable;
+import io.reactivex.FlowableTransformer;
 
-public final class NeverErrorTransformer<T> implements Observable.Transformer<T, T> {
+public final class NeverErrorTransformer<T> implements FlowableTransformer<T, T> {
 
     private final @Nullable
     Consumer<Throwable> errorAction;
@@ -22,13 +25,13 @@ public final class NeverErrorTransformer<T> implements Observable.Transformer<T,
 
     @Override
     @NonNull
-    public Observable<T> call(final @NonNull Observable<T> source) {
-        return source
+    public Publisher<T> apply(Flowable<T> upstream) {
+        return upstream
                 .doOnError(e -> {
                     if (this.errorAction != null) {
                         this.errorAction.accept(e);
                     }
                 })
-                .onErrorResumeNext(Observable.empty());
+                .onErrorResumeNext(Flowable.empty());
     }
 }
