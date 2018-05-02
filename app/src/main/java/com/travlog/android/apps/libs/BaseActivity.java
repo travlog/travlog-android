@@ -19,16 +19,18 @@ import com.trello.rxlifecycle2.android.ActivityEvent;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import butterknife.ButterKnife;
+import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.subjects.CompletableSubject;
 import io.reactivex.subjects.PublishSubject;
 import timber.log.Timber;
 
 public class BaseActivity<ViewModelType extends ActivityViewModel> extends RxAppCompatActivity
         implements ActivityLifeCycleType {
 
-    private final PublishSubject<Void> back = PublishSubject.create();
+    private final CompletableSubject back = CompletableSubject.create();
     private static final String VIEW_MODEL_KEY = "viewModel";
     private final CompositeDisposable disposables = new CompositeDisposable();
     protected ViewModelType viewModel;
@@ -92,10 +94,10 @@ public class BaseActivity<ViewModelType extends ActivityViewModel> extends RxApp
         super.onStart();
         Timber.d("onStart %s", this.toString());
 
-        this.back
-                .compose(bindUntilEvent(ActivityEvent.STOP))
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(__ -> goBack());
+        addDisposable(
+                this.back
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(this::goBack));
     }
 
     @CallSuper
@@ -168,7 +170,7 @@ public class BaseActivity<ViewModelType extends ActivityViewModel> extends RxApp
      * Call when the user wants triggers a back event, e.g. clicking back in a toolbar or pressing the device back button.
      */
     public void back() {
-        this.back.onNext(null);
+        this.back.onComplete();
     }
 
     /**
@@ -224,10 +226,6 @@ public class BaseActivity<ViewModelType extends ActivityViewModel> extends RxApp
 //        return component().environment();
 //    }
 
-    /**
-     * @deprecated Use {@link #bindToLifecycle()} or {@link #bindUntilEvent(ActivityEvent)} instead.
-     */
-    @Deprecated
     protected final void addDisposable(final @NonNull Disposable disposable) {
         this.disposables.add(disposable);
     }
@@ -261,10 +259,5 @@ public class BaseActivity<ViewModelType extends ActivityViewModel> extends RxApp
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(enabled);
         }
-    }
-
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-
     }
 }

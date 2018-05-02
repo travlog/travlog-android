@@ -27,4 +27,5 @@
     <string name="undo">undo</string>
     <string name="cancel">cancel</string>
     <string name="close">close</string>
+    <string name="done">done</string>
 </resources>

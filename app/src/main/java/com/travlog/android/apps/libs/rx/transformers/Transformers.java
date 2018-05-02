@@ -3,7 +3,7 @@ package com.travlog.android.apps.libs.rx.transformers;
 import android.support.annotation.NonNull;
 
 import com.travlog.android.apps.services.ApiException;
-import com.travlog.android.apps.services.apiresponses.ErrorEnvelope;
+import com.travlog.android.apps.services.apiresponses.Envelope;
 
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
@@ -48,7 +48,7 @@ public final class Transformers {
      * @deprecated Use {@link Observable#materialize()} instead.
      */
     @Deprecated
-    public static <T> NeverApiErrorTransformer<T> pipeApiErrorsTo(final @NonNull PublishSubject<ErrorEnvelope> errorSubject) {
+    public static <T> NeverApiErrorTransformer<T> pipeApiErrorsTo(final @NonNull PublishSubject<Envelope> errorSubject) {
         return new NeverApiErrorTransformer<>(errorSubject::onNext);
     }
 

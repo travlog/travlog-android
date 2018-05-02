@@ -1,14 +1,12 @@
 package com.travlog.android.apps.viewmodels.inputs;
 
+import android.support.annotation.NonNull;
+
 public interface SignUpViewModelInputs {
 
-    void email(String email);
+    void email(@NonNull String email);
 
-    void password(String password);
-
-    void confirmPassword(String password);
-
-    void name(String name);
+    void password(@NonNull String password);
 
     void signUpClick();
 }

@@ -21,7 +21,7 @@ import com.travlog.android.apps.libs.rx.Optional;
 import com.travlog.android.apps.services.ApiClientType;
 import com.travlog.android.apps.services.apirequests.XauthBody;
 import com.travlog.android.apps.services.apiresponses.AccessTokenEnvelope;
-import com.travlog.android.apps.services.apiresponses.ErrorEnvelope;
+import com.travlog.android.apps.services.apiresponses.Envelope;
 import com.travlog.android.apps.ui.activities.SignInActivity;
 import com.travlog.android.apps.viewmodels.errors.SignInViewModelErrors;
 import com.travlog.android.apps.viewmodels.inputs.SignInViewModelInputs;
@@ -62,10 +62,17 @@ public class SignInViewModel extends ActivityViewModel<SignInActivity> implement
                 .map(activityResult -> activityResult.intent)
                 .map(GoogleSignIn::getSignedInAccountFromIntent)
                 .map(Task::getResult)
+                .map(googleSignInAccount -> {
+                    final XauthBody body = new XauthBody();
+                    body.userId = googleSignInAccount.getId();
+                    body.name = googleSignInAccount.getDisplayName();
+                    body.email = googleSignInAccount.getEmail();
+                    body.type = "google";
+
+                    return body;
+                })
                 .compose(bindToLifecycle())
-                .subscribe(googleSignInAccount -> {
-                    Timber.d("getSignedInAccountFromIntent: %s", googleSignInAccount.toJson());
-                });
+                .subscribe(xauthBody);
 
         xauthBody
                 .switchMap(body -> this.signup(body)
@@ -77,7 +84,7 @@ public class SignInViewModel extends ActivityViewModel<SignInActivity> implement
                         }))
                 .compose(bindToLifecycle())
                 .subscribe(envelope -> {
-                    currentUser.login(envelope.user, envelope.accessToken);
+                    currentUser.login(envelope.data.user, envelope.data.accessToken);
                     signInSuccess.onNext(new Optional<>(null));
                 });
 
@@ -94,11 +101,10 @@ public class SignInViewModel extends ActivityViewModel<SignInActivity> implement
                 // Facebook Email address
                 GraphRequest request = GraphRequest.newMeRequest(accessToken, (obj, res) -> {
 
-                    Timber.d("onCompleted: %s", res);
+                    Timber.d("onSuccess: %s", res);
 
                     try {
                         final XauthBody body = new XauthBody();
-                        body.accessToken = accessToken.getToken();
                         body.userId = accessToken.getUserId();
                         body.name = obj.getString("name");
                         body.email = obj.getString("email");
@@ -126,13 +132,17 @@ public class SignInViewModel extends ActivityViewModel<SignInActivity> implement
                 facebookAuthorizationError.onNext(error);
             }
         });
+
+        duplicatedError()
+                .compose(bindToLifecycle())
+                .subscribe(msg -> Timber.d("SignInViewModel: %s", msg));
     }
 
     private void clearFacebookSession(final @NonNull FacebookException e) {
         LoginManager.getInstance().logOut();
     }
 
-    final @NonNull
+    private @NonNull
     Observable<AccessTokenEnvelope> signup(final @NonNull XauthBody body) {
         return client.signup(body)
                 .compose(neverError())
@@ -143,7 +153,7 @@ public class SignInViewModel extends ActivityViewModel<SignInActivity> implement
     private final PublishSubject<String> email = PublishSubject.create();
     private final PublishSubject<String> password = PublishSubject.create();
     private final PublishSubject<Optional> signInClick = PublishSubject.create();
-    private final PublishSubject<ErrorEnvelope> loginError = PublishSubject.create();
+    private final PublishSubject<Envelope> loginError = PublishSubject.create();
 
     private final BehaviorSubject<Optional> signInSuccess = BehaviorSubject.create();
     private final BehaviorSubject<FacebookException> facebookAuthorizationError = BehaviorSubject.create();
@@ -183,41 +193,13 @@ public class SignInViewModel extends ActivityViewModel<SignInActivity> implement
 
     @Override
     public @NonNull
-    Observable<String> showFacebookInvalidAccessTokenErrorToast() {
-        return this.loginError
-                .filter(ErrorEnvelope::isFacebookInvalidAccessTokenError)
-                .map(errorEnvelope -> errorEnvelope.errorMessage);
-    }
-
-    @Override
-    public @NonNull
-    Observable<String> showMissingFacebookEmailErrorToast() {
-        return this.loginError
-                .filter(ErrorEnvelope::isMissingFacebookEmailError)
-                .map(errorEnvelope -> errorEnvelope.errorMessage);
-    }
-
-    @Override
-    public @NonNull
-    Observable<String> showUnauthorizedErrorDialog() {
-        return this.loginError
-                .filter(ErrorEnvelope::isUnauthorizedError)
-                .map(errorEnvelope -> errorEnvelope.errorMessage);
-    }
-
-    @Override
-    public @NonNull
     Observable<Boolean> setSignInButtonEnabled() {
         return setSignInButtonEnabled;
     }
 
     @Override
-    public Observable<String> invalidLoginError() {
-        return null;
-    }
-
-    @Override
-    public Observable<String> genericLoginError() {
-        return null;
+    public Observable<String> duplicatedError() {
+        return loginError.filter(Envelope::isDuplicatedUser)
+                .map(errorEnvelope -> errorEnvelope.err.msg);
     }
 }

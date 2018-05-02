@@ -12,6 +12,6 @@ import retrofit2.http.POST;
 
 public interface ApiService {
 
-    @POST("/users/signup")
+    @POST("/signup")
     Flowable<Response<AccessTokenEnvelope>> signup(@NonNull @Body XauthBody body);
 }

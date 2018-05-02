@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import com.google.gson.Gson;
 import com.travlog.android.apps.services.ApiException;
 import com.travlog.android.apps.services.ResponseException;
-import com.travlog.android.apps.services.apiresponses.ErrorEnvelope;
+import com.travlog.android.apps.services.apiresponses.Envelope;
 
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
@@ -24,7 +24,7 @@ import retrofit2.Response;
  *
  * @param <T> The response type.
  */
-public final class ApiErrorOperator<T> implements FlowableOperator<T, Response<T>> {
+public final class ApiErrorOperator<T extends Envelope> implements FlowableOperator<T, Response<T>> {
 
     private final Gson gson;
 
@@ -47,11 +47,15 @@ public final class ApiErrorOperator<T> implements FlowableOperator<T, Response<T
             public void onNext(Response<T> tResponse) {
                 if (!tResponse.isSuccessful()) {
                     try {
-                        final ErrorEnvelope envelope = gson.fromJson(tResponse.errorBody().string(), ErrorEnvelope.class);
+                        final Envelope envelope = gson.fromJson(tResponse.errorBody().string(), Envelope.class);
                         observer.onError(new ApiException(envelope, tResponse));
                     } catch (final @NonNull IOException e) {
                         observer.onError(new ResponseException(tResponse));
                     }
+                } else if (!tResponse.body().success) {
+                    final Envelope envelope = tResponse.body();
+
+                    observer.onError(new ApiException(envelope, tResponse));
                 } else {
                     observer.onNext(tResponse.body());
                     observer.onComplete();

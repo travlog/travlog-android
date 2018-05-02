@@ -26,6 +26,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;
 
 import static com.travlog.android.apps.libs.ActivityRequestCodes.SIGN_IN_WITH_GOOGLE;
+import static com.travlog.android.apps.libs.ActivityRequestCodes.SIGN_UP_FLOW;
 
 @RequiresActivityViewModel(SignInViewModel.class)
 public class SignInActivity extends BaseActivity<SignInViewModel> {
@@ -98,7 +99,7 @@ public class SignInActivity extends BaseActivity<SignInViewModel> {
         viewModel.outputs.signInSuccess()
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(bindToLifecycle())
-                .subscribe(__ -> this.finish());
+                .subscribe(__ -> this.back());
 
         viewModel.outputs.setSignInButtonEnabled()
                 .compose(bindToLifecycle())
@@ -111,8 +112,8 @@ public class SignInActivity extends BaseActivity<SignInViewModel> {
     }
 
     private void startSignUp() {
-//        final Intent intent = new Intent(this, SignUpActivity.class);
-//        startActivityForResult(intent, SIGN_UP_FLOW);
+        final Intent intent = new Intent(this, SignUpActivity.class);
+        startActivityForResult(intent, SIGN_UP_FLOW);
     }
 
     private void setSignInButtonEnabled(final boolean enabled) {
