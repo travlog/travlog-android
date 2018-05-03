@@ -13,5 +13,8 @@ import retrofit2.http.POST;
 public interface ApiService {
 
     @POST("/signup")
-    Flowable<Response<AccessTokenEnvelope>> signup(@NonNull @Body XauthBody body);
+    Flowable<Response<AccessTokenEnvelope>> signUp(@NonNull @Body XauthBody body);
+
+    @POST("/signin")
+    Flowable<Response<AccessTokenEnvelope>> signIn(@NonNull @Body XauthBody body);
 }

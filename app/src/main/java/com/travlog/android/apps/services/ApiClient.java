@@ -21,8 +21,15 @@ public final class ApiClient implements ApiClientType {
     }
 
     @Override
-    public Flowable<AccessTokenEnvelope> signup(@NonNull XauthBody body) {
-        return service.signup(body)
+    public Flowable<AccessTokenEnvelope> signUp(@NonNull XauthBody body) {
+        return service.signUp(body)
+                .lift(apiErrorOperator())
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Flowable<AccessTokenEnvelope> signIn(@NonNull XauthBody body) {
+        return service.signIn(body)
                 .lift(apiErrorOperator())
                 .subscribeOn(Schedulers.io());
     }

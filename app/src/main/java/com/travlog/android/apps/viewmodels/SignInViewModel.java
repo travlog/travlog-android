@@ -3,6 +3,8 @@ package com.travlog.android.apps.viewmodels;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
+import android.util.Pair;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -35,7 +37,10 @@ import io.reactivex.subjects.PublishSubject;
 import timber.log.Timber;
 
 import static com.travlog.android.apps.libs.ActivityRequestCodes.SIGN_IN_WITH_GOOGLE;
+import static com.travlog.android.apps.libs.rx.transformers.Transformers.combineLatestPair;
 import static com.travlog.android.apps.libs.rx.transformers.Transformers.neverError;
+import static com.travlog.android.apps.libs.rx.transformers.Transformers.pipeApiErrorsTo;
+import static com.travlog.android.apps.libs.rx.transformers.Transformers.takeWhen;
 
 public class SignInViewModel extends ActivityViewModel<SignInActivity> implements
         SignInViewModelInputs, SignInViewModelOutputs, SignInViewModelErrors {
@@ -75,7 +80,7 @@ public class SignInViewModel extends ActivityViewModel<SignInActivity> implement
                 .subscribe(xauthBody);
 
         xauthBody
-                .switchMap(body -> this.signup(body)
+                .switchMap(body -> this.signIn(body)
                         .doOnSubscribe(subscription -> {
 
                         })
@@ -83,10 +88,7 @@ public class SignInViewModel extends ActivityViewModel<SignInActivity> implement
 
                         }))
                 .compose(bindToLifecycle())
-                .subscribe(envelope -> {
-                    currentUser.login(envelope.data.user, envelope.data.accessToken);
-                    signInSuccess.onNext(new Optional<>(null));
-                });
+                .subscribe(this::signInSuccess);
 
         facebookAuthorizationError
                 .compose(bindToLifecycle())
@@ -136,6 +138,35 @@ public class SignInViewModel extends ActivityViewModel<SignInActivity> implement
         duplicatedError()
                 .compose(bindToLifecycle())
                 .subscribe(msg -> Timber.d("SignInViewModel: %s", msg));
+
+        final Observable<Pair<String, String>> emailAndPassword = email.compose(combineLatestPair(password));
+
+        final Observable<Boolean> isValid = emailAndPassword
+                .map(ep -> this.isValid(ep.first, ep.second));
+
+        isValid
+                .compose(bindToLifecycle())
+                .subscribe(setSignInButtonEnabled);
+
+        emailAndPassword
+                .compose(takeWhen(signInClick))
+                .map(ep -> {
+                    final XauthBody body = new XauthBody();
+                    body.email = ep.first;
+                    body.password = ep.second;
+                    return body;
+                })
+                .compose(bindToLifecycle())
+                .subscribe(xauthBody);
+    }
+
+    private void signInSuccess(final @NonNull AccessTokenEnvelope accessTokenEnvelope) {
+        currentUser.login(accessTokenEnvelope.data.user, accessTokenEnvelope.data.accessToken);
+        signInSuccess.onNext(new Optional<>(null));
+    }
+
+    private boolean isValid(final @NonNull String email, final @NonNull String password) {
+        return !TextUtils.isEmpty(email) && !TextUtils.isEmpty(password);
     }
 
     private void clearFacebookSession(final @NonNull FacebookException e) {
@@ -143,8 +174,9 @@ public class SignInViewModel extends ActivityViewModel<SignInActivity> implement
     }
 
     private @NonNull
-    Observable<AccessTokenEnvelope> signup(final @NonNull XauthBody body) {
-        return client.signup(body)
+    Observable<AccessTokenEnvelope> signIn(final @NonNull XauthBody body) {
+        return client.signIn(body)
+                .compose(pipeApiErrorsTo(signInError))
                 .compose(neverError())
                 .toObservable();
     }
@@ -153,7 +185,7 @@ public class SignInViewModel extends ActivityViewModel<SignInActivity> implement
     private final PublishSubject<String> email = PublishSubject.create();
     private final PublishSubject<String> password = PublishSubject.create();
     private final PublishSubject<Optional> signInClick = PublishSubject.create();
-    private final PublishSubject<Envelope> loginError = PublishSubject.create();
+    private final PublishSubject<Envelope> signInError = PublishSubject.create();
 
     private final BehaviorSubject<Optional> signInSuccess = BehaviorSubject.create();
     private final BehaviorSubject<FacebookException> facebookAuthorizationError = BehaviorSubject.create();
@@ -199,7 +231,7 @@ public class SignInViewModel extends ActivityViewModel<SignInActivity> implement
 
     @Override
     public Observable<String> duplicatedError() {
-        return loginError.filter(Envelope::isDuplicatedUser)
+        return signInError.filter(Envelope::isDuplicatedUser)
                 .map(errorEnvelope -> errorEnvelope.err.msg);
     }
 }

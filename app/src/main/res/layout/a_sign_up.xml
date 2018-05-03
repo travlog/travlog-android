@@ -2,19 +2,28 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingTop="@dimen/activity_vertical_padding">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?actionBarSize" />
+    <ImageButton
+        android:id="@id/close_button"
+        style="?actionButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/close"
+        android:src="@drawable/ic_close_black_24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.travlog.android.apps.ui.widgets.NonSwipeableViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:paddingEnd="@dimen/activity_horizontal_padding"
+        android:paddingStart="@dimen/activity_horizontal_padding"
+        android:paddingTop="@dimen/activity_vertical_padding"
         app:layout_constraintBottom_toTopOf="@+id/next"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/close_button" />
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/next"

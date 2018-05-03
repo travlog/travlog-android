@@ -50,6 +50,7 @@
 
         <activity
             android:name=".ui.activities.SignUpActivity"
+            android:theme="@style/TravlogTheme.SignIn"
             android:windowSoftInputMode="adjustResize" />
 
         <activity

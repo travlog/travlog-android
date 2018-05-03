@@ -27,6 +27,7 @@ import io.reactivex.subjects.PublishSubject;
 import timber.log.Timber;
 
 import static com.travlog.android.apps.libs.rx.transformers.Transformers.combineLatestPair;
+import static com.travlog.android.apps.libs.rx.transformers.Transformers.neverError;
 import static com.travlog.android.apps.libs.rx.transformers.Transformers.pipeApiErrorsTo;
 import static com.travlog.android.apps.libs.rx.transformers.Transformers.takeWhen;
 
@@ -84,9 +85,9 @@ public class SignUpViewModel extends ActivityViewModel<SignUpActivity>
         body.email = email;
         body.password = password;
 
-        return apiClient.signup(body)
+        return apiClient.signUp(body)
                 .compose(pipeApiErrorsTo(signUpError))
-//                .compose(neverError())
+                .compose(neverError())
                 .toObservable();
     }
 

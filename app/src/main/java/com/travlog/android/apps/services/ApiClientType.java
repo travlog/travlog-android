@@ -9,5 +9,7 @@ import io.reactivex.Flowable;
 
 public interface ApiClientType {
 
-    Flowable<AccessTokenEnvelope> signup(@NonNull XauthBody body);
+    Flowable<AccessTokenEnvelope> signUp(@NonNull XauthBody body);
+
+    Flowable<AccessTokenEnvelope> signIn(@NonNull XauthBody body);
 }

@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.jakewharton.rxbinding2.support.v4.view.RxViewPager;
 import com.jakewharton.rxbinding2.view.RxView;
@@ -22,8 +22,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 @RequiresActivityViewModel(SignUpViewModel.class)
 public class SignUpActivity extends BaseActivity<SignUpViewModel> {
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
+    @BindView(R.id.close_button)
+    View closeButton;
     @BindView(R.id.view_pager)
     NonSwipeableViewPager viewPager;
     @BindView(R.id.next)
@@ -37,11 +37,13 @@ public class SignUpActivity extends BaseActivity<SignUpViewModel> {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.a_sign_up);
-        setSupportActionBar(toolbar);
-        setDisplayHomeAsUpEnabled(true);
 
         adapter = new SignUpPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
+
+        RxView.clicks(closeButton)
+                .compose(bindToLifecycle())
+                .subscribe(__ -> this.back());
 
         RxViewPager.pageSelections(viewPager)
                 .doOnNext(__ -> setNextButtonEnabled(false))
