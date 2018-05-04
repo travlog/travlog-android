@@ -4,5 +4,9 @@ import com.travlog.android.apps.models.User;
 
 public class ProfileEnvelope extends Envelope {
 
-    public User data;
+    public Data data;
+
+    public class Data {
+        public User user;
+    }
 }

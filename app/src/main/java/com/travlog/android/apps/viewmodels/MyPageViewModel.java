@@ -19,7 +19,7 @@ public class MyPageViewModel extends ActivityViewModel<MyPageActivity>
         super(environment);
 
         environment.currentUser.loggedInUser()
-                .map(user -> user.name)
+                .map(user -> user.username)
                 .compose(bindToLifecycle())
                 .subscribe(setUsernameText);
     }

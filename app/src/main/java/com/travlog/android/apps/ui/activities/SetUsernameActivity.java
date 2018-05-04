@@ -46,7 +46,7 @@ public class SetUsernameActivity extends BaseActivity<SetUsernameViewModel> {
 
         RxView.clicks(saveButton)
                 .compose(bindToLifecycle())
-                .subscribe(__ -> viewModel.inputs.saveClick());
+                .subscribe(__ -> viewModel.saveClick());
 
         viewModel.outputs.setSaveButtonEnabled()
                 .compose(bindToLifecycle())

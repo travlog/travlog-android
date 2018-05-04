@@ -61,7 +61,7 @@ public class SetUsernameViewModel extends ActivityViewModel<SetUsernameActivity>
 
         username
                 .compose(takeWhen(saveClick))
-                .switchMap(username -> this.setUsername(username)
+                .switchMap(username -> this.setUsername(currentUser.getUser().get().userId, username)
                         .doOnSubscribe(disposable -> {
 
                         })
@@ -90,11 +90,11 @@ public class SetUsernameViewModel extends ActivityViewModel<SetUsernameActivity>
     }
 
     private @NonNull
-    Observable<User> setUsername(final @NonNull String username) {
+    Observable<User> setUsername(final @NonNull String userId, final @NonNull String username) {
         final User user = new User();
         user.username = username;
 
-        return apiClient.updateProfile(user)
+        return apiClient.updateProfile(userId, user)
                 .compose(pipeApiErrorsTo(profileError))
                 .compose(neverError())
                 .toObservable();

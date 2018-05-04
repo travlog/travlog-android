@@ -17,7 +17,7 @@ public interface ApiClientType {
 
     Flowable<AccessTokenEnvelope> signIn(@NonNull XauthBody body);
 
-    Flowable<User> updateProfile(@NonNull User body);
+    Flowable<User> updateProfile(@NonNull String userId, @NonNull User body);
 
     Flowable<User> userByUsername(@NonNull String username);
 }

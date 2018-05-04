@@ -56,7 +56,7 @@ public abstract class CurrentUserType {
      */
     @Deprecated
     public boolean exists() {
-        return getUser() != null;
+        return getUser().isNotEmpty();
     }
 
     /**

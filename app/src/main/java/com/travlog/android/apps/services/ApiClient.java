@@ -36,11 +36,11 @@ public final class ApiClient implements ApiClientType {
     }
 
     @Override
-    public Flowable<User> updateProfile(final @NonNull User body) {
-        return service.updateProfile(body)
+    public Flowable<User> updateProfile(final @NonNull String userId, final @NonNull User body) {
+        return service.updateProfile(userId, body)
                 .lift(apiErrorOperator())
                 .subscribeOn(Schedulers.io())
-                .map(envelope -> envelope.data);
+                .map(envelope -> envelope.data.user);
     }
 
     @Override
@@ -48,7 +48,7 @@ public final class ApiClient implements ApiClientType {
         return service.getUserByUsername(username)
                 .lift(apiErrorOperator())
                 .subscribeOn(Schedulers.io())
-                .map(envelope -> envelope.data);
+                .map(envelope -> envelope.data.user);
     }
 
     /**

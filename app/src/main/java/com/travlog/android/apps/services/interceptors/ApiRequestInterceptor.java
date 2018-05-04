@@ -6,6 +6,7 @@ import com.travlog.android.apps.libs.CurrentUserType;
 
 import java.io.IOException;
 
+import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -35,8 +36,19 @@ public final class ApiRequestInterceptor implements Interceptor {
         return initialRequest.newBuilder()
                 .header("Accept", "application/json")
                 .header("Authorization", "Bearer " + this.currentUser.getAccessToken())
-                .url(initialRequest.url())
+                .url(url(initialRequest.url()))
                 .build();
+    }
+
+    private HttpUrl url(final @NonNull HttpUrl initialHttpUrl) {
+        final HttpUrl.Builder builder = initialHttpUrl.newBuilder();
+
+        if (this.currentUser.exists()) {
+            builder.setQueryParameter("client_id", this.currentUser.getUser().get().userId)
+                    .setQueryParameter("oauth_token", this.currentUser.getAccessToken());
+        }
+
+        return builder.build();
     }
 
 //    private boolean shouldIntercept(final @NonNull Request request) {

@@ -23,8 +23,9 @@ public interface ApiService {
     @POST("/signin")
     Flowable<Response<AccessTokenEnvelope>> signIn(@NonNull @Body XauthBody body);
 
-    @PUT("/users")
-    Flowable<Response<ProfileEnvelope>> updateProfile(@NonNull @Body User body);
+    @PUT("/users/{userId}")
+    Flowable<Response<ProfileEnvelope>> updateProfile(@NonNull @Path("userId") String userId,
+                                                      @NonNull @Body User body);
 
     @GET("/users/{username}")
     Flowable<Response<ProfileEnvelope>> getUserByUsername(@NonNull @Path("username") String username);
