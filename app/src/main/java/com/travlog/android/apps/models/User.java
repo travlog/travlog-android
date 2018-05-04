@@ -3,10 +3,11 @@ package com.travlog.android.apps.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class User implements Parcelable{
+public class User implements Parcelable {
 
     public String uid;
     public String name;
+    public String username;
 
     @Override
     public int describeContents() {
@@ -17,6 +18,7 @@ public class User implements Parcelable{
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.uid);
         dest.writeString(this.name);
+        dest.writeString(this.username);
     }
 
     public User() {
@@ -25,6 +27,7 @@ public class User implements Parcelable{
     protected User(Parcel in) {
         this.uid = in.readString();
         this.name = in.readString();
+        this.username = in.readString();
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -38,4 +41,13 @@ public class User implements Parcelable{
             return new User[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "uid='" + uid + '\'' +
+                ", name='" + name + '\'' +
+                ", username'" + username + '\'' +
+                '}';
+    }
 }

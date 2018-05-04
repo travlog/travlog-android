@@ -20,6 +20,8 @@ public class MainActivity extends BaseActivity<MainViewModel> {
     View signInButton;
     @BindView(R.id.sign_up)
     View signUpButton;
+    @BindView(R.id.my_page)
+    View myPageButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,5 +36,9 @@ public class MainActivity extends BaseActivity<MainViewModel> {
         RxView.clicks(signUpButton)
                 .compose(bindToLifecycle())
                 .subscribe(__ -> startActivity(new Intent(this, SignUpActivity.class)));
+
+        RxView.clicks(myPageButton)
+                .compose(bindToLifecycle())
+                .subscribe(__->startActivity(new Intent(this, MyPageActivity.class)));
     }
 }

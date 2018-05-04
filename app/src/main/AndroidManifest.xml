@@ -56,6 +56,13 @@
         <activity
             android:name=".ui.activities.SignInActivity"
             android:theme="@style/TravlogTheme.SignIn" />
+
+        <activity android:name=".ui.activities.MyPageActivity" />
+
+        <activity
+            android:name=".ui.activities.SetUsernameActivity"
+            android:label=""
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>

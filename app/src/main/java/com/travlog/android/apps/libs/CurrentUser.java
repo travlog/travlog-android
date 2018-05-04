@@ -1,5 +1,6 @@
 package com.travlog.android.apps.libs;
 
+import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -22,6 +23,7 @@ public class CurrentUser extends CurrentUserType {
 
     private final BehaviorSubject<Optional<User>> user = BehaviorSubject.create();
 
+    @SuppressLint("CheckResult")
     public CurrentUser(final @NonNull StringPreferenceType accessTokenPreference,
                        final @NonNull StringPreferenceType userPreference) {
         this.accessTokenPreference = accessTokenPreference;
