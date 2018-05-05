@@ -1,6 +1,7 @@
 package com.travlog.android.apps.viewmodels;
 
 import android.annotation.SuppressLint;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -72,6 +73,11 @@ public class SignInViewModel extends ActivityViewModel<SignInActivity> implement
                     body.userId = googleSignInAccount.getId();
                     body.name = googleSignInAccount.getDisplayName();
                     body.email = googleSignInAccount.getEmail();
+
+                    final Uri photoUrl = googleSignInAccount.getPhotoUrl();
+                    if (photoUrl != null) {
+                        body.profilePicture = photoUrl.toString();
+                    }
                     body.type = "google";
 
                     return body;
@@ -110,6 +116,7 @@ public class SignInViewModel extends ActivityViewModel<SignInActivity> implement
                         body.userId = accessToken.getUserId();
                         body.name = obj.getString("name");
                         body.email = obj.getString("email");
+                        body.profilePicture = obj.getJSONObject("picture").getJSONObject("data").getString("url");
                         body.type = "facebook";
 
                         xauthBody.onNext(body);
@@ -118,7 +125,7 @@ public class SignInViewModel extends ActivityViewModel<SignInActivity> implement
                     }
                 });
                 Bundle parameters = new Bundle();
-                parameters.putString("fields", "name,email");
+                parameters.putString("fields", "name,email,picture");
                 request.setParameters(parameters);
                 request.executeAsync();
             }

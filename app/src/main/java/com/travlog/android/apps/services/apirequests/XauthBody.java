@@ -7,6 +7,7 @@ public class XauthBody {
     public String email;
     public String password;
     public String name;
+    public String profilePicture;
     public String type;
 
     @Override
@@ -17,6 +18,7 @@ public class XauthBody {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
+                ", profilePicture='" + profilePicture + '\'' +
                 ", type='" + type + '\'' +
                 '}';
     }
