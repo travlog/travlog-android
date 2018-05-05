@@ -32,3 +32,22 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+ext {
+    compileSdkVersion = 27
+    buildToolsVersion = "27.0.3"
+    minSdkVersion = 15
+    targetSdkVersion = 27
+
+    versionCode = 1
+    versionName = "0.0.1"
+
+    support = "27.1.1"
+    firebase = "15.0.0"
+    dagger = "2.11"
+    rxlifecycle2 = "2.2.1"
+    rxbinding2 = "2.1.1"
+    butterknife = "8.8.1"
+    retrofit = "2.3.0"
+    glide = "4.6.1"
+}
