@@ -37,8 +37,8 @@ public class SignInActivity extends BaseActivity<SignInViewModel> {
     LoginButton signInFacebookButton;
     @BindView(R.id.sign_in_with_google_button)
     SignInButton signInGoogleButton;
-    @BindView(R.id.email)
-    EditText emailEditText;
+    @BindView(R.id.login_id)
+    EditText loginIdEdit;
     @BindView(R.id.password)
     EditText passwordEditText;
     @BindView(R.id.sign_in_button)
@@ -78,10 +78,10 @@ public class SignInActivity extends BaseActivity<SignInViewModel> {
                 .compose(bindToLifecycle())
                 .subscribe(__ -> startSignInWithGoogleActivity());
 
-        RxTextView.textChanges(emailEditText)
+        RxTextView.textChanges(loginIdEdit)
                 .map(CharSequence::toString)
                 .compose(bindToLifecycle())
-                .subscribe(viewModel::email);
+                .subscribe(viewModel::loginId);
 
         RxTextView.textChanges(passwordEditText)
                 .map(CharSequence::toString)

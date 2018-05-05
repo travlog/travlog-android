@@ -1,8 +1,10 @@
 package com.travlog.android.apps.viewmodels.inputs;
 
+import android.support.annotation.NonNull;
+
 public interface SignInViewModelInputs {
 
-    void email(String email);
+    void loginId(@NonNull String loginId);
 
     void signInClick();
 

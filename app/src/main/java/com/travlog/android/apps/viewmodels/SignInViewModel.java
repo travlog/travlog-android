@@ -139,20 +139,20 @@ public class SignInViewModel extends ActivityViewModel<SignInActivity> implement
                 .compose(bindToLifecycle())
                 .subscribe(msg -> Timber.d("SignInViewModel: %s", msg));
 
-        final Observable<Pair<String, String>> emailAndPassword = email.compose(combineLatestPair(password));
+        final Observable<Pair<String, String>> loginIdAndPassword = loginId.compose(combineLatestPair(password));
 
-        final Observable<Boolean> isValid = emailAndPassword
+        final Observable<Boolean> isValid = loginIdAndPassword
                 .map(ep -> this.isValid(ep.first, ep.second));
 
         isValid
                 .compose(bindToLifecycle())
                 .subscribe(setSignInButtonEnabled);
 
-        emailAndPassword
+        loginIdAndPassword
                 .compose(takeWhen(signInClick))
                 .map(ep -> {
                     final XauthBody body = new XauthBody();
-                    body.email = ep.first;
+                    body.loginId = ep.first;
                     body.password = ep.second;
                     return body;
                 })
@@ -165,8 +165,8 @@ public class SignInViewModel extends ActivityViewModel<SignInActivity> implement
         signInSuccess.onNext(new Optional<>(null));
     }
 
-    private boolean isValid(final @NonNull String email, final @NonNull String password) {
-        return !TextUtils.isEmpty(email) && !TextUtils.isEmpty(password);
+    private boolean isValid(final @NonNull String loginId, final @NonNull String password) {
+        return !TextUtils.isEmpty(loginId) && !TextUtils.isEmpty(password);
     }
 
     private void clearFacebookSession(final @NonNull FacebookException e) {
@@ -182,7 +182,7 @@ public class SignInViewModel extends ActivityViewModel<SignInActivity> implement
     }
 
     private final PublishSubject<XauthBody> xauthBody = PublishSubject.create();
-    private final PublishSubject<String> email = PublishSubject.create();
+    private final PublishSubject<String> loginId = PublishSubject.create();
     private final PublishSubject<String> password = PublishSubject.create();
     private final PublishSubject<Optional> signInClick = PublishSubject.create();
     private final PublishSubject<Envelope> signInError = PublishSubject.create();
@@ -196,8 +196,8 @@ public class SignInViewModel extends ActivityViewModel<SignInActivity> implement
     public final SignInViewModelErrors errors = this;
 
     @Override
-    public void email(final @NonNull String email) {
-        this.email.onNext(email);
+    public void loginId(final @NonNull String loginId) {
+        this.loginId.onNext(loginId);
     }
 
     @Override

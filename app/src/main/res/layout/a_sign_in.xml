@@ -47,11 +47,11 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@id/email"
+        android:id="@id/login_id"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="@string/hint_email"
-        android:inputType="textEmailAddress"
+        android:hint="@string/hint_login_id"
+        android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/vertical_center_guideline" />
@@ -64,7 +64,7 @@
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/email" />
+        app:layout_constraintTop_toBottomOf="@id/login_id" />
 
     <Button
         android:id="@id/sign_in_button"

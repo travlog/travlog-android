@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Travlog</string>
 
-    <string name="hint_email">email</string>
+    <string name="hint_login_id">username or email</string>
     <string name="hint_password">password</string>
     <string name="hint_name">name</string>
     <string name="hint_title">title</string>

@@ -3,6 +3,7 @@
 
     <item name="sign_in_with_facebook_button" type="id" />
     <item name="sign_in_with_google_button" type="id" />
+    <item name="login_id" type="id" />
     <item name="email" type="id" />
     <item name="password" type="id" />
     <item name="sign_in_button" type="id" />
