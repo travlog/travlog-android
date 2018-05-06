@@ -45,7 +45,7 @@ public class SetUsernameViewModel extends ActivityViewModel<SetUsernameActivity>
 
         isValid
                 .compose(bindToLifecycle())
-                .subscribe(setSaveButtonEnabled);
+                .subscribe(setDoneButtonEnabled);
 
         username
                 .debounce(500, TimeUnit.MILLISECONDS)
@@ -60,7 +60,7 @@ public class SetUsernameViewModel extends ActivityViewModel<SetUsernameActivity>
                 .subscribe();
 
         username
-                .compose(takeWhen(saveClick))
+                .compose(takeWhen(doneClick))
                 .switchMap(username -> this.setUsername(currentUser.getUser().get().userId, username)
                         .doOnSubscribe(disposable -> {
 
@@ -105,10 +105,10 @@ public class SetUsernameViewModel extends ActivityViewModel<SetUsernameActivity>
     public final SetUsernameViewModelErrors errors = this;
 
     private final PublishSubject<String> username = PublishSubject.create();
-    private final PublishSubject<Optional> saveClick = PublishSubject.create();
+    private final PublishSubject<Optional> doneClick = PublishSubject.create();
     private final PublishSubject<Envelope> profileError = PublishSubject.create();
 
-    private final BehaviorSubject<Boolean> setSaveButtonEnabled = BehaviorSubject.create();
+    private final BehaviorSubject<Boolean> setDoneButtonEnabled = BehaviorSubject.create();
     private final CompletableSubject back = CompletableSubject.create();
 
     @Override
@@ -117,14 +117,14 @@ public class SetUsernameViewModel extends ActivityViewModel<SetUsernameActivity>
     }
 
     @Override
-    public void saveClick() {
-        this.saveClick.onNext(new Optional<>(null));
+    public void doneClick() {
+        this.doneClick.onNext(new Optional<>(null));
     }
 
     @NonNull
     @Override
-    public Observable<Boolean> setSaveButtonEnabled() {
-        return setSaveButtonEnabled;
+    public Observable<Boolean> setDoneButtonEnabled() {
+        return setDoneButtonEnabled;
     }
 
     @NonNull

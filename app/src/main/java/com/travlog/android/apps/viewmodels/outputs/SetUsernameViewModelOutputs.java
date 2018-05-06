@@ -8,7 +8,7 @@ import io.reactivex.Observable;
 public interface SetUsernameViewModelOutputs {
 
     @NonNull
-    Observable<Boolean> setSaveButtonEnabled();
+    Observable<Boolean> setDoneButtonEnabled();
 
     @NonNull
     Completable back();

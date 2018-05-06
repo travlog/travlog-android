@@ -6,5 +6,5 @@ public interface SetUsernameViewModelInputs {
 
     void username(@NonNull String username);
 
-    void saveClick();
+    void doneClick();
 }

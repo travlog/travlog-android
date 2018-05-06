@@ -14,6 +14,10 @@
         android:theme="@style/TravlogTheme">
 
         <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="6ed90c2005dfd3578f74731cb9d1a3d0ced77214" />
+
+        <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
@@ -71,9 +75,10 @@
             android:name=".ui.activities.SetUsernameActivity"
             android:label=""
             android:windowSoftInputMode="adjustResize" />
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="6ed90c2005dfd3578f74731cb9d1a3d0ced77214" />
+
+        <activity
+            android:name=".ui.activities.CreateNoteActivity"
+            android:label="" />
     </application>
 
 </manifest>

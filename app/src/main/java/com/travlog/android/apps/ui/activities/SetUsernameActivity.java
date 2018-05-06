@@ -30,8 +30,8 @@ public class SetUsernameActivity extends BaseActivity<SetUsernameViewModel> {
     TextInputLayout usernameInputLayout;
     @BindView(R.id.username_edit)
     TextInputEditText usernameEdit;
-    @BindView(R.id.save_button)
-    View saveButton;
+    @BindView(R.id.done)
+    View doneButton;
 
     @SuppressLint("CheckResult")
     @Override
@@ -47,14 +47,14 @@ public class SetUsernameActivity extends BaseActivity<SetUsernameViewModel> {
                 .compose(bindToLifecycle())
                 .subscribe(viewModel.inputs::username);
 
-        RxView.clicks(saveButton)
+        RxView.clicks(doneButton)
                 .compose(bindToLifecycle())
-                .subscribe(__ -> viewModel.saveClick());
+                .subscribe(__ -> viewModel.doneClick());
 
-        viewModel.outputs.setSaveButtonEnabled()
+        viewModel.outputs.setDoneButtonEnabled()
                 .compose(bindToLifecycle())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::setSaveButtonEnabled);
+                .subscribe(this::setDoneButtonEnabled);
 
         addDisposable(
                 viewModel.outputs.back()
@@ -62,8 +62,8 @@ public class SetUsernameActivity extends BaseActivity<SetUsernameViewModel> {
                         .subscribe(this::back));
     }
 
-    private void setSaveButtonEnabled(final boolean enabled) {
-        this.saveButton.setEnabled(enabled);
+    private void setDoneButtonEnabled(final boolean enabled) {
+        this.doneButton.setEnabled(enabled);
     }
 
     @Nullable
