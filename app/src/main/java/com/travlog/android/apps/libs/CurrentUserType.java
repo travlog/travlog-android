@@ -8,6 +8,7 @@ import com.travlog.android.apps.libs.utils.ObjectUtils;
 import com.travlog.android.apps.models.User;
 
 import io.reactivex.Observable;
+import timber.log.Timber;
 
 public abstract class CurrentUserType {
 

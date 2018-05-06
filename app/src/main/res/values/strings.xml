@@ -28,4 +28,7 @@
     <string name="done">done</string>
     <string name="my_page">my page</string>
     <string name="username">Username</string>
+    <string name="linked_accounts">linked accounts</string>
+    <string name="facebook">facebook</string>
+    <string name="google">google</string>
 </resources>

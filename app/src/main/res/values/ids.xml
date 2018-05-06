@@ -10,7 +10,7 @@
     <item name="forgot_password_button" type="id" />
     <item name="sign_up_button" type="id" />
 
-    <item name="confirm_password" type="id" />
+    <item name="profile_picture" type="id" />
     <item name="name" type="id" />
     <item name="username" type="id" />
 

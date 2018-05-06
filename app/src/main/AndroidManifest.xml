@@ -60,6 +60,14 @@
         <activity android:name=".ui.activities.MyPageActivity" />
 
         <activity
+            android:name=".ui.activities.SettingsActivity"
+            android:label="@string/settings" />
+
+        <activity
+            android:name=".ui.activities.LinkedAccountsActivity"
+            android:label="@string/linked_accounts" />
+
+        <activity
             android:name=".ui.activities.SetUsernameActivity"
             android:label=""
             android:windowSoftInputMode="adjustResize" />

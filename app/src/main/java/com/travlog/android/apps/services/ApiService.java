@@ -32,4 +32,8 @@ public interface ApiService {
 
     @GET("/users/{userId}")
     Flowable<Response<ProfileEnvelope>> getUserByUserId(@NonNull @Path("userId") String userId);
+
+    @PUT("/users/{userId}/link")
+    Flowable<Response<ProfileEnvelope>> link(@NonNull @Path("userId") String userId,
+                                             @NonNull @Body XauthBody body);
 }

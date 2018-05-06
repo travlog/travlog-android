@@ -7,5 +7,8 @@ import io.reactivex.Observable;
 public interface MyPageViewModelOutputs {
 
     @NonNull
+    Observable<String> setProfilePicture();
+
+    @NonNull
     Observable<String> setUsernameText();
 }

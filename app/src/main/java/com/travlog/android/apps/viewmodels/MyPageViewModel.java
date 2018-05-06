@@ -1,6 +1,7 @@
 package com.travlog.android.apps.viewmodels;
 
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.travlog.android.apps.libs.ActivityViewModel;
 import com.travlog.android.apps.libs.Environment;
@@ -19,16 +20,28 @@ public class MyPageViewModel extends ActivityViewModel<MyPageActivity>
         super(environment);
 
         environment.currentUser.loggedInUser()
-                .map(user -> user.username)
+                .map(user -> TextUtils.isEmpty(user.username) ? "" : user.username)
                 .compose(bindToLifecycle())
                 .subscribe(setUsernameText);
+
+        environment.currentUser.loggedInUser()
+                .map(user -> TextUtils.isEmpty(user.profilePicture) ? "" : user.profilePicture)
+                .compose(bindToLifecycle())
+                .subscribe(setProfilePicture);
     }
 
     public final MyPageViewModelInputs inputs = this;
     public final MyPageViewModelOutputs outputs = this;
     public final MyPageViewModelErrors errors = this;
 
+    private final BehaviorSubject<String> setProfilePicture = BehaviorSubject.create();
     private final BehaviorSubject<String> setUsernameText = BehaviorSubject.create();
+
+    @NonNull
+    @Override
+    public Observable<String> setProfilePicture() {
+        return setProfilePicture;
+    }
 
     @NonNull
     @Override

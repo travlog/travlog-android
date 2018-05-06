@@ -8,6 +8,7 @@ public class User implements Parcelable {
     public String userId;
     public String name;
     public String username;
+    public String profilePicture;
 
     @Override
     public int describeContents() {
@@ -19,6 +20,7 @@ public class User implements Parcelable {
         dest.writeString(this.userId);
         dest.writeString(this.name);
         dest.writeString(this.username);
+        dest.writeString(this.profilePicture);
     }
 
     public User() {
@@ -28,6 +30,7 @@ public class User implements Parcelable {
         this.userId = in.readString();
         this.name = in.readString();
         this.username = in.readString();
+        this.profilePicture = in.readString();
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -47,7 +50,8 @@ public class User implements Parcelable {
         return "User{" +
                 "userId='" + userId + '\'' +
                 ", name='" + name + '\'' +
-                ", username'" + username + '\'' +
+                ", username='" + username + '\'' +
+                ", profilePicture='" + profilePicture + '\'' +
                 '}';
     }
 }

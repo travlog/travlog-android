@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.Toolbar;
+import android.util.Pair;
 import android.view.View;
 
 import com.jakewharton.rxbinding2.view.RxView;
@@ -17,6 +18,8 @@ import com.travlog.android.apps.viewmodels.SetUsernameViewModel;
 
 import butterknife.BindView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+
+import static com.travlog.android.apps.libs.utils.TransitionUtils.slideInFromLeft;
 
 @RequiresActivityViewModel(SetUsernameViewModel.class)
 public class SetUsernameActivity extends BaseActivity<SetUsernameViewModel> {
@@ -53,13 +56,19 @@ public class SetUsernameActivity extends BaseActivity<SetUsernameViewModel> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::setSaveButtonEnabled);
 
-        viewModel.outputs.back()
-                .compose(bindToLifecycle())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::back);
+        addDisposable(
+                viewModel.outputs.back()
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(this::back));
     }
 
     private void setSaveButtonEnabled(final boolean enabled) {
         this.saveButton.setEnabled(enabled);
+    }
+
+    @Nullable
+    @Override
+    protected Pair<Integer, Integer> exitTransition() {
+        return slideInFromLeft();
     }
 }

@@ -48,7 +48,7 @@ public class SignInActivity extends BaseActivity<SignInViewModel> {
     @BindView(R.id.sign_up_button)
     Button signUpButton;
 
-    GoogleApiClient googleApiClient;
+    private GoogleApiClient googleApiClient;
 
     @SuppressLint("CheckResult")
     @Override
@@ -72,7 +72,7 @@ public class SignInActivity extends BaseActivity<SignInViewModel> {
 
         RxView.clicks(closeButton)
                 .compose(bindToLifecycle())
-                .subscribe(__ -> back());
+                .subscribe(__ -> this.back());
 
         RxView.clicks(signInGoogleButton)
                 .compose(bindToLifecycle())

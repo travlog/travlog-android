@@ -2,14 +2,13 @@ package com.travlog.android.apps.libs;
 
 import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import com.facebook.login.LoginManager;
 import com.google.gson.Gson;
 import com.travlog.android.apps.libs.db.realm.RealmHelper;
 import com.travlog.android.apps.libs.perferences.StringPreferenceType;
 import com.travlog.android.apps.libs.rx.Optional;
-import com.travlog.android.apps.libs.utils.ObjectUtils;
 import com.travlog.android.apps.models.User;
 
 import io.reactivex.Observable;

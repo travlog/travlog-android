@@ -9,6 +9,7 @@ import com.travlog.android.apps.models.User;
 import com.travlog.android.apps.services.apirequests.XauthBody;
 import com.travlog.android.apps.services.apiresponses.AccessTokenEnvelope;
 import com.travlog.android.apps.services.apiresponses.Envelope;
+import com.travlog.android.apps.services.apiresponses.ProfileEnvelope;
 
 import io.reactivex.Flowable;
 import io.reactivex.schedulers.Schedulers;
@@ -49,6 +50,15 @@ public final class ApiClient implements ApiClientType {
                 .lift(apiErrorOperator())
                 .subscribeOn(Schedulers.io())
                 .map(envelope -> envelope.data.user);
+    }
+
+    @Override
+    public Flowable<ProfileEnvelope> linkAccounts(final @NonNull String userId,
+                                                  final @NonNull XauthBody body) {
+
+        return service.link(userId, body)
+                .lift(apiErrorOperator())
+                .subscribeOn(Schedulers.io());
     }
 
     /**

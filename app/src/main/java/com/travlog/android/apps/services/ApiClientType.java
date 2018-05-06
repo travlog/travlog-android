@@ -5,11 +5,9 @@ import android.support.annotation.NonNull;
 import com.travlog.android.apps.models.User;
 import com.travlog.android.apps.services.apirequests.XauthBody;
 import com.travlog.android.apps.services.apiresponses.AccessTokenEnvelope;
-import com.travlog.android.apps.services.apiresponses.CheckExistEnvelope;
+import com.travlog.android.apps.services.apiresponses.ProfileEnvelope;
 
 import io.reactivex.Flowable;
-import retrofit2.Response;
-import retrofit2.http.Path;
 
 public interface ApiClientType {
 
@@ -20,4 +18,7 @@ public interface ApiClientType {
     Flowable<User> updateProfile(@NonNull String userId, @NonNull User body);
 
     Flowable<User> userByUsername(@NonNull String username);
+
+    Flowable<ProfileEnvelope> linkAccounts(@NonNull String userId,
+                                           @NonNull XauthBody body);
 }
