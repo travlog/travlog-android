@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 public enum ApiEndpoint {
     PRODUCTION("Production", ""),
     STAGING("Staging", ""),
-    LOCAL("Local", "http://192.168.0.5:3000"),
+    LOCAL("Local", "http://192.168.0.5:3000/api/"),
     CUSTOM("Custom", null);
 
     private String name;

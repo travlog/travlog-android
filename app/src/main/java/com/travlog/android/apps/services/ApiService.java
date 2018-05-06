@@ -17,23 +17,23 @@ import retrofit2.http.Path;
 
 public interface ApiService {
 
-    @POST("/signup")
+    @POST("signup")
     Flowable<Response<AccessTokenEnvelope>> signUp(@NonNull @Body XauthBody body);
 
-    @POST("/signin")
+    @POST("signin")
     Flowable<Response<AccessTokenEnvelope>> signIn(@NonNull @Body XauthBody body);
 
-    @PUT("/users/{userId}")
+    @PUT("users/{userId}")
     Flowable<Response<ProfileEnvelope>> updateProfile(@NonNull @Path("userId") String userId,
                                                       @NonNull @Body User body);
 
-    @GET("/users/{username}")
+    @GET("users/{username}")
     Flowable<Response<ProfileEnvelope>> getUserByUsername(@NonNull @Path("username") String username);
 
-    @GET("/users/{userId}")
+    @GET("users/{userId}")
     Flowable<Response<ProfileEnvelope>> getUserByUserId(@NonNull @Path("userId") String userId);
 
-    @PUT("/users/{userId}/link")
+    @PUT("users/{userId}/link")
     Flowable<Response<ProfileEnvelope>> link(@NonNull @Path("userId") String userId,
                                              @NonNull @Body XauthBody body);
 }
