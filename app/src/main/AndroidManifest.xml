@@ -71,6 +71,9 @@
             android:name=".ui.activities.SetUsernameActivity"
             android:label=""
             android:windowSoftInputMode="adjustResize" />
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="6ed90c2005dfd3578f74731cb9d1a3d0ced77214" />
     </application>
 
 </manifest>
