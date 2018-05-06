@@ -28,6 +28,9 @@ android {
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "GIT_SHA", "\"${commitSha()}\""
+        buildConfigField "String", "BUILD_DATE", "\"${commitTime()}\""
     }
     buildTypes {
         debug {
@@ -45,6 +48,17 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 }
+
+task debug() {
+    dependsOn('clean', 'assembleDebug')
+}
+
+task release() {
+    dependsOn('clean', 'assembleRelease')
+}
+
+debug.mustRunAfter clean
+release.mustRunAfter clean
 
 dependencies {
     configurations {
@@ -101,3 +115,31 @@ dependencies {
     }
 }
 apply plugin: 'com.google.gms.google-services'
+
+// SHA and timestamp caching courtesy of https://github.com/gdg-x/frisbee/blob/develop/app/build.gradle#L193-L218
+def commitSha() {
+    def file = new File(project.buildDir, "commit-sha.txt")
+    if (file.exists()) {
+        return file.text
+    }
+
+    def value = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
+
+    file.parentFile.mkdirs()
+    file.text = value
+    return value
+}
+
+def commitTime() {
+    def file = new File(project.buildDir, "commit-timestamp.txt")
+    if (file.exists()) {
+        return file.text
+    }
+
+    def date = new Date()
+    def value = date.format("yyyy-MM-dd'T'HH:mm:ss'Z'", TimeZone.getTimeZone("UTC"))
+
+    file.parentFile.mkdirs()
+    file.text = value
+    return value
+}

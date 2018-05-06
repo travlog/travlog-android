@@ -11,6 +11,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
 import com.travlog.android.apps.libs.ApiEndpoint;
+import com.travlog.android.apps.libs.Build;
 import com.travlog.android.apps.libs.CurrentUser;
 import com.travlog.android.apps.libs.CurrentUserType;
 import com.travlog.android.apps.libs.Environment;
@@ -49,11 +50,13 @@ public class ApplicationModule {
     @Provides
     @Singleton
     static Environment provideEnvironment(final @NonNull ApiClientType apiClient,
+                                          final @NonNull Build build,
                                           final @NonNull CurrentUserType currentUser,
                                           final @NonNull SharedPreferences sharedPreferences) {
 
         final Environment environment = new Environment();
         environment.apiClient = apiClient;
+        environment.build = build;
         environment.currentUser = currentUser;
         environment.sharedPreferences = sharedPreferences;
 
@@ -170,6 +173,13 @@ public class ApplicationModule {
     @Singleton
     AssetManager provideAssetManager() {
         return this.application.getAssets();
+    }
+
+    @Provides
+    @Singleton
+    @NonNull
+    static Build provideBuild(final @NonNull PackageInfo packageInfo) {
+        return new Build(packageInfo);
     }
 
     @Provides
