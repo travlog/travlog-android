@@ -4,8 +4,8 @@ import android.support.annotation.NonNull;
 
 import com.travlog.android.apps.models.User;
 import com.travlog.android.apps.services.apirequests.OauthBody;
+import com.travlog.android.apps.services.apirequests.SignInBody;
 import com.travlog.android.apps.services.apirequests.SignUpBody;
-import com.travlog.android.apps.services.apirequests.XauthBody;
 import com.travlog.android.apps.services.apiresponses.AccessTokenEnvelope;
 import com.travlog.android.apps.services.apiresponses.ProfileEnvelope;
 
@@ -15,7 +15,7 @@ public interface ApiClientType {
 
     Flowable<AccessTokenEnvelope> signUp(@NonNull SignUpBody body);
 
-    Flowable<AccessTokenEnvelope> signIn(@NonNull XauthBody body);
+    Flowable<AccessTokenEnvelope> signIn(@NonNull SignInBody body);
 
     Flowable<AccessTokenEnvelope> oAuth(@NonNull OauthBody body);
 
@@ -24,5 +24,5 @@ public interface ApiClientType {
     Flowable<User> userByUsername(@NonNull String username);
 
     Flowable<ProfileEnvelope> linkAccounts(@NonNull String userId,
-                                           @NonNull XauthBody body);
+                                           @NonNull OauthBody body);
 }

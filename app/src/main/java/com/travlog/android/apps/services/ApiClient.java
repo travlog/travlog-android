@@ -7,8 +7,8 @@ import com.travlog.android.apps.libs.rx.operators.ApiErrorOperator;
 import com.travlog.android.apps.libs.rx.operators.Operators;
 import com.travlog.android.apps.models.User;
 import com.travlog.android.apps.services.apirequests.OauthBody;
+import com.travlog.android.apps.services.apirequests.SignInBody;
 import com.travlog.android.apps.services.apirequests.SignUpBody;
-import com.travlog.android.apps.services.apirequests.XauthBody;
 import com.travlog.android.apps.services.apiresponses.AccessTokenEnvelope;
 import com.travlog.android.apps.services.apiresponses.Envelope;
 import com.travlog.android.apps.services.apiresponses.ProfileEnvelope;
@@ -32,7 +32,7 @@ public final class ApiClient implements ApiClientType {
     }
 
     @Override
-    public Flowable<AccessTokenEnvelope> signIn(final @NonNull XauthBody body) {
+    public Flowable<AccessTokenEnvelope> signIn(final @NonNull SignInBody body) {
         return service.signIn(body)
                 .lift(apiErrorOperator())
                 .subscribeOn(Schedulers.io());
@@ -63,7 +63,7 @@ public final class ApiClient implements ApiClientType {
 
     @Override
     public Flowable<ProfileEnvelope> linkAccounts(final @NonNull String userId,
-                                                  final @NonNull XauthBody body) {
+                                                  final @NonNull OauthBody body) {
 
         return service.link(userId, body)
                 .lift(apiErrorOperator())

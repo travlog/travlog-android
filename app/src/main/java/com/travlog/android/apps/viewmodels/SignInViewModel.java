@@ -21,7 +21,7 @@ import com.travlog.android.apps.libs.Environment;
 import com.travlog.android.apps.libs.rx.Optional;
 import com.travlog.android.apps.services.ApiClientType;
 import com.travlog.android.apps.services.apirequests.OauthBody;
-import com.travlog.android.apps.services.apirequests.XauthBody;
+import com.travlog.android.apps.services.apirequests.SignInBody;
 import com.travlog.android.apps.services.apiresponses.AccessTokenEnvelope;
 import com.travlog.android.apps.services.apiresponses.Envelope;
 import com.travlog.android.apps.ui.activities.SignInActivity;
@@ -169,7 +169,7 @@ public class SignInViewModel extends ActivityViewModel<SignInActivity> implement
 
     private @NonNull
     Observable<AccessTokenEnvelope> signIn(final @NonNull String loginId, final @NonNull String password) {
-        final XauthBody body = new XauthBody();
+        final SignInBody body = new SignInBody();
         body.loginId = loginId;
         body.password = password;
 

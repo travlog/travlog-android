@@ -1,6 +1,6 @@
 package com.travlog.android.apps.services.apirequests;
 
-public class XauthBody {
+public class SignInBody {
 
     public String userId;
     public String loginId;
