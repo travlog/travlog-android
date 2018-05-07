@@ -7,7 +7,6 @@ public class SignUpBody implements Parcelable {
 
     public String email;
     public String password;
-    public String name;
 
     @Override
     public int describeContents() {
@@ -18,7 +17,6 @@ public class SignUpBody implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.email);
         dest.writeString(this.password);
-        dest.writeString(this.name);
     }
 
     public SignUpBody() {
@@ -27,7 +25,6 @@ public class SignUpBody implements Parcelable {
     protected SignUpBody(Parcel in) {
         this.email = in.readString();
         this.password = in.readString();
-        this.name = in.readString();
     }
 
     public static final Creator<SignUpBody> CREATOR = new Creator<SignUpBody>() {

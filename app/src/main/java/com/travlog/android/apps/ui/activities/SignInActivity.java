@@ -12,8 +12,10 @@ import android.widget.EditText;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Scope;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.travlog.android.apps.R;
@@ -60,8 +62,8 @@ public class SignInActivity extends BaseActivity<SignInViewModel> {
         signInFacebookButton.setReadPermissions("email", "public_profile");
 
         final GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestScopes(new Scope(Scopes.EMAIL))
                 .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
                 .build();
 
         googleApiClient = new GoogleApiClient.Builder(this)

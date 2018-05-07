@@ -1,8 +1,6 @@
 package com.travlog.android.apps.viewmodels;
 
 import android.annotation.SuppressLint;
-import android.net.Uri;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Pair;
@@ -11,17 +9,18 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.GraphRequest;
 import com.facebook.internal.CallbackManagerImpl;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.Task;
 import com.travlog.android.apps.libs.ActivityViewModel;
 import com.travlog.android.apps.libs.CurrentUserType;
 import com.travlog.android.apps.libs.Environment;
 import com.travlog.android.apps.libs.rx.Optional;
 import com.travlog.android.apps.services.ApiClientType;
+import com.travlog.android.apps.services.apirequests.OauthBody;
 import com.travlog.android.apps.services.apirequests.XauthBody;
 import com.travlog.android.apps.services.apiresponses.AccessTokenEnvelope;
 import com.travlog.android.apps.services.apiresponses.Envelope;
@@ -30,13 +29,12 @@ import com.travlog.android.apps.viewmodels.errors.SignInViewModelErrors;
 import com.travlog.android.apps.viewmodels.inputs.SignInViewModelInputs;
 import com.travlog.android.apps.viewmodels.outputs.SignInViewModelOutputs;
 
-import org.json.JSONException;
-
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.PublishSubject;
 import timber.log.Timber;
 
+import static android.app.Activity.RESULT_OK;
 import static com.travlog.android.apps.libs.ActivityRequestCodes.SIGN_IN_WITH_GOOGLE;
 import static com.travlog.android.apps.libs.rx.transformers.Transformers.combineLatestPair;
 import static com.travlog.android.apps.libs.rx.transformers.Transformers.neverError;
@@ -65,28 +63,24 @@ public class SignInViewModel extends ActivityViewModel<SignInActivity> implement
 
         activityResult()
                 .filter(activityResult -> activityResult.requestCode == SIGN_IN_WITH_GOOGLE)
+                .filter(activityResult -> activityResult.resultCode == RESULT_OK)
                 .map(activityResult -> activityResult.intent)
                 .map(GoogleSignIn::getSignedInAccountFromIntent)
                 .map(Task::getResult)
-                .map(googleSignInAccount -> {
-                    final XauthBody body = new XauthBody();
-                    body.userId = googleSignInAccount.getId();
-                    body.name = googleSignInAccount.getDisplayName();
-                    body.email = googleSignInAccount.getEmail();
+                .map(GoogleSignInAccount::getIdToken)
+                .switchMap(accessToken -> this.oAuth(accessToken, "google")
+                        .doOnSubscribe(disposable -> {
 
-                    final Uri photoUrl = googleSignInAccount.getPhotoUrl();
-                    if (photoUrl != null) {
-                        body.profilePicture = photoUrl.toString();
-                    }
-                    body.type = "google";
+                        })
+                        .doAfterTerminate(() -> {
 
-                    return body;
-                })
+                        }))
                 .compose(bindToLifecycle())
-                .subscribe(xauthBody);
+                .subscribe(this::signInSuccess);
 
-        xauthBody
-                .switchMap(body -> this.signIn(body)
+        firebaseAccessToken
+                .map(accessToken -> Pair.create(accessToken, "facebook"))
+                .switchMap(ap -> this.oAuth(ap.first, ap.second)
                         .doOnSubscribe(subscription -> {
 
                         })
@@ -106,28 +100,7 @@ public class SignInViewModel extends ActivityViewModel<SignInActivity> implement
             public void onSuccess(LoginResult loginResult) {
                 final AccessToken accessToken = loginResult.getAccessToken();
 
-                // Facebook Email address
-                GraphRequest request = GraphRequest.newMeRequest(accessToken, (obj, res) -> {
-
-                    Timber.d("onSuccess: %s", res);
-
-                    try {
-                        final XauthBody body = new XauthBody();
-                        body.userId = accessToken.getUserId();
-                        body.name = obj.getString("name");
-                        body.email = obj.getString("email");
-                        body.profilePicture = obj.getJSONObject("picture").getJSONObject("data").getString("url");
-                        body.type = "facebook";
-
-                        xauthBody.onNext(body);
-                    } catch (JSONException e) {
-                        Timber.w(e, "onSuccess: ");
-                    }
-                });
-                Bundle parameters = new Bundle();
-                parameters.putString("fields", "name,email,picture");
-                request.setParameters(parameters);
-                request.executeAsync();
+                SignInViewModel.this.firebaseAccessToken.onNext(accessToken.getToken());
             }
 
             @Override
@@ -157,14 +130,15 @@ public class SignInViewModel extends ActivityViewModel<SignInActivity> implement
 
         loginIdAndPassword
                 .compose(takeWhen(signInClick))
-                .map(ep -> {
-                    final XauthBody body = new XauthBody();
-                    body.loginId = ep.first;
-                    body.password = ep.second;
-                    return body;
-                })
+                .switchMap(ip -> this.signIn(ip.first, ip.second)
+                        .doOnSubscribe(disposable -> {
+
+                        })
+                        .doAfterTerminate(() -> {
+
+                        }))
                 .compose(bindToLifecycle())
-                .subscribe(xauthBody);
+                .subscribe(this::signInSuccess);
     }
 
     private void signInSuccess(final @NonNull AccessTokenEnvelope accessTokenEnvelope) {
@@ -181,14 +155,31 @@ public class SignInViewModel extends ActivityViewModel<SignInActivity> implement
     }
 
     private @NonNull
-    Observable<AccessTokenEnvelope> signIn(final @NonNull XauthBody body) {
+    Observable<AccessTokenEnvelope> oAuth(final @NonNull String accessToken,
+                                          final @NonNull String provider) {
+
+        final OauthBody body = new OauthBody();
+        body.token = accessToken;
+        body.provider = provider;
+
+        return client.oAuth(body)
+                .compose(neverError())
+                .toObservable();
+    }
+
+    private @NonNull
+    Observable<AccessTokenEnvelope> signIn(final @NonNull String loginId, final @NonNull String password) {
+        final XauthBody body = new XauthBody();
+        body.loginId = loginId;
+        body.password = password;
+
         return client.signIn(body)
                 .compose(pipeApiErrorsTo(signInError))
                 .compose(neverError())
                 .toObservable();
     }
 
-    private final PublishSubject<XauthBody> xauthBody = PublishSubject.create();
+    private final PublishSubject<String> firebaseAccessToken = PublishSubject.create();
     private final PublishSubject<String> loginId = PublishSubject.create();
     private final PublishSubject<String> password = PublishSubject.create();
     private final PublishSubject<Optional> signInClick = PublishSubject.create();

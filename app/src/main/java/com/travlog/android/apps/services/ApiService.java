@@ -3,6 +3,8 @@ package com.travlog.android.apps.services;
 import android.support.annotation.NonNull;
 
 import com.travlog.android.apps.models.User;
+import com.travlog.android.apps.services.apirequests.OauthBody;
+import com.travlog.android.apps.services.apirequests.SignUpBody;
 import com.travlog.android.apps.services.apirequests.XauthBody;
 import com.travlog.android.apps.services.apiresponses.AccessTokenEnvelope;
 import com.travlog.android.apps.services.apiresponses.ProfileEnvelope;
@@ -18,10 +20,13 @@ import retrofit2.http.Path;
 public interface ApiService {
 
     @POST("signup")
-    Flowable<Response<AccessTokenEnvelope>> signUp(@NonNull @Body XauthBody body);
+    Flowable<Response<AccessTokenEnvelope>> signUp(@NonNull @Body SignUpBody body);
 
     @POST("signin")
     Flowable<Response<AccessTokenEnvelope>> signIn(@NonNull @Body XauthBody body);
+
+    @POST("oauth")
+    Flowable<Response<AccessTokenEnvelope>> oAuth(@NonNull @Body OauthBody body);
 
     @PUT("users/{userId}")
     Flowable<Response<ProfileEnvelope>> updateProfile(@NonNull @Path("userId") String userId,

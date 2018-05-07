@@ -9,7 +9,7 @@ import com.travlog.android.apps.libs.ActivityViewModel;
 import com.travlog.android.apps.libs.Environment;
 import com.travlog.android.apps.libs.rx.Optional;
 import com.travlog.android.apps.services.ApiClientType;
-import com.travlog.android.apps.services.apirequests.XauthBody;
+import com.travlog.android.apps.services.apirequests.SignUpBody;
 import com.travlog.android.apps.services.apiresponses.AccessTokenEnvelope;
 import com.travlog.android.apps.services.apiresponses.Envelope;
 import com.travlog.android.apps.ui.activities.SignUpActivity;
@@ -57,7 +57,13 @@ public class SignUpViewModel extends ActivityViewModel<SignUpActivity>
         email.compose(combineLatestPair(password))
                 .compose(takeWhen(signUpClick))
                 .compose(bindToLifecycle())
-                .switchMap(ep -> this.signUp(ep.first, ep.second))
+                .switchMap(ep -> this.signUp(ep.first, ep.second)
+                        .doOnSubscribe(disposable -> {
+
+                        })
+                        .doAfterTerminate(() -> {
+
+                        }))
                 .compose(bindToLifecycle())
                 .subscribe(envelope -> {
                     environment.currentUser.login(envelope.data.user, envelope.data.accessToken);
@@ -81,7 +87,7 @@ public class SignUpViewModel extends ActivityViewModel<SignUpActivity>
     Observable<AccessTokenEnvelope> signUp(final @NonNull String email,
                                            final @NonNull String password) {
 
-        final XauthBody body = new XauthBody();
+        final SignUpBody body = new SignUpBody();
         body.email = email;
         body.password = password;
 

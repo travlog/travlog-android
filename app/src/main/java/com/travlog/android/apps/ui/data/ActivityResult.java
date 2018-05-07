@@ -15,8 +15,11 @@ public class ActivityResult {
         final ActivityResult activityResult = new ActivityResult();
         activityResult.requestCode = requestCode;
         activityResult.resultCode = resultCode;
-        activityResult.intent = intent;
-
+        if (intent == null) {
+            activityResult.intent = new Intent();
+        } else {
+            activityResult.intent = intent;
+        }
 
         return activityResult;
     }
