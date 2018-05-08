@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.travlog.android.apps.libs.rx.operators.ApiErrorOperator;
 import com.travlog.android.apps.libs.rx.operators.Operators;
 import com.travlog.android.apps.models.Account;
+import com.travlog.android.apps.models.Note;
 import com.travlog.android.apps.models.User;
 import com.travlog.android.apps.services.apirequests.OauthBody;
 import com.travlog.android.apps.services.apirequests.SignInBody;
@@ -71,6 +72,14 @@ public final class ApiClient implements ApiClientType {
                 .lift(apiErrorOperator())
                 .subscribeOn(Schedulers.io())
                 .map(envelope -> envelope.data.accounts);
+    }
+
+    @Override
+    public Flowable<Note> postNote(final @NonNull String userId, final @NonNull Note note) {
+        return service.postNote(userId, note)
+                .lift(apiErrorOperator())
+                .subscribeOn(Schedulers.io())
+                .map(envelope -> envelope.data);
     }
 
     /**

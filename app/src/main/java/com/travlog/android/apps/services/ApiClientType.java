@@ -3,6 +3,7 @@ package com.travlog.android.apps.services;
 import android.support.annotation.NonNull;
 
 import com.travlog.android.apps.models.Account;
+import com.travlog.android.apps.models.Note;
 import com.travlog.android.apps.models.User;
 import com.travlog.android.apps.services.apirequests.OauthBody;
 import com.travlog.android.apps.services.apirequests.SignInBody;
@@ -27,4 +28,6 @@ public interface ApiClientType {
 
     Flowable<List<Account>> linkAccounts(@NonNull String userId,
                                          @NonNull OauthBody body);
+
+    Flowable<Note> postNote(@NonNull String userId, @NonNull Note note);
 }

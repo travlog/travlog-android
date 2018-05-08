@@ -41,10 +41,10 @@ public class MainActivity extends BaseActivity<MainViewModel> {
 
         RxView.clicks(myPageButton)
                 .compose(bindToLifecycle())
-                .subscribe(__->startActivity(new Intent(this, MyPageActivity.class)));
+                .subscribe(__ -> startActivity(new Intent(this, MyPageActivity.class)));
 
         RxView.clicks(addNoteButton)
                 .compose(bindToLifecycle())
-                .subscribe(__->startActivity(new Intent(this, CreateNoteActivity.class)));
+                .subscribe(__ -> startActivity(new Intent(this, PostNoteActivity.class)));
     }
 }
