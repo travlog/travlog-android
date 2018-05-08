@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.Task;
 import com.travlog.android.apps.libs.ActivityViewModel;
 import com.travlog.android.apps.libs.Environment;
 import com.travlog.android.apps.libs.rx.Optional;
+import com.travlog.android.apps.models.Account;
 import com.travlog.android.apps.services.ApiClientType;
 import com.travlog.android.apps.services.apirequests.OauthBody;
 import com.travlog.android.apps.services.apiresponses.ProfileEnvelope;
@@ -22,6 +23,8 @@ import com.travlog.android.apps.ui.activities.LinkedAccountsActivity;
 import com.travlog.android.apps.viewmodels.errors.LinkedAccountsViewModelErrors;
 import com.travlog.android.apps.viewmodels.inputs.LinkedAccountsViewModelInputs;
 import com.travlog.android.apps.viewmodels.outputs.LinkedAccountsViewModelOutputs;
+
+import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
@@ -85,7 +88,7 @@ public class LinkedAccountsViewModel extends ActivityViewModel<LinkedAccountsAct
     }
 
     private @NonNull
-    Observable<ProfileEnvelope> link(final @NonNull String userId, final @NonNull String token, final @NonNull String provider) {
+    Observable<List<Account>> link(final @NonNull String userId, final @NonNull String token, final @NonNull String provider) {
         final OauthBody body = new OauthBody();
         body.token = token;
         body.provider = provider;

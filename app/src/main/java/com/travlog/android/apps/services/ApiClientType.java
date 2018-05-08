@@ -2,12 +2,14 @@ package com.travlog.android.apps.services;
 
 import android.support.annotation.NonNull;
 
+import com.travlog.android.apps.models.Account;
 import com.travlog.android.apps.models.User;
 import com.travlog.android.apps.services.apirequests.OauthBody;
 import com.travlog.android.apps.services.apirequests.SignInBody;
 import com.travlog.android.apps.services.apirequests.SignUpBody;
 import com.travlog.android.apps.services.apiresponses.AccessTokenEnvelope;
-import com.travlog.android.apps.services.apiresponses.ProfileEnvelope;
+
+import java.util.List;
 
 import io.reactivex.Flowable;
 
@@ -23,6 +25,6 @@ public interface ApiClientType {
 
     Flowable<User> userByUsername(@NonNull String username);
 
-    Flowable<ProfileEnvelope> linkAccounts(@NonNull String userId,
-                                           @NonNull OauthBody body);
+    Flowable<List<Account>> linkAccounts(@NonNull String userId,
+                                         @NonNull OauthBody body);
 }

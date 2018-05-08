@@ -5,13 +5,15 @@ import android.support.annotation.NonNull;
 import com.google.gson.Gson;
 import com.travlog.android.apps.libs.rx.operators.ApiErrorOperator;
 import com.travlog.android.apps.libs.rx.operators.Operators;
+import com.travlog.android.apps.models.Account;
 import com.travlog.android.apps.models.User;
 import com.travlog.android.apps.services.apirequests.OauthBody;
 import com.travlog.android.apps.services.apirequests.SignInBody;
 import com.travlog.android.apps.services.apirequests.SignUpBody;
 import com.travlog.android.apps.services.apiresponses.AccessTokenEnvelope;
 import com.travlog.android.apps.services.apiresponses.Envelope;
-import com.travlog.android.apps.services.apiresponses.ProfileEnvelope;
+
+import java.util.List;
 
 import io.reactivex.Flowable;
 import io.reactivex.schedulers.Schedulers;
@@ -62,12 +64,13 @@ public final class ApiClient implements ApiClientType {
     }
 
     @Override
-    public Flowable<ProfileEnvelope> linkAccounts(final @NonNull String userId,
-                                                  final @NonNull OauthBody body) {
+    public Flowable<List<Account>> linkAccounts(final @NonNull String userId,
+                                                final @NonNull OauthBody body) {
 
         return service.link(userId, body)
                 .lift(apiErrorOperator())
-                .subscribeOn(Schedulers.io());
+                .subscribeOn(Schedulers.io())
+                .map(envelope -> envelope.data.accounts);
     }
 
     /**

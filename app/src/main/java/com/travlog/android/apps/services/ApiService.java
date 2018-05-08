@@ -7,6 +7,7 @@ import com.travlog.android.apps.services.apirequests.OauthBody;
 import com.travlog.android.apps.services.apirequests.SignUpBody;
 import com.travlog.android.apps.services.apirequests.SignInBody;
 import com.travlog.android.apps.services.apiresponses.AccessTokenEnvelope;
+import com.travlog.android.apps.services.apiresponses.AccountsEnvelope;
 import com.travlog.android.apps.services.apiresponses.ProfileEnvelope;
 
 import io.reactivex.Flowable;
@@ -39,6 +40,6 @@ public interface ApiService {
     Flowable<Response<ProfileEnvelope>> getUserByUserId(@NonNull @Path("userId") String userId);
 
     @PUT("users/{userId}/link")
-    Flowable<Response<ProfileEnvelope>> link(@NonNull @Path("userId") String userId,
-                                             @NonNull @Body OauthBody body);
+    Flowable<Response<AccountsEnvelope>> link(@NonNull @Path("userId") String userId,
+                                              @NonNull @Body OauthBody body);
 }
