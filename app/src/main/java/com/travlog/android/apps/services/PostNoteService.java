@@ -13,6 +13,7 @@ import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
 import timber.log.Timber;
 
+import static com.travlog.android.apps.libs.rx.transformers.Transformers.neverApiError;
 import static com.travlog.android.apps.libs.rx.transformers.Transformers.neverError;
 import static com.travlog.android.apps.ui.IntentKey.NOTE;
 
@@ -47,13 +48,14 @@ public class PostNoteService extends JobIntentService {
         disposables.add(
                 currentUser.loggedInUser()
                         .map(user -> user.userId)
-                        .switchMap(userId -> this.post(userId, note))
+                        .switchMap(userId -> this.post(note))
                         .subscribe());
     }
 
     private @NonNull
-    Observable<Note> post(final @NonNull String userId, final @NonNull Note note) {
-        return apiClient.postNote(userId, note)
+    Observable<Note> post(final @NonNull Note note) {
+        return apiClient.postNote(note)
+                .compose(neverApiError())
                 .compose(neverError())
                 .toObservable();
     }

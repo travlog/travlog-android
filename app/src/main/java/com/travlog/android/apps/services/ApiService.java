@@ -45,7 +45,6 @@ public interface ApiService {
     Flowable<Response<AccountsEnvelope>> link(@NonNull @Path("userId") String userId,
                                               @NonNull @Body OauthBody body);
 
-    @POST("notes/{userId}")
-    Flowable<Response<PostNoteEnvelope>> postNote(@NonNull @Path("userId") String userId,
-                                                  @NonNull @Body Note note);
+    @POST("notes")
+    Flowable<Response<PostNoteEnvelope>> postNote(@NonNull @Body Note note);
 }

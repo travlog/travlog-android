@@ -29,5 +29,5 @@ public interface ApiClientType {
     Flowable<List<Account>> linkAccounts(@NonNull String userId,
                                          @NonNull OauthBody body);
 
-    Flowable<Note> postNote(@NonNull String userId, @NonNull Note note);
+    Flowable<Note> postNote(@NonNull Note note);
 }

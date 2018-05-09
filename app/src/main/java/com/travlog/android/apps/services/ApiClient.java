@@ -75,8 +75,8 @@ public final class ApiClient implements ApiClientType {
     }
 
     @Override
-    public Flowable<Note> postNote(final @NonNull String userId, final @NonNull Note note) {
-        return service.postNote(userId, note)
+    public Flowable<Note> postNote(final @NonNull Note note) {
+        return service.postNote(note)
                 .lift(apiErrorOperator())
                 .subscribeOn(Schedulers.io())
                 .map(envelope -> envelope.data);
