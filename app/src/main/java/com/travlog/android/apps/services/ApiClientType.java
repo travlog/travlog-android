@@ -30,4 +30,6 @@ public interface ApiClientType {
                                          @NonNull OauthBody body);
 
     Flowable<Note> postNote(@NonNull Note note);
+
+    Flowable<List<Note>> notes();
 }

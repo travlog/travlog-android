@@ -53,6 +53,8 @@
 
         <activity android:name=".ui.activities.MainActivity" />
 
+        <activity android:name=".ui.activities.NoteActivity" />
+
         <activity
             android:name=".ui.activities.SignUpActivity"
             android:theme="@style/TravlogTheme.SignIn"

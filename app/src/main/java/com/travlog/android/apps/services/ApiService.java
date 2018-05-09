@@ -5,10 +5,11 @@ import android.support.annotation.NonNull;
 import com.travlog.android.apps.models.Note;
 import com.travlog.android.apps.models.User;
 import com.travlog.android.apps.services.apirequests.OauthBody;
-import com.travlog.android.apps.services.apirequests.SignUpBody;
 import com.travlog.android.apps.services.apirequests.SignInBody;
+import com.travlog.android.apps.services.apirequests.SignUpBody;
 import com.travlog.android.apps.services.apiresponses.AccessTokenEnvelope;
 import com.travlog.android.apps.services.apiresponses.AccountsEnvelope;
+import com.travlog.android.apps.services.apiresponses.NoteEnvelope;
 import com.travlog.android.apps.services.apiresponses.PostNoteEnvelope;
 import com.travlog.android.apps.services.apiresponses.ProfileEnvelope;
 
@@ -47,4 +48,7 @@ public interface ApiService {
 
     @POST("notes")
     Flowable<Response<PostNoteEnvelope>> postNote(@NonNull @Body Note note);
+
+    @GET("notes")
+    Flowable<Response<NoteEnvelope>> notes();
 }

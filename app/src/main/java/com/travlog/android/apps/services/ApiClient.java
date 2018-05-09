@@ -82,6 +82,14 @@ public final class ApiClient implements ApiClientType {
                 .map(envelope -> envelope.data);
     }
 
+    @Override
+    public Flowable<List<Note>> notes() {
+        return service.notes()
+                .lift(apiErrorOperator())
+                .subscribeOn(Schedulers.io())
+                .map(envelope -> envelope.data.notes);
+    }
+
     /**
      * Utility to create a new {@link ApiErrorOperator}, saves us from littering references to gson throughout the client.
      */

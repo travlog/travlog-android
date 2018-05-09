@@ -90,6 +90,7 @@ dependencies {
     implementation "com.trello.rxlifecycle2:rxlifecycle-components:${rxlifecycle2}"
     implementation "com.jakewharton.rxbinding2:rxbinding:${rxbinding2}"
     implementation "com.jakewharton.rxbinding2:rxbinding-support-v4:${rxbinding2}"
+    implementation "com.jakewharton.rxbinding2:rxbinding-design:${rxbinding2}"
 
     implementation "com.jakewharton:butterknife:${butterknife}"
     annotationProcessor "com.jakewharton:butterknife-compiler:${butterknife}"

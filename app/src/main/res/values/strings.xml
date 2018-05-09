@@ -1,4 +1,8 @@
 <resources>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
     <string name="hint_username_or_email_address">Username or email address</string>
     <string name="hint_password">Password</string>
     <string name="hint_title">Title</string>

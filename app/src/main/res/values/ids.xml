@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <item name="drawer" type="id" />
+    <item name="navigation_view" type="id" />
+    <item name="toolbar" type="id" />
+    <item name="swipe_refresh" type="id" />
+    <item name="recycler_view" type="id" />
+
     <item name="sign_in_with_facebook_button" type="id" />
     <item name="sign_in_with_google_button" type="id" />
     <item name="login_id" type="id" />
@@ -17,7 +23,6 @@
     <item name="title" type="id" />
 
     <item name="root" type="id" />
-    <item name="toolbar" type="id" />
     <item name="note_recycler_view" type="id" />
     <item name="add_note_button" type="id" />
     <item name="period" type="id" />
