@@ -6,6 +6,42 @@
     android:layout_height="match_parent"
     tools:context=".ui.activities.MainActivity">
 
+    <android.support.design.widget.AppBarLayout
+        android:id="@id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:minHeight="?actionBarSize"
+            app:layout_scrollFlags="scroll|snap">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                app:title="MY TRAVLOG"
+                app:titleMarginStart="48dp" />
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/mtrl_bottomappbar_height"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            tools:listitem="@layout/i_note" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -18,8 +54,10 @@
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:layout_gravity="bottom"
+        app:backgroundTint="@color/white"
         app:fabAlignmentMode="center"
-        app:fabAttached="true">
+        app:fabAttached="true"
+        app:title="MY TRAVLOG1">
 
         <android.support.v7.widget.AppCompatImageButton
             android:id="@+id/menu"
@@ -52,19 +90,5 @@
         app:iconPadding="16dp"
         app:layout_anchor="@+id/bottom_app_bar"
         app:layout_anchorGravity="center_horizontal" />
-
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/mtrl_bottomappbar_height">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@id/recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-            tools:listitem="@layout/i_note" />
-    </android.support.v4.widget.SwipeRefreshLayout>
 </android.support.design.widget.CoordinatorLayout>
 

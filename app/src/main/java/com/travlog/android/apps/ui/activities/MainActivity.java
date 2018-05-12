@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.bottomappbar.BottomAppBar;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.jakewharton.rxbinding2.view.RxView;
@@ -26,9 +28,9 @@ import static com.travlog.android.apps.ui.IntentKey.NOTE;
 @RequiresActivityViewModel(MainViewModel.class)
 public class MainActivity extends BaseActivity<MainViewModel> {
 
-    //    @BindView(R.id.app_bar)
-//    AppBarLayout appBarLayout;
-//    @BindView(R.id.collapsing_toolbar)
+    @BindView(R.id.app_bar)
+    AppBarLayout appBarLayout;
+    //    @BindView(R.id.collapsing_toolbar)
 //    CollapsingToolbarLayout collapsingToolbarLayout;
 //    @BindView(R.id.toolbar)
 //    Toolbar toolbar;
@@ -52,13 +54,12 @@ public class MainActivity extends BaseActivity<MainViewModel> {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.a_main);
-
 //        final ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this,
 //                drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 //        drawerLayout.addDrawerListener(drawerToggle);
 //        drawerToggle.syncState();
 
-//        appBarLayout.setOutlineProvider(null);
+        appBarLayout.setOutlineProvider(null);
 
         adapter = new NoteAdapter(viewModel);
         recyclerView.setAdapter(adapter);
