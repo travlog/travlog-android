@@ -19,6 +19,9 @@ import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.PublishSubject;
 
+import static com.travlog.android.apps.libs.rx.transformers.Transformers.neverApiError;
+import static com.travlog.android.apps.libs.rx.transformers.Transformers.neverError;
+
 public class MainViewModel extends ActivityViewModel<MainActivity>
         implements MainViewModelInputs, MainViewModelOutputs, MainViewModelErrors, NoteAdapter.Delegate {
 
@@ -39,6 +42,8 @@ public class MainViewModel extends ActivityViewModel<MainActivity>
     private @NonNull
     Observable<List<Note>> notes() {
         return apiClient.notes()
+                .compose(neverApiError())
+                .compose(neverError())
                 .toObservable();
     }
 

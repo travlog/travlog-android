@@ -3,6 +3,8 @@
 
     <item name="drawer" type="id" />
     <item name="navigation_view" type="id" />
+    <item name="app_bar" type="id" />
+    <item name="collapsing_toolbar" type="id" />
     <item name="toolbar" type="id" />
     <item name="swipe_refresh" type="id" />
     <item name="recycler_view" type="id" />

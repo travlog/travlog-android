@@ -11,23 +11,37 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@id/toolbar"
+        <android.support.design.widget.AppBarLayout
+            android:id="@id/app_bar"
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize" />
+            android:layout_height="wrap_content">
+
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/collapsing_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="84dp"
+                android:minHeight="?actionBarSize"
+                app:layout_scrollFlags="scroll|snap">
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?actionBarSize"
+                    app:title="MY TRAVLOG"
+                    app:titleMarginStart="48dp" />
+            </android.support.design.widget.CollapsingToolbarLayout>
+        </android.support.design.widget.AppBarLayout>
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipe_refresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="?actionBarSize">
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:clipToPadding="false"
-                android:paddingTop="@dimen/activity_vertical_padding"
                 app:layoutManager="android.support.v7.widget.LinearLayoutManager"
                 tools:listitem="@layout/i_note" />
         </android.support.v4.widget.SwipeRefreshLayout>
