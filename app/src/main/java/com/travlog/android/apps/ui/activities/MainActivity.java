@@ -6,9 +6,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.bottomappbar.BottomAppBar;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.jakewharton.rxbinding2.view.RxView;
@@ -22,6 +24,7 @@ import com.travlog.android.apps.viewmodels.MainViewModel;
 
 import butterknife.BindView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import timber.log.Timber;
 
 import static com.travlog.android.apps.ui.IntentKey.NOTE;
 
@@ -30,10 +33,6 @@ public class MainActivity extends BaseActivity<MainViewModel> {
 
     @BindView(R.id.app_bar)
     AppBarLayout appBarLayout;
-    //    @BindView(R.id.collapsing_toolbar)
-//    CollapsingToolbarLayout collapsingToolbarLayout;
-//    @BindView(R.id.toolbar)
-//    Toolbar toolbar;
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout refreshLayout;
     @BindView(R.id.recycler_view)
@@ -54,10 +53,6 @@ public class MainActivity extends BaseActivity<MainViewModel> {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.a_main);
-//        final ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this,
-//                drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-//        drawerLayout.addDrawerListener(drawerToggle);
-//        drawerToggle.syncState();
 
         appBarLayout.setOutlineProvider(null);
 
@@ -106,14 +101,5 @@ public class MainActivity extends BaseActivity<MainViewModel> {
         final Intent intent = new Intent(this, NoteActivity.class);
         intent.putExtra(NOTE, note);
         startActivityWithTransition(intent, R.anim.slide_in_right, R.anim.fade_out_slide_out_left);
-    }
-
-    @Override
-    public void back() {
-//        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-//            drawerLayout.closeDrawer(GravityCompat.START);
-//        } else {
-        super.back();
-//        }
     }
 }
