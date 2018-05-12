@@ -32,4 +32,6 @@ public interface ApiClientType {
     Flowable<Note> postNote(@NonNull Note note);
 
     Flowable<List<Note>> notes();
+
+    Flowable<Note> deleteNote(long noteId);
 }

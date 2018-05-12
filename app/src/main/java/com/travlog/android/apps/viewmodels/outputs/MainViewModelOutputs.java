@@ -15,4 +15,7 @@ public interface MainViewModelOutputs {
 
     @NonNull
     Observable<Note> showNoteActivity();
+
+    @NonNull
+    Observable<Integer> deleteNote();
 }

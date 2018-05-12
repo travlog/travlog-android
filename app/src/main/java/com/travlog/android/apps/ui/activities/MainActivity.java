@@ -117,6 +117,11 @@ public class MainActivity extends BaseActivity<MainViewModel> {
                 .compose(bindToLifecycle())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::showNoteActivity);
+
+        viewModel.outputs.deleteNote()
+                .compose(bindToLifecycle())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(adapter::deleteData);
     }
 
     private void showNoteActivity(final @NonNull Note note) {

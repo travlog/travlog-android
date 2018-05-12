@@ -15,5 +15,6 @@ public class SplashActivity extends BaseActivity<SplashViewModel> {
         super.onCreate(savedInstanceState);
 
         startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
 }

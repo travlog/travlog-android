@@ -10,12 +10,14 @@ import com.travlog.android.apps.services.apirequests.SignUpBody;
 import com.travlog.android.apps.services.apiresponses.AccessTokenEnvelope;
 import com.travlog.android.apps.services.apiresponses.AccountsEnvelope;
 import com.travlog.android.apps.services.apiresponses.NoteEnvelope;
+import com.travlog.android.apps.services.apiresponses.NotesEnvelope;
 import com.travlog.android.apps.services.apiresponses.PostNoteEnvelope;
 import com.travlog.android.apps.services.apiresponses.ProfileEnvelope;
 
 import io.reactivex.Flowable;
 import retrofit2.Response;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -50,5 +52,8 @@ public interface ApiService {
     Flowable<Response<PostNoteEnvelope>> postNote(@NonNull @Body Note note);
 
     @GET("notes")
-    Flowable<Response<NoteEnvelope>> notes();
+    Flowable<Response<NotesEnvelope>> notes();
+
+    @DELETE("notes/{noteId}")
+    Flowable<Response<NoteEnvelope>> deleteNote(@Path("noteId") long noteId);
 }

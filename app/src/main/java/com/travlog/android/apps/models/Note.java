@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 public class Note implements Parcelable {
 
+    public int id;
     public String title;
     public String memo;
 
@@ -15,6 +16,7 @@ public class Note implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.id);
         dest.writeString(this.title);
         dest.writeString(this.memo);
     }
@@ -23,6 +25,7 @@ public class Note implements Parcelable {
     }
 
     protected Note(Parcel in) {
+        this.id = in.readInt();
         this.title = in.readString();
         this.memo = in.readString();
     }
@@ -42,6 +45,7 @@ public class Note implements Parcelable {
     @Override
     public String toString() {
         return "Note{" +
+                "id=" + id +
                 "title='" + title + '\'' +
                 ", memo='" + memo + '\'' +
                 '}';

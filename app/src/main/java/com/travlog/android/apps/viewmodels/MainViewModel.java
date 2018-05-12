@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.travlog.android.apps.libs.ActivityViewModel;
 import com.travlog.android.apps.libs.Environment;
+import com.travlog.android.apps.libs.rx.bus.DeleteNote;
 import com.travlog.android.apps.models.Note;
 import com.travlog.android.apps.services.ApiClientType;
 import com.travlog.android.apps.ui.activities.MainActivity;
@@ -37,6 +38,9 @@ public class MainViewModel extends ActivityViewModel<MainActivity>
         notes()
                 .compose(bindToLifecycle())
                 .subscribe(updateData::onNext);
+
+        deleteNote = DeleteNote.getInstance().getObservable()
+                .map(note -> note.id);
     }
 
     private @NonNull
@@ -51,6 +55,7 @@ public class MainViewModel extends ActivityViewModel<MainActivity>
 
     private final BehaviorSubject<List<Note>> updateData = BehaviorSubject.create();
     private Observable<Note> showNoteActivity;
+    private Observable<Integer> deleteNote;
 
     public final MainViewModelInputs inputs = this;
     public final MainViewModelOutputs outputs = this;
@@ -66,6 +71,12 @@ public class MainViewModel extends ActivityViewModel<MainActivity>
     @Override
     public Observable<Note> showNoteActivity() {
         return showNoteActivity;
+    }
+
+    @NonNull
+    @Override
+    public Observable<Integer> deleteNote() {
+        return deleteNote;
     }
 
     @Override
