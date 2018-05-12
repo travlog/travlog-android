@@ -14,7 +14,10 @@ public interface MainViewModelOutputs {
     Observable<List<Note>> updateData();
 
     @NonNull
-    Observable<Note> showNoteActivity();
+    Observable<Note> showNoteDetailsActivity();
+
+    @NonNull
+    Observable<Note> updateNote();
 
     @NonNull
     Observable<Integer> deleteNote();

@@ -91,7 +91,15 @@ public final class ApiClient implements ApiClientType {
     }
 
     @Override
-    public Flowable<Note> deleteNote(final long noteId) {
+    public Flowable<Note> getNote(final int noteId) {
+        return service.getNote(noteId)
+                .lift(apiErrorOperator())
+                .subscribeOn(Schedulers.io())
+                .map(envelope -> envelope.data);
+    }
+
+    @Override
+    public Flowable<Note> deleteNote(final int noteId) {
         return service.deleteNote(noteId)
                 .lift(apiErrorOperator())
                 .subscribeOn(Schedulers.io())

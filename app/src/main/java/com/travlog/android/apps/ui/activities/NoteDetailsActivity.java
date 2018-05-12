@@ -13,15 +13,15 @@ import android.view.MenuItem;
 import com.travlog.android.apps.R;
 import com.travlog.android.apps.libs.BaseActivity;
 import com.travlog.android.apps.libs.qualifiers.RequiresActivityViewModel;
-import com.travlog.android.apps.viewmodels.NoteViewModel;
+import com.travlog.android.apps.viewmodels.NoteDetailsViewModel;
 
 import butterknife.BindView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
 import static com.travlog.android.apps.libs.utils.TransitionUtils.slideInFromLeft;
 
-@RequiresActivityViewModel(NoteViewModel.class)
-public class NoteActivity extends BaseActivity<NoteViewModel> {
+@RequiresActivityViewModel(NoteDetailsViewModel.class)
+public class NoteDetailsActivity extends BaseActivity<NoteDetailsViewModel> {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -33,7 +33,7 @@ public class NoteActivity extends BaseActivity<NoteViewModel> {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.a_note);
+        setContentView(R.layout.a_note_details);
         setSupportActionBar(toolbar);
         setDisplayHomeAsUpEnabled(true);
 

@@ -56,6 +56,23 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return result;
     }
 
+    public void updateData(final @NonNull Note note) {
+        final Note originNote = noteSparseArray.get(note.id);
+
+
+        noteSparseArray.put(note.id, note);
+
+        if (originNote != null) {
+            final int index = notes.indexOf(originNote);
+
+            notes.set(index, note);
+            notifyItemChanged(index);
+        } else {
+            notes.add(0, note);
+            notifyItemInserted(0);
+        }
+    }
+
     public @NonNull
     Note deleteData(final int noteId) {
         final Note note = noteSparseArray.get(noteId);

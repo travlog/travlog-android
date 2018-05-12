@@ -4,7 +4,8 @@ import android.support.annotation.NonNull;
 
 import com.travlog.android.apps.libs.ActivityViewModel;
 import com.travlog.android.apps.libs.Environment;
-import com.travlog.android.apps.libs.rx.bus.DeleteNote;
+import com.travlog.android.apps.libs.rx.bus.DeleteNoteEvent;
+import com.travlog.android.apps.libs.rx.bus.NoteEvent;
 import com.travlog.android.apps.models.Note;
 import com.travlog.android.apps.services.ApiClientType;
 import com.travlog.android.apps.ui.activities.MainActivity;
@@ -33,13 +34,15 @@ public class MainViewModel extends ActivityViewModel<MainActivity>
 
         this.apiClient = environment.apiClient;
 
-        this.showNoteActivity = this.noteItemClick;
+        this.showNoteDetailsActivity = this.noteItemClick;
 
         notes()
                 .compose(bindToLifecycle())
                 .subscribe(updateData::onNext);
 
-        deleteNote = DeleteNote.getInstance().getObservable()
+        updateNote = NoteEvent.getInstance().getObservable();
+
+        deleteNote = DeleteNoteEvent.getInstance().getObservable()
                 .map(note -> note.id);
     }
 
@@ -54,7 +57,8 @@ public class MainViewModel extends ActivityViewModel<MainActivity>
     private final PublishSubject<Note> noteItemClick = PublishSubject.create();
 
     private final BehaviorSubject<List<Note>> updateData = BehaviorSubject.create();
-    private Observable<Note> showNoteActivity;
+    private Observable<Note> showNoteDetailsActivity;
+    private Observable<Note> updateNote;
     private Observable<Integer> deleteNote;
 
     public final MainViewModelInputs inputs = this;
@@ -69,8 +73,14 @@ public class MainViewModel extends ActivityViewModel<MainActivity>
 
     @NonNull
     @Override
-    public Observable<Note> showNoteActivity() {
-        return showNoteActivity;
+    public Observable<Note> showNoteDetailsActivity() {
+        return showNoteDetailsActivity;
+    }
+
+    @NonNull
+    @Override
+    public Observable<Note> updateNote() {
+        return updateNote;
     }
 
     @NonNull

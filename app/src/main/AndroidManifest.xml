@@ -53,7 +53,7 @@
 
         <activity android:name=".ui.activities.MainActivity" />
 
-        <activity android:name=".ui.activities.NoteActivity" />
+        <activity android:name=".ui.activities.NoteDetailsActivity" />
 
         <activity
             android:name=".ui.activities.SignUpActivity"

@@ -7,20 +7,20 @@ import com.travlog.android.apps.models.Note;
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 
-public class DeleteNote {
-
-    private static DeleteNote instance;
+public class NoteEvent {
 
     private final PublishSubject<Note> subject;
 
-    private DeleteNote() {
+    private static NoteEvent instance;
+
+    private NoteEvent() {
         subject = PublishSubject.create();
     }
 
     public static @NonNull
-    DeleteNote getInstance() {
+    NoteEvent getInstance() {
         if (instance == null) {
-            instance = new DeleteNote();
+            instance = new NoteEvent();
         }
         return instance;
     }

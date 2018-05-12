@@ -1,16 +1,14 @@
 package com.travlog.android.apps.ui.activities;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.bottomappbar.BottomAppBar;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.view.MotionEvent;
 import android.view.View;
 
 import com.jakewharton.rxbinding2.view.RxView;
@@ -24,7 +22,6 @@ import com.travlog.android.apps.viewmodels.MainViewModel;
 
 import butterknife.BindView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import timber.log.Timber;
 
 import static com.travlog.android.apps.ui.IntentKey.NOTE;
 
@@ -54,7 +51,9 @@ public class MainActivity extends BaseActivity<MainViewModel> {
 
         setContentView(R.layout.a_main);
 
-        appBarLayout.setOutlineProvider(null);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            appBarLayout.setOutlineProvider(null);
+        }
 
         adapter = new NoteAdapter(viewModel);
         recyclerView.setAdapter(adapter);
@@ -76,10 +75,15 @@ public class MainActivity extends BaseActivity<MainViewModel> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(adapter::updateData);
 
-        viewModel.outputs.showNoteActivity()
+        viewModel.outputs.showNoteDetailsActivity()
                 .compose(bindToLifecycle())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::showNoteActivity);
+                .subscribe(this::showNoteDetailsActivity);
+
+        viewModel.outputs.updateNote()
+                .compose(bindToLifecycle())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(adapter::updateData);
 
         viewModel.outputs.deleteNote()
                 .compose(bindToLifecycle())
@@ -97,8 +101,8 @@ public class MainActivity extends BaseActivity<MainViewModel> {
                 .show(getSupportFragmentManager(), "MainMenuBottomSheetDialogFragment");
     }
 
-    private void showNoteActivity(final @NonNull Note note) {
-        final Intent intent = new Intent(this, NoteActivity.class);
+    private void showNoteDetailsActivity(final @NonNull Note note) {
+        final Intent intent = new Intent(this, NoteDetailsActivity.class);
         intent.putExtra(NOTE, note);
         startActivityWithTransition(intent, R.anim.slide_in_right, R.anim.fade_out_slide_out_left);
     }
