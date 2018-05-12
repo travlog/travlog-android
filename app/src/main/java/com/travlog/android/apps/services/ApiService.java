@@ -55,8 +55,11 @@ public interface ApiService {
     Flowable<Response<NotesEnvelope>> notes();
 
     @GET("notes/{noteId}")
-    Flowable<Response<NoteEnvelope>> getNote(@Path("noteId") long noteId);
+    Flowable<Response<NoteEnvelope>> getNote(@Path("noteId") int noteId);
+
+    @PUT("notes/{noteId}")
+    Flowable<Response<NoteEnvelope>> updateNote(@Path("noteId") int noteId, @NonNull @Body Note note);
 
     @DELETE("notes/{noteId}")
-    Flowable<Response<NoteEnvelope>> deleteNote(@Path("noteId") long noteId);
+    Flowable<Response<NoteEnvelope>> deleteNote(@Path("noteId") int noteId);
 }

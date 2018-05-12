@@ -23,4 +23,6 @@
     <string name="hint_email">Email</string>
     <string name="delete">Delete</string>
     <string name="add_travlog">Add travlog</string>
+    <string name="edit">Edit</string>
+    <string name="save">Save</string>
 </resources>

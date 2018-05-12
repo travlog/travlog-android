@@ -9,13 +9,10 @@ import com.travlog.android.apps.services.apirequests.OauthBody;
 import com.travlog.android.apps.services.apirequests.SignInBody;
 import com.travlog.android.apps.services.apirequests.SignUpBody;
 import com.travlog.android.apps.services.apiresponses.AccessTokenEnvelope;
-import com.travlog.android.apps.services.apiresponses.NoteEnvelope;
 
 import java.util.List;
 
 import io.reactivex.Flowable;
-import retrofit2.Response;
-import retrofit2.http.Path;
 
 public interface ApiClientType {
 
@@ -37,6 +34,8 @@ public interface ApiClientType {
     Flowable<List<Note>> notes();
 
     Flowable<Note> getNote(int noteId);
+
+    Flowable<Note> updateNote(@NonNull Note note);
 
     Flowable<Note> deleteNote(int noteId);
 }

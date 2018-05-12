@@ -55,6 +55,8 @@
 
         <activity android:name=".ui.activities.NoteDetailsActivity" />
 
+        <activity android:name=".ui.activities.EditNoteActivity" />
+
         <activity
             android:name=".ui.activities.SignUpActivity"
             android:theme="@style/TravlogTheme.SignIn"

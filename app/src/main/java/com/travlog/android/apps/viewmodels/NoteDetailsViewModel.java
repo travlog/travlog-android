@@ -10,7 +10,7 @@ import com.travlog.android.apps.libs.rx.bus.DeleteNoteEvent;
 import com.travlog.android.apps.libs.rx.bus.NoteEvent;
 import com.travlog.android.apps.models.Note;
 import com.travlog.android.apps.services.ApiClientType;
-import com.travlog.android.apps.ui.activities.NoteActivity;
+import com.travlog.android.apps.ui.activities.NoteDetailsActivity;
 import com.travlog.android.apps.viewmodels.errors.NoteViewModelErrors;
 import com.travlog.android.apps.viewmodels.inputs.NoteViewModelInputs;
 import com.travlog.android.apps.viewmodels.outputs.NoteViewModelOutputs;
@@ -26,7 +26,7 @@ import static com.travlog.android.apps.libs.rx.transformers.Transformers.neverEr
 import static com.travlog.android.apps.libs.rx.transformers.Transformers.takeWhen;
 import static com.travlog.android.apps.ui.IntentKey.NOTE;
 
-public class NoteDetailsViewModel extends ActivityViewModel<NoteActivity> implements
+public class NoteDetailsViewModel extends ActivityViewModel<NoteDetailsActivity> implements
         NoteViewModelInputs, NoteViewModelOutputs, NoteViewModelErrors {
 
     private final ApiClientType apiClient;
@@ -48,6 +48,11 @@ public class NoteDetailsViewModel extends ActivityViewModel<NoteActivity> implem
                 });
 
         note
+                .compose(takeWhen(editClick))
+                .compose(bindToLifecycle())
+                .subscribe(showEditNoteActivity);
+
+        note
                 .compose(takeWhen(deleteClick))
                 .switchMap(note -> this.delete(note.id)
                         .doOnSubscribe(disposable -> {
@@ -59,13 +64,12 @@ public class NoteDetailsViewModel extends ActivityViewModel<NoteActivity> implem
                 .compose(bindToLifecycle())
                 .subscribe(this::deleteSuccess);
 
-        noteIntent
-                .compose(bindToLifecycle())
-                .subscribe(note);
-
-        noteIntent
-                .switchMap(note -> this.note(note.id))
-                .doOnNext(NoteEvent.getInstance()::post)
+        Observable.merge(
+                noteIntent,
+                noteIntent.switchMap(note -> this.note(note.id))
+                        .doOnNext(NoteEvent.getInstance()::post),
+                NoteEvent.getInstance().getObservable()
+        )
                 .compose(bindToLifecycle())
                 .subscribe(note);
     }
@@ -93,9 +97,11 @@ public class NoteDetailsViewModel extends ActivityViewModel<NoteActivity> implem
     }
 
     private final PublishSubject<Note> note = PublishSubject.create();
+    private final PublishSubject<Optional> editClick = PublishSubject.create();
     private final PublishSubject<Optional> deleteClick = PublishSubject.create();
 
     private final BehaviorSubject<String> setTitleText = BehaviorSubject.create();
+    private final BehaviorSubject<Note> showEditNoteActivity = BehaviorSubject.create();
     private final CompletableSubject back = CompletableSubject.create();
 
     public final NoteViewModelInputs inputs = this;
@@ -110,8 +116,19 @@ public class NoteDetailsViewModel extends ActivityViewModel<NoteActivity> implem
 
     @NonNull
     @Override
+    public Observable<Note> showEditNoteActivity() {
+        return showEditNoteActivity;
+    }
+
+    @NonNull
+    @Override
     public Completable back() {
         return back;
+    }
+
+    @Override
+    public void editClick() {
+        this.editClick.onNext(new Optional<>(null));
     }
 
     @Override
