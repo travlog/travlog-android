@@ -84,11 +84,6 @@
         <activity
             android:name=".ui.activities.PostNoteActivity"
             android:label="" />
-
-        <service
-            android:name=".services.PostNoteService"
-            android:exported="false"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
 
 </manifest>

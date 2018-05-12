@@ -2,12 +2,10 @@ package com.travlog.android.apps.viewmodels.outputs;
 
 import android.support.annotation.NonNull;
 
-import com.travlog.android.apps.models.Note;
-
-import io.reactivex.Observable;
+import io.reactivex.Completable;
 
 public interface PostNoteViewModelOutputs {
 
     @NonNull
-    Observable<Note> startPostNoteService();
+    Completable back();
 }

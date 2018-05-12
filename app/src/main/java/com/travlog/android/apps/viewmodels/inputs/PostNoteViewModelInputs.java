@@ -6,5 +6,5 @@ public interface PostNoteViewModelInputs {
 
     void title(@NonNull String title);
 
-    void back();
+    void saveClick();
 }
