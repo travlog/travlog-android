@@ -36,7 +36,7 @@ public class PostNoteActivity extends BaseActivity<PostNoteViewModel> {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.a_create_note);
+        setContentView(R.layout.a_post_note);
         setSupportActionBar(toolbar);
         setDisplayHomeAsUpEnabled(true);
 

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v7.widget.AppCompatButton;
+import android.util.Pair;
 import android.view.View;
 
 import com.jakewharton.rxbinding2.support.v4.view.RxViewPager;
@@ -80,5 +81,11 @@ public class SignUpActivity extends BaseActivity<SignUpViewModel> {
 
     private void setNextButtonEnabled(final boolean enabled) {
         this.nextButton.setEnabled(enabled);
+    }
+
+    @Nullable
+    @Override
+    protected Pair<Integer, Integer> exitTransition() {
+        return Pair.create(android.R.anim.fade_in, R.anim.slide_out_bottom);
     }
 }

@@ -1,67 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@id/drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.activities.MainActivity">
 
-    <android.support.design.widget.CoordinatorLayout
+    <View
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="1dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="?actionBarSize"
+        android:background="@drawable/divider_background" />
 
-        <android.support.design.widget.AppBarLayout
-            android:id="@id/app_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+    <android.support.design.bottomappbar.BottomAppBar
+        android:id="@id/bottom_app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_gravity="bottom"
+        app:fabAlignmentMode="center"
+        app:fabAttached="true">
 
-            <android.support.design.widget.CollapsingToolbarLayout
-                android:id="@+id/collapsing_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="84dp"
-                android:minHeight="?actionBarSize"
-                app:layout_scrollFlags="scroll|snap">
-
-                <android.support.v7.widget.Toolbar
-                    android:id="@id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?actionBarSize"
-                    app:title="MY TRAVLOG"
-                    app:titleMarginStart="48dp" />
-            </android.support.design.widget.CollapsingToolbarLayout>
-        </android.support.design.widget.AppBarLayout>
-
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipe_refresh"
-            android:layout_width="match_parent"
+        <android.support.v7.widget.AppCompatImageButton
+            android:id="@+id/menu"
+            style="?toolbarNavigationButtonStyle"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            android:layout_gravity="start"
+            android:src="@drawable/ic_menu_black_24dp" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@id/recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-                tools:listitem="@layout/i_note" />
-        </android.support.v4.widget.SwipeRefreshLayout>
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/add_note"
+        <android.support.v7.widget.AppCompatImageButton
+            android:id="@+id/overflow"
+            style="?actionOverflowButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/activity_horizontal_padding"
-            android:layout_marginEnd="@dimen/activity_horizontal_padding"
-            android:layout_marginRight="@dimen/activity_horizontal_padding"
-            android:src="@drawable/ic_add_white_24dp"
-            app:layout_anchor="@id/recycler_view"
-            app:layout_anchorGravity="end|bottom" />
-    </android.support.design.widget.CoordinatorLayout>
+            android:layout_gravity="end" />
+    </android.support.design.bottomappbar.BottomAppBar>
 
-    <android.support.design.widget.NavigationView
-        android:id="@id/navigation_view"
+    <android.support.design.button.MaterialButton
+        android:id="@+id/add_note"
         android:layout_width="wrap_content"
+        android:layout_height="64dp"
+        android:gravity="center"
+        android:text="@string/add_travlog"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        app:additionalPaddingLeftForIcon="0dp"
+        app:additionalPaddingRightForIcon="8dp"
+        app:cornerRadius="32dp"
+        app:icon="@drawable/ic_add_white_24dp"
+        app:iconPadding="16dp"
+        app:layout_anchor="@+id/bottom_app_bar"
+        app:layout_anchorGravity="center_horizontal" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
-        app:menu="@menu/menu_main_navigation" />
-</android.support.v4.widget.DrawerLayout>
+        android:layout_marginBottom="@dimen/mtrl_bottomappbar_height">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            tools:listitem="@layout/i_note" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+</android.support.design.widget.CoordinatorLayout>
+

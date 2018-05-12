@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
-        android:id="@+id/menu_sign_in"
-        android:title="@string/sign_in" />
+        <item
+            android:id="@+id/menu_sign_in"
+            android:title="@string/sign_in"
+            app:showAsAction="never" />
 
-    <item
-        android:id="@+id/menu_sign_up"
-        android:title="@string/sign_up" />
+        <item
+            android:id="@+id/menu_sign_up"
+            android:title="@string/sign_up"
+            app:showAsAction="never" />
 
-    <item
-        android:id="@+id/menu_my_page"
-        android:title="@string/my_page" />
+        <item
+            android:id="@+id/menu_my_page"
+            android:title="@string/my_page"
+            app:showAsAction="never" />
 </menu>

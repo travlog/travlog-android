@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@android:color/transparent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_bottom_sheet"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <android.support.design.button.MaterialButton
+            android:id="@+id/sign_in"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/sign_in"
+            app:backgroundTint="@android:color/white"
+            app:rippleColor="@color/accent" />
+
+        <android.support.design.button.MaterialButton
+            android:id="@+id/sign_up"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/sign_up"
+            app:backgroundTint="@android:color/white"
+            app:rippleColor="@color/accent" />
+
+        <android.support.design.button.MaterialButton
+            android:id="@+id/my_page"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/my_page"
+            app:backgroundTint="@android:color/white"
+            app:rippleColor="@color/accent" />
+    </LinearLayout>
+</android.support.design.card.MaterialCardView>
