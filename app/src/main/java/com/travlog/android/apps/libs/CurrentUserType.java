@@ -4,11 +4,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.travlog.android.apps.libs.rx.Optional;
-import com.travlog.android.apps.libs.utils.ObjectUtils;
+import com.travlog.android.apps.libs.utils.ObjectUtilsKt;
 import com.travlog.android.apps.models.User;
 
 import io.reactivex.Observable;
-import timber.log.Timber;
 
 public abstract class CurrentUserType {
 
@@ -67,7 +66,7 @@ public abstract class CurrentUserType {
      */
     public @NonNull
     Observable<Boolean> isSignedIn() {
-        return observable().map(ObjectUtils::isNotNull);
+        return observable().map(ObjectUtilsKt::isNotNull);
     }
 
     /**
