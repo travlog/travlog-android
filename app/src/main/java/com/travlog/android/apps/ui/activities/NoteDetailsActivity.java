@@ -20,7 +20,7 @@ import com.travlog.android.apps.viewmodels.NoteDetailsViewModel;
 import butterknife.BindView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
-import static com.travlog.android.apps.libs.utils.TransitionUtils.slideInFromLeft;
+import static com.travlog.android.apps.libs.utils.TransitionUtilsKt.slideInFromLeft;
 import static com.travlog.android.apps.ui.IntentKey.NOTE;
 
 @RequiresActivityViewModel(NoteDetailsViewModel.class)

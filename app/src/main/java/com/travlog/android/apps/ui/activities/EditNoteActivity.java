@@ -19,7 +19,7 @@ import com.travlog.android.apps.viewmodels.EditNoteViewModel;
 import butterknife.BindView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
-import static com.travlog.android.apps.libs.utils.TransitionUtils.slideInFromLeft;
+import static com.travlog.android.apps.libs.utils.TransitionUtilsKt.slideInFromLeft;
 
 @RequiresActivityViewModel(EditNoteViewModel.class)
 public class EditNoteActivity extends BaseActivity<EditNoteViewModel> {

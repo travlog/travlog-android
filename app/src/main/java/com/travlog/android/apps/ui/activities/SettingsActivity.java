@@ -16,7 +16,7 @@ import com.travlog.android.apps.viewmodels.SettingsViewModel;
 
 import butterknife.BindView;
 
-import static com.travlog.android.apps.libs.utils.TransitionUtils.slideInFromLeft;
+import static com.travlog.android.apps.libs.utils.TransitionUtilsKt.slideInFromLeft;
 
 @RequiresActivityViewModel(SettingsViewModel.class)
 public class SettingsActivity extends BaseActivity<SettingsViewModel> {

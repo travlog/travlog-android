@@ -24,7 +24,7 @@ import butterknife.BindView;
 import timber.log.Timber;
 
 import static com.travlog.android.apps.libs.ActivityRequestCodes.SIGN_IN_WITH_GOOGLE;
-import static com.travlog.android.apps.libs.utils.TransitionUtils.slideInFromLeft;
+import static com.travlog.android.apps.libs.utils.TransitionUtilsKt.slideInFromLeft;
 
 @RequiresActivityViewModel(LinkedAccountsViewModel.class)
 public class LinkedAccountsActivity extends BaseActivity<LinkedAccountsViewModel> {
