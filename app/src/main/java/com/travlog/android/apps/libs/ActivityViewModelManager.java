@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.travlog.android.apps.TravlogApplication;
-import com.travlog.android.apps.libs.utils.BundleUtils;
+import com.travlog.android.apps.libs.utils.BundleUtilsKt;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -86,7 +86,7 @@ public class ActivityViewModelManager {
         }
 
         this.viewModels.put(id, activityViewModel);
-        activityViewModel.onCreate(context, BundleUtils.maybeGetBundle(savedInstanceState, VIEW_MODEL_STATE_KEY));
+        activityViewModel.onCreate(context, BundleUtilsKt.maybeGetBundle(savedInstanceState, VIEW_MODEL_STATE_KEY));
 
         return activityViewModel;
     }

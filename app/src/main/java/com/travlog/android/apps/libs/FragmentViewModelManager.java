@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 
 import com.travlog.android.apps.FragmentViewModel;
 import com.travlog.android.apps.TravlogApplication;
-import com.travlog.android.apps.libs.utils.BundleUtils;
+import com.travlog.android.apps.libs.utils.BundleUtilsKt;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -84,7 +84,7 @@ public final class FragmentViewModelManager {
         }
 
         this.viewModels.put(id, viewModel);
-        viewModel.onCreate(context, BundleUtils.maybeGetBundle(savedInstanceState, VIEW_MODEL_STATE_KEY));
+        viewModel.onCreate(context, BundleUtilsKt.maybeGetBundle(savedInstanceState, VIEW_MODEL_STATE_KEY));
 
         return viewModel;
     }

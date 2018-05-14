@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.travlog.android.apps.FragmentViewModel;
 import com.travlog.android.apps.libs.qualifiers.RequiresFragmentViewModel;
-import com.travlog.android.apps.libs.utils.BundleUtils;
+import com.travlog.android.apps.libs.utils.BundleUtilsKt;
 import com.trello.rxlifecycle2.components.support.RxFragment;
 
 import butterknife.ButterKnife;
@@ -139,7 +139,7 @@ public class BaseFragment<ViewModelType extends FragmentViewModel> extends RxFra
             if (ViewModelTypeClass != null) {
                 viewModel = FragmentViewModelManager.getInstance().fetch(getContext(),
                         ViewModelTypeClass,
-                        BundleUtils.maybeGetBundle(viewModelEnvelope, VIEW_MODEL_KEY));
+                        BundleUtilsKt.maybeGetBundle(viewModelEnvelope, VIEW_MODEL_KEY));
             }
         }
     }

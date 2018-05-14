@@ -13,18 +13,15 @@ import android.view.MenuItem;
 import com.travlog.android.apps.ApplicationComponent;
 import com.travlog.android.apps.TravlogApplication;
 import com.travlog.android.apps.libs.qualifiers.RequiresActivityViewModel;
-import com.travlog.android.apps.libs.utils.BundleUtils;
+import com.travlog.android.apps.libs.utils.BundleUtilsKt;
 import com.travlog.android.apps.ui.data.ActivityResult;
-import com.trello.rxlifecycle2.android.ActivityEvent;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import butterknife.ButterKnife;
-import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.subjects.CompletableSubject;
-import io.reactivex.subjects.PublishSubject;
 import timber.log.Timber;
 
 public class BaseActivity<ViewModelType extends ActivityViewModel> extends RxAppCompatActivity
@@ -249,7 +246,7 @@ public class BaseActivity<ViewModelType extends ActivityViewModel> extends RxApp
             if (viewModelClass != null) {
                 this.viewModel = ActivityViewModelManager.getInstance().fetch(this,
                         viewModelClass,
-                        BundleUtils.maybeGetBundle(viewModelEnvelope, VIEW_MODEL_KEY));
+                        BundleUtilsKt.maybeGetBundle(viewModelEnvelope, VIEW_MODEL_KEY));
             }
         }
     }
