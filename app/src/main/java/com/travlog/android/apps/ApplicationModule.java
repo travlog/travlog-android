@@ -11,7 +11,6 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
 import com.travlog.android.apps.libs.ApiEndpoint;
-import com.travlog.android.apps.libs.Build;
 import com.travlog.android.apps.libs.CurrentUser;
 import com.travlog.android.apps.libs.CurrentUserType;
 import com.travlog.android.apps.libs.Environment;
@@ -22,6 +21,7 @@ import com.travlog.android.apps.libs.qualifiers.ApiEndpointPreference;
 import com.travlog.android.apps.libs.qualifiers.ApplicationContext;
 import com.travlog.android.apps.libs.qualifiers.PackageNameString;
 import com.travlog.android.apps.libs.qualifiers.UserPreference;
+import com.travlog.android.apps.libs.BuildKt;
 import com.travlog.android.apps.services.ApiClient;
 import com.travlog.android.apps.services.ApiClientType;
 import com.travlog.android.apps.services.ApiService;
@@ -50,7 +50,7 @@ public class ApplicationModule {
     @Provides
     @Singleton
     static Environment provideEnvironment(final @NonNull ApiClientType apiClient,
-                                          final @NonNull Build build,
+                                          final @NonNull BuildKt build,
                                           final @NonNull CurrentUserType currentUser,
                                           final @NonNull SharedPreferences sharedPreferences) {
 
@@ -178,8 +178,8 @@ public class ApplicationModule {
     @Provides
     @Singleton
     @NonNull
-    static Build provideBuild(final @NonNull PackageInfo packageInfo) {
-        return new Build(packageInfo);
+    static BuildKt provideBuild(final @NonNull PackageInfo packageInfo) {
+        return new BuildKt(packageInfo);
     }
 
     @Provides
