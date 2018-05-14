@@ -9,6 +9,7 @@
     <item name="toolbar" type="id" />
     <item name="swipe_refresh" type="id" />
     <item name="recycler_view" type="id" />
+    <item name="search_view" type="id" />
 
     <item name="sign_in_with_facebook_button" type="id" />
     <item name="sign_in_with_google_button" type="id" />
@@ -44,8 +45,10 @@
     <item name="cost_container" type="id" />
     <item name="add_cost_button" type="id" />
 
-    <item name="period_start" type="id" />
-    <item name="period_end" type="id" />
+    <item name="start_date" type="id" />
+    <item name="end_date" type="id" />
+    <item name="location" type="id" />
+    <item name="add_destination" type="id" />
     <item name="add_member_button" type="id" />
 
     <item name="reset_password_button" type="id" />

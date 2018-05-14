@@ -20,7 +20,12 @@
         <item name="android:windowBackground">@mipmap/ic_launcher</item>
     </style>
 
-    <style name="TravlogTheme.SignIn" parent="TravlogTheme"></style>
+    <style name="TravlogTheme.SearchLocation" parent="TravlogTheme">
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
 
     <style name="CustomBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/CustomBottomSheetStyle</item>

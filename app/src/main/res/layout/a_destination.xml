@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activities.DestinationActivity">
+
+    <android.support.design.button.MaterialButton
+        android:id="@id/start_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:minHeight="64dp"
+        android:text="Feb 28, 2018"
+        app:backgroundTint="@color/white"
+        app:icon="@drawable/ic_date_range_black_24dp"
+        app:iconTint="@color/black"
+        app:layout_constraintEnd_toStartOf="@id/end_date"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <android.support.design.button.MaterialButton
+        android:id="@id/end_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:minHeight="64dp"
+        android:text="Feb 28, 2018"
+        app:backgroundTint="@color/white"
+        app:icon="@drawable/ic_date_range_black_24dp"
+        app:iconTint="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/start_date" />
+
+    <android.support.design.card.MaterialCardView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        app:layout_constraintEnd_toEndOf="@id/end_date"
+        app:layout_constraintStart_toStartOf="@id/start_date"
+        app:layout_constraintTop_toBottomOf="@id/start_date">
+
+        <android.support.design.button.MaterialButton
+            android:id="@id/location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:hint="@string/hint_where_do_you_want_to_go"
+            android:minHeight="64dp"
+            app:backgroundTint="@color/white"
+            app:icon="@drawable/ic_location_on_black_24dp"
+            app:iconTint="@color/black" />
+    </android.support.design.card.MaterialCardView>
+</android.support.constraint.ConstraintLayout>

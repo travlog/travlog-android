@@ -42,7 +42,8 @@
 
         <activity
             android:name=".ui.activities.SplashActivity"
-            android:theme="@style/TravlogTheme.Splash">
+            android:theme="@style/TravlogTheme.Splash"
+            android:windowSoftInputMode="stateAlwaysHidden">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -51,30 +52,35 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.activities.MainActivity" />
+        <activity
+            android:name=".ui.activities.MainActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
 
-        <activity android:name=".ui.activities.NoteDetailsActivity" />
+        <activity
+            android:name=".ui.activities.NoteDetailsActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
 
         <activity android:name=".ui.activities.EditNoteActivity" />
 
         <activity
             android:name=".ui.activities.SignUpActivity"
-            android:theme="@style/TravlogTheme.SignIn"
             android:windowSoftInputMode="adjustResize" />
 
-        <activity
-            android:name=".ui.activities.SignInActivity"
-            android:theme="@style/TravlogTheme.SignIn" />
+        <activity android:name=".ui.activities.SignInActivity" />
 
-        <activity android:name=".ui.activities.MyPageActivity" />
+        <activity
+            android:name=".ui.activities.MyPageActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
 
         <activity
             android:name=".ui.activities.SettingsActivity"
-            android:label="@string/settings" />
+            android:label="@string/settings"
+            android:windowSoftInputMode="stateAlwaysHidden" />
 
         <activity
             android:name=".ui.activities.LinkedAccountsActivity"
-            android:label="@string/linked_accounts" />
+            android:label="@string/linked_accounts"
+            android:windowSoftInputMode="stateAlwaysHidden" />
 
         <activity
             android:name=".ui.activities.SetUsernameActivity"
@@ -84,6 +90,15 @@
         <activity
             android:name=".ui.activities.PostNoteActivity"
             android:label="" />
+
+        <activity
+            android:name=".ui.activities.DestinationActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+
+        <activity
+            android:name=".ui.activities.SearchLocationActivity"
+            android:theme="@style/TravlogTheme.SearchLocation"
+            android:windowSoftInputMode="stateAlwaysVisible" />
     </application>
 
 </manifest>

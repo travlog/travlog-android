@@ -25,4 +25,6 @@
     <string name="add_travlog">Add travlog</string>
     <string name="edit">Edit</string>
     <string name="save">Save</string>
+    <string name="add_destination">Add destination</string>
+    <string name="hint_where_do_you_want_to_go">Where do you want to go?</string>
 </resources>

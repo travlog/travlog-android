@@ -12,6 +12,7 @@ import com.travlog.android.apps.services.apiresponses.AccountsEnvelope;
 import com.travlog.android.apps.services.apiresponses.NoteEnvelope;
 import com.travlog.android.apps.services.apiresponses.NotesEnvelope;
 import com.travlog.android.apps.services.apiresponses.PostNoteEnvelope;
+import com.travlog.android.apps.services.apiresponses.PredictionsEnvelope;
 import com.travlog.android.apps.services.apiresponses.ProfileEnvelope;
 
 import io.reactivex.Flowable;
@@ -22,6 +23,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ApiService {
 
@@ -62,4 +64,7 @@ public interface ApiService {
 
     @DELETE("notes/{noteId}")
     Flowable<Response<NoteEnvelope>> deleteNote(@Path("noteId") int noteId);
+
+    @GET("maps")
+    Flowable<Response<PredictionsEnvelope>> locations(@NonNull @Query("query") String query);
 }

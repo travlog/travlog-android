@@ -7,11 +7,12 @@
     tools:context=".ui.activities.PostNoteActivity">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+        android:id="@id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize" />
 
     <android.support.design.widget.TextInputLayout
+        android:id="@+id/title_input_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_vertical_padding"
@@ -25,4 +26,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </android.support.design.widget.TextInputLayout>
+
+    <LinearLayout
+        android:id="@+id/destination_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/title_input_layout">
+
+        <android.support.design.button.MaterialButton
+            android:id="@id/add_destination"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:minHeight="64dp"
+            android:text="@string/add_destination"
+            android:textAllCaps="true"
+            app:backgroundTint="@color/white"
+            app:icon="@drawable/ic_add_white_24dp"
+            app:iconTint="@color/black" />
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>

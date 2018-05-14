@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.travlog.android.apps.models.Account;
 import com.travlog.android.apps.models.Note;
+import com.travlog.android.apps.models.Prediction;
 import com.travlog.android.apps.models.User;
 import com.travlog.android.apps.services.apirequests.OauthBody;
 import com.travlog.android.apps.services.apirequests.SignInBody;
@@ -38,4 +39,6 @@ public interface ApiClientType {
     Flowable<Note> updateNote(@NonNull Note note);
 
     Flowable<Note> deleteNote(int noteId);
+
+    Flowable<List<Prediction>> searchLocation(@NonNull String query);
 }

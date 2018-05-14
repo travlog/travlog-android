@@ -1,6 +1,7 @@
 package com.travlog.android.apps.ui.activities;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
@@ -8,7 +9,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 
+import com.jakewharton.rxbinding2.view.RxView;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.travlog.android.apps.R;
 import com.travlog.android.apps.libs.BaseActivity;
@@ -27,6 +31,10 @@ public class PostNoteActivity extends BaseActivity<PostNoteViewModel> {
     Toolbar toolbar;
     @BindView(R.id.title_edit)
     TextInputEditText titleEdit;
+    @BindView(R.id.destination_container)
+    LinearLayout destinationContainer;
+    @BindView(R.id.add_destination)
+    View addDestinationButton;
 
     @SuppressLint("CheckResult")
     @Override
@@ -42,10 +50,19 @@ public class PostNoteActivity extends BaseActivity<PostNoteViewModel> {
                 .compose(bindToLifecycle())
                 .subscribe(viewModel.inputs::title);
 
+        RxView.clicks(addDestinationButton)
+                .compose(bindToLifecycle())
+                .subscribe(__ -> this.showDestinationActivity());
+
         viewModel.outputs.back()
                 .compose(bindToLifecycle())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::back);
+    }
+
+    private void showDestinationActivity() {
+        final Intent intent = new Intent(this, DestinationActivity.class);
+        startActivityWithTransition(intent, R.anim.slide_in_right, R.anim.fade_out_slide_out_left);
     }
 
     @Override

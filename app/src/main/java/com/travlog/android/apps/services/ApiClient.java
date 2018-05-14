@@ -7,6 +7,7 @@ import com.travlog.android.apps.libs.rx.operators.ApiErrorOperator;
 import com.travlog.android.apps.libs.rx.operators.Operators;
 import com.travlog.android.apps.models.Account;
 import com.travlog.android.apps.models.Note;
+import com.travlog.android.apps.models.Prediction;
 import com.travlog.android.apps.models.User;
 import com.travlog.android.apps.services.apirequests.OauthBody;
 import com.travlog.android.apps.services.apirequests.SignInBody;
@@ -112,6 +113,14 @@ public final class ApiClient implements ApiClientType {
                 .lift(apiErrorOperator())
                 .subscribeOn(Schedulers.io())
                 .map(envelope -> envelope.data);
+    }
+
+    @Override
+    public Flowable<List<Prediction>> searchLocation(@NonNull String query) {
+        return service.locations(query)
+                .lift(apiErrorOperator())
+                .subscribeOn(Schedulers.io())
+                .map(envelope -> envelope.getData().getPredictions());
     }
 
     /**
