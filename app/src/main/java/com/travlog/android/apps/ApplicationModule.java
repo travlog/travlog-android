@@ -11,8 +11,9 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
 import com.travlog.android.apps.libs.ApiEndpoint;
-import com.travlog.android.apps.libs.CurrentUser;
-import com.travlog.android.apps.libs.CurrentUserType;
+import com.travlog.android.apps.libs.BuildKt;
+import com.travlog.android.apps.libs.CurrentUserKt;
+import com.travlog.android.apps.libs.CurrentUserTypeKt;
 import com.travlog.android.apps.libs.Environment;
 import com.travlog.android.apps.libs.perferences.StringPreference;
 import com.travlog.android.apps.libs.perferences.StringPreferenceType;
@@ -21,7 +22,6 @@ import com.travlog.android.apps.libs.qualifiers.ApiEndpointPreference;
 import com.travlog.android.apps.libs.qualifiers.ApplicationContext;
 import com.travlog.android.apps.libs.qualifiers.PackageNameString;
 import com.travlog.android.apps.libs.qualifiers.UserPreference;
-import com.travlog.android.apps.libs.BuildKt;
 import com.travlog.android.apps.services.ApiClient;
 import com.travlog.android.apps.services.ApiClientType;
 import com.travlog.android.apps.services.ApiService;
@@ -51,7 +51,7 @@ public class ApplicationModule {
     @Singleton
     static Environment provideEnvironment(final @NonNull ApiClientType apiClient,
                                           final @NonNull BuildKt build,
-                                          final @NonNull CurrentUserType currentUser,
+                                          final @NonNull CurrentUserTypeKt currentUser,
                                           final @NonNull SharedPreferences sharedPreferences) {
 
         final Environment environment = new Environment();
@@ -113,7 +113,7 @@ public class ApplicationModule {
     @Provides
     @Singleton
     @NonNull
-    static ApiRequestInterceptor provideApiRequestInterceptor(final @NonNull CurrentUserType currentUser,
+    static ApiRequestInterceptor provideApiRequestInterceptor(final @NonNull CurrentUserTypeKt currentUser,
                                                               final @NonNull ApiEndpoint endpoint) {
 
         return new ApiRequestInterceptor(currentUser, endpoint.url());
@@ -184,10 +184,10 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    static CurrentUserType provideCurrentUser(final @AccessTokenPreference @NonNull StringPreferenceType accessTokenPreference,
-                                              final @NonNull @UserPreference StringPreferenceType userPreference) {
+    static CurrentUserTypeKt provideCurrentUser(final @AccessTokenPreference @NonNull StringPreferenceType accessTokenPreference,
+                                                final @NonNull @UserPreference StringPreferenceType userPreference) {
 
-        return new CurrentUser(accessTokenPreference, userPreference);
+        return new CurrentUserKt(accessTokenPreference, userPreference);
     }
 
     @Provides

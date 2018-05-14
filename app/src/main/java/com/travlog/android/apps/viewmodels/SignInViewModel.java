@@ -16,7 +16,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.Task;
 import com.travlog.android.apps.libs.ActivityViewModel;
-import com.travlog.android.apps.libs.CurrentUserType;
+import com.travlog.android.apps.libs.CurrentUserTypeKt;
 import com.travlog.android.apps.libs.Environment;
 import com.travlog.android.apps.libs.rx.Optional;
 import com.travlog.android.apps.services.ApiClientType;
@@ -45,7 +45,7 @@ public class SignInViewModel extends ActivityViewModel<SignInActivity> implement
         SignInViewModelInputs, SignInViewModelOutputs, SignInViewModelErrors {
 
     private final ApiClientType client;
-    private final CurrentUserType currentUser;
+    private final CurrentUserTypeKt currentUser;
     private final CallbackManager callbackManager;
 
     @SuppressLint("CheckResult")

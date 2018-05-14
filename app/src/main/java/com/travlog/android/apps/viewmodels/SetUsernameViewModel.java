@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.travlog.android.apps.libs.ActivityViewModel;
-import com.travlog.android.apps.libs.CurrentUserType;
+import com.travlog.android.apps.libs.CurrentUserTypeKt;
 import com.travlog.android.apps.libs.Environment;
 import com.travlog.android.apps.libs.rx.Optional;
 import com.travlog.android.apps.models.User;
@@ -31,7 +31,7 @@ import static com.travlog.android.apps.libs.rx.transformers.Transformers.takeWhe
 public class SetUsernameViewModel extends ActivityViewModel<SetUsernameActivity>
         implements SetUsernameViewModelInputs, SetUsernameViewModelOutputs, SetUsernameViewModelErrors {
 
-    private final CurrentUserType currentUser;
+    private final CurrentUserTypeKt currentUser;
     private final ApiClientType apiClient;
 
     @SuppressLint("CheckResult")
@@ -61,7 +61,7 @@ public class SetUsernameViewModel extends ActivityViewModel<SetUsernameActivity>
 
         username
                 .compose(takeWhen(doneClick))
-                .switchMap(username -> this.setUsername(currentUser.getUser().get().userId, username)
+                .switchMap(username -> this.setUsername(currentUser.getUser().userId, username)
                         .doOnSubscribe(disposable -> {
 
                         })

@@ -57,7 +57,7 @@ public class LinkedAccountsViewModel extends ActivityViewModel<LinkedAccountsAct
                 .map(GoogleSignIn::getSignedInAccountFromIntent)
                 .map(Task::getResult)
                 .map(GoogleSignInAccount::getIdToken)
-                .switchMap(token -> this.link(environment.currentUser.getUser().get().userId, token, "google"))
+                .switchMap(token -> this.link(environment.currentUser.getUser().userId, token, "google"))
                 .compose(bindToLifecycle())
                 .subscribe();
 
@@ -82,7 +82,7 @@ public class LinkedAccountsViewModel extends ActivityViewModel<LinkedAccountsAct
         });
 
         facebookAccessToken
-                .switchMap(token -> this.link(environment.currentUser.getUser().get().userId, token, "facebook"))
+                .switchMap(token -> this.link(environment.currentUser.getUser().userId, token, "facebook"))
                 .compose(bindToLifecycle())
                 .subscribe();
     }

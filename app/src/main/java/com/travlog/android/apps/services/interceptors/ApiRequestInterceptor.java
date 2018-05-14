@@ -2,21 +2,20 @@ package com.travlog.android.apps.services.interceptors;
 
 import android.support.annotation.NonNull;
 
-import com.travlog.android.apps.libs.CurrentUserType;
+import com.travlog.android.apps.libs.CurrentUserTypeKt;
 
 import java.io.IOException;
 
-import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 
 public final class ApiRequestInterceptor implements Interceptor {
 
-    private final CurrentUserType currentUser;
+    private final CurrentUserTypeKt currentUser;
     private final String endpoint;
 
-    public ApiRequestInterceptor(final @NonNull CurrentUserType currentUser,
+    public ApiRequestInterceptor(final @NonNull CurrentUserTypeKt currentUser,
                                  final @NonNull String endpoint) {
 
         this.currentUser = currentUser;

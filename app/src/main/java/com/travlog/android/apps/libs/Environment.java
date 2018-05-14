@@ -8,6 +8,6 @@ public class Environment {
 
     public ApiClientType apiClient;
     public BuildKt build;
-    public CurrentUserType currentUser;
+    public CurrentUserTypeKt currentUser;
     public SharedPreferences sharedPreferences;
 }
