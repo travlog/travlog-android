@@ -24,7 +24,7 @@
     <item name="name" type="id" />
     <item name="username" type="id" />
 
-    <item name="title" type="id" />
+    <item name="note_title" type="id" />
 
     <item name="root" type="id" />
     <item name="note_recycler_view" type="id" />
