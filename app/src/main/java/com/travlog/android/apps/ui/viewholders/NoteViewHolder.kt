@@ -14,6 +14,6 @@ class NoteViewHolder(itemView: View, private val delegate: Delegate) : RecyclerV
     fun bindData(item: Note) {
         this.itemView.note_title.text = item.title
 
-        itemView.setOnClickListener { view -> this.delegate.noteViewHolderItemClick(this, item) }
+        itemView.setOnClickListener { this.delegate.noteViewHolderItemClick(this, item) }
     }
 }

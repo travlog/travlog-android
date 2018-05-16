@@ -36,67 +36,66 @@ class ApiClient(private val service: ApiService) : ApiClientType {
 
     override fun updateProfile(userId: String, body: User): Flowable<User> {
         return service.updateProfile(userId, body)
-                .lift<ProfileEnvelope>(apiErrorOperator<ProfileEnvelope>())
+                .lift<ProfileEnvelope>(apiErrorOperator())
                 .subscribeOn(Schedulers.io())
-                .map { envelope -> envelope.data.user }
+                .map { it.data.user }
     }
 
     override fun userByUsername(username: String): Flowable<User> {
         return service.getUserByUsername(username)
-                .lift<ProfileEnvelope>(apiErrorOperator<ProfileEnvelope>())
+                .lift<ProfileEnvelope>(apiErrorOperator())
                 .subscribeOn(Schedulers.io())
-                .map { envelope -> envelope.data.user }
+                .map { it.data.user }
     }
 
-    override fun linkAccounts(userId: String,
-                              body: OauthBody): Flowable<List<Account>> {
+    override fun linkAccounts(userId: String, body: OauthBody): Flowable<List<Account>> {
 
         return service.link(userId, body)
-                .lift<AccountsEnvelope>(apiErrorOperator<AccountsEnvelope>())
+                .lift<AccountsEnvelope>(apiErrorOperator())
                 .subscribeOn(Schedulers.io())
-                .map { envelope -> envelope.data.accounts }
+                .map { it.data.accounts }
     }
 
     override fun postNote(note: Note): Flowable<Note> {
         return service.postNote(note)
-                .lift<PostNoteEnvelope>(apiErrorOperator<PostNoteEnvelope>())
+                .lift<PostNoteEnvelope>(apiErrorOperator())
                 .subscribeOn(Schedulers.io())
-                .map { envelope -> envelope.data }
+                .map { it.data }
     }
 
     override fun notes(): Flowable<List<Note>> {
         return service.notes()
-                .lift<NotesEnvelope>(apiErrorOperator<NotesEnvelope>())
+                .lift<NotesEnvelope>(apiErrorOperator())
                 .subscribeOn(Schedulers.io())
-                .map { envelope -> envelope.data.list }
+                .map { it.data.list }
     }
 
     override fun getNote(noteId: Int): Flowable<Note> {
         return service.getNote(noteId)
-                .lift<NoteEnvelope>(apiErrorOperator<NoteEnvelope>())
+                .lift<NoteEnvelope>(apiErrorOperator())
                 .subscribeOn(Schedulers.io())
-                .map { envelope -> envelope.data }
+                .map { it.data }
     }
 
     override fun updateNote(note: Note): Flowable<Note> {
         return service.updateNote(note.id, note)
-                .lift<NoteEnvelope>(apiErrorOperator<NoteEnvelope>())
+                .lift<NoteEnvelope>(apiErrorOperator())
                 .subscribeOn(Schedulers.io())
-                .map { envelope -> envelope.data }
+                .map { it.data }
     }
 
     override fun deleteNote(noteId: Int): Flowable<Note> {
         return service.deleteNote(noteId)
-                .lift<NoteEnvelope>(apiErrorOperator<NoteEnvelope>())
+                .lift<NoteEnvelope>(apiErrorOperator())
                 .subscribeOn(Schedulers.io())
-                .map { envelope -> envelope.data }
+                .map { it.data }
     }
 
     override fun searchLocation(query: String): Flowable<List<Prediction>> {
         return service.locations(query)
-                .lift<PredictionsEnvelope>(apiErrorOperator<PredictionsEnvelope>())
+                .lift<PredictionsEnvelope>(apiErrorOperator())
                 .subscribeOn(Schedulers.io())
-                .map { envelope -> envelope.data.predictions }
+                .map { it.data.predictions }
     }
 
     /**

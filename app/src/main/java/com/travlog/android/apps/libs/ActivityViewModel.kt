@@ -43,19 +43,19 @@ open class ActivityViewModel<ViewType : ActivityLifeCycleType>(environment: Envi
     }
 
     @CallSuper
-    fun onResume(view: Any) {
+    open fun onResume(view: Any) {
         Timber.d("onResume %s", this.toString())
         onTakeView(view)
     }
 
     @CallSuper
-    fun onPause() {
+    open fun onPause() {
         Timber.d("onPause %s", this.toString())
         dropView()
     }
 
     @CallSuper
-    fun onDestroy() {
+    open fun onDestroy() {
         Timber.d("onDestroy %s", this.toString())
 
         this.disposables.clear()
@@ -88,7 +88,7 @@ open class ActivityViewModel<ViewType : ActivityLifeCycleType>(environment: Envi
      * It is required that *every* observable in a view model do `.compose(bindToLifecycle())` before calling
      * `subscribe`.
      */
-    fun <T> bindToLifecycle(): ObservableTransformer<T, T> {
+    protected fun <T> bindToLifecycle(): ObservableTransformer<T, T> {
         return ObservableTransformer { source ->
             source.takeUntil(this.view.switchMap { v -> v.lifecycle().map { Pair.create(v, it) } }
                     .filter({ isFinished(it.first, it.second) }))

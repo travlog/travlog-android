@@ -6,6 +6,8 @@ import io.reactivex.Observable
 
 interface MainViewModelOutputs {
 
+    fun setRefreshing(): Observable<Boolean>
+
     fun updateData(): Observable<List<Note>>
 
     fun showNoteDetailsActivity(): Observable<Note>

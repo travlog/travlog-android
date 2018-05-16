@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.travlog.android.apps.R
 import com.travlog.android.apps.models.Note
 import com.travlog.android.apps.ui.viewholders.NoteViewHolder
+import timber.log.Timber
 
 import java.util.ArrayList
 
@@ -36,19 +37,21 @@ class NoteAdapter(private val delegate: Delegate) : RecyclerView.Adapter<Recycle
     }
 
     fun updateData(notes: List<Note>): Boolean {
-        val result = this.notes.addAll(notes)
+        Timber.d("updateData? %s", notes)
+        this.notes.addAll(notes).let {
+            for (note in notes) {
+                noteSparseArray.put(note.id, note)
+            }
 
-        for (note in notes) {
-            noteSparseArray.put(note.id, note)
+            notifyDataSetChanged()
+
+            return it
         }
-
-        notifyDataSetChanged()
-        return result
     }
 
-    fun updateData(note: Note) {
+    fun updateNote(note: Note) {
+        Timber.d("updateNote? %s", note)
         val originNote = noteSparseArray.get(note.id)
-
 
         noteSparseArray.put(note.id, note)
 

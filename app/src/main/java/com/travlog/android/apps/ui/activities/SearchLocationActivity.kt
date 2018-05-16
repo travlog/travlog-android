@@ -1,7 +1,7 @@
 package com.travlog.android.apps.ui.activities
 
 import android.content.Intent
-import android.content.res.ColorStateList
+import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.util.Pair
@@ -27,35 +27,41 @@ class SearchLocationActivity : BaseActivity<SearchLocationViewModel>() {
     @BindColor(R.color.accent)
     @JvmField
     var accentColor = 0
-    @BindColor(R.color.accent)
-    @JvmField
-    var accentColorState: ColorStateList? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val window = window
-
-        val layoutParams = window.attributes
-        layoutParams.dimAmount = 0.75f
-        window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
-        window.attributes = layoutParams
+        window.apply {
+            attributes
+                    .apply {
+                        dimAmount = 0.75f
+                    }
+                    .let {
+                        this.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+                        this.attributes = it
+                    }
+        }
 
         setContentView(R.layout.a_search_location)
 
-        this.search_view!!.setOnHomeActionClickListener({ this.back() })
-        this.search_view!!.setSearchFocused(true)
-        this.search_view!!.setOnBindSuggestionCallback { _, _, textView, item, itemPosition ->
+        this.search_view.setOnHomeActionClickListener { this.back() }
+        this.search_view.setSearchFocused(true)
+        this.search_view.setOnBindSuggestionCallback { _, _, textView, item, _ ->
             val prediction = item as Prediction
 
-            var text = prediction.body!!
+            var text = prediction.body ?: ""
 
             for (mainTextMatchedSubstring in prediction.structuredFormatting.mainTextMatchedSubstrings) {
                 val substring = text.substring(mainTextMatchedSubstring.offset, mainTextMatchedSubstring.length)
                 text = text.replaceFirst(substring.toRegex(), "<font color=\"$accentColor\">$substring</font>")
             }
 
-            textView.text = Html.fromHtml(text)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                textView.text = Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY)
+            } else {
+                @Suppress("DEPRECATION")
+                textView.text = Html.fromHtml(text)
+            }
         }
 
         this.search_view.setOnFocusChangeListener(object : FloatingSearchView.OnFocusChangeListener {
@@ -79,7 +85,7 @@ class SearchLocationActivity : BaseActivity<SearchLocationViewModel>() {
         RxFloatingSearchView.queryChanges(this.search_view)
                 .compose(bindToLifecycle())
                 .map { it.toString() }
-                .subscribe { viewModel!!.inputs::query }
+                .subscribe { viewModel!!.inputs.query(it) }
 
         viewModel!!.outputs.swapSuggestions()
                 .compose(bindToLifecycle())

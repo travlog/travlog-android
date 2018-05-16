@@ -1,3 +1,8 @@
 package com.travlog.android.apps.viewmodels.inputs
 
-interface MainViewModelInputs
+interface MainViewModelInputs {
+
+    fun loadMore()
+
+    fun refresh()
+}
