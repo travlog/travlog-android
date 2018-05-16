@@ -47,7 +47,7 @@
 
     <item name="start_date" type="id" />
     <item name="end_date" type="id" />
-    <item name="location" type="id" />
+    <item name="location_button" type="id" />
     <item name="add_destination" type="id" />
     <item name="add_member_button" type="id" />
 

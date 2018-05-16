@@ -19,23 +19,25 @@ class DestinationActivity : BaseActivity<DestinationViewModel>() {
 
         setContentView(R.layout.a_destination)
 
-        RxView.clicks(location)
+        RxView.clicks(location_button)
                 .compose(bindToLifecycle())
                 .subscribe { this.showSearchLocationActivity() }
 
-        viewModel!!.outputs.setLocationText()
-                .compose(bindToLifecycle<String>())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::setLocationText)
+        viewModel?.apply {
+            outputs.setLocationText()
+                    .compose(bindToLifecycle())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe { setLocationText(it) }
+        }
     }
 
     private fun setLocationText(location: String) {
-        this.location.text = location
+        location_button.text = location
     }
 
-    private fun showSearchLocationActivity() {
-        val intent = Intent(this, SearchLocationActivity::class.java)
-        startActivityForResult(intent, SEARCH_LOCATION)
-        overridePendingTransition(R.anim.slide_in_right, R.anim.fade_out_slide_out_left)
-    }
+    private fun showSearchLocationActivity() =
+            Intent(this, SearchLocationActivity::class.java).let {
+                startActivityForResult(it, SEARCH_LOCATION)
+                overridePendingTransition(R.anim.slide_in_right, R.anim.fade_out_slide_out_left)
+            }
 }

@@ -5,7 +5,7 @@ import com.travlog.android.apps.libs.ActivityRequestCodes.SEARCH_LOCATION
 import com.travlog.android.apps.libs.ActivityViewModel
 import com.travlog.android.apps.libs.Environment
 import com.travlog.android.apps.models.Prediction
-import com.travlog.android.apps.ui.IntentKey
+import com.travlog.android.apps.ui.IntentKey.PREDICTION
 import com.travlog.android.apps.ui.activities.DestinationActivity
 import com.travlog.android.apps.viewmodels.errors.DestinationViewModelErrors
 import com.travlog.android.apps.viewmodels.inputs.DestinationViewModelInputs
@@ -13,7 +13,8 @@ import com.travlog.android.apps.viewmodels.outputs.DestinationViewModelOutputs
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 
-class DestinationViewModel(environment: Environment) : ActivityViewModel<DestinationActivity>(environment), DestinationViewModelInputs, DestinationViewModelOutputs, DestinationViewModelErrors {
+class DestinationViewModel(environment: Environment) : ActivityViewModel<DestinationActivity>(environment),
+        DestinationViewModelInputs, DestinationViewModelOutputs, DestinationViewModelErrors {
 
     private val setLocationText = BehaviorSubject.create<String>()
 
@@ -23,11 +24,11 @@ class DestinationViewModel(environment: Environment) : ActivityViewModel<Destina
 
     init {
         activityResult()
-                .filter({ it.requestCode == SEARCH_LOCATION })
-                .filter({ it.resultCode == RESULT_OK })
-                .map({ it.intent })
-                .map({ i -> i.getParcelableExtra(IntentKey.PREDICTION) as Prediction })
-                .map({ it.structuredFormatting.mainText })
+                .filter { it.requestCode == SEARCH_LOCATION }
+                .filter { it.resultCode == RESULT_OK }
+                .map { it.intent }
+                .map { it.getParcelableExtra(PREDICTION) as Prediction }
+                .map { it.structuredFormatting.mainText }
                 .subscribe(setLocationText)
     }
 

@@ -6,7 +6,7 @@ import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-class Prediction() : SearchSuggestion {
+class Prediction() : SearchSuggestion, Serializable {
 
     var description = ""
     var id = ""
@@ -22,18 +22,45 @@ class Prediction() : SearchSuggestion {
     constructor(parcel: Parcel) : this() {
         description = parcel.readString()
         id = parcel.readString()
+        matchedSubstrings = parcel.createTypedArrayList(MatchedSubstring)
         placeId = parcel.readString()
         reference = parcel.readString()
+        structuredFormatting = parcel.readParcelable(StructuredFormatting::class.java.classLoader)
+        terms = parcel.createTypedArrayList(Term)
         types = parcel.createStringArrayList()
     }
 
-    inner class MatchedSubstring : Serializable {
+    class MatchedSubstring() : Parcelable {
 
         var length = 0
         var offset = 0
+
+        constructor(parcel: Parcel) : this() {
+            length = parcel.readInt()
+            offset = parcel.readInt()
+        }
+
+        override fun writeToParcel(parcel: Parcel, flags: Int) {
+            parcel.writeInt(length)
+            parcel.writeInt(offset)
+        }
+
+        override fun describeContents(): Int {
+            return 0
+        }
+
+        companion object CREATOR : Parcelable.Creator<MatchedSubstring> {
+            override fun createFromParcel(parcel: Parcel): MatchedSubstring {
+                return MatchedSubstring(parcel)
+            }
+
+            override fun newArray(size: Int): Array<MatchedSubstring?> {
+                return arrayOfNulls(size)
+            }
+        }
     }
 
-    inner class StructuredFormatting : Serializable {
+    class StructuredFormatting() : Parcelable {
 
         @SerializedName("main_text")
         var mainText = ""
@@ -41,12 +68,60 @@ class Prediction() : SearchSuggestion {
         var mainTextMatchedSubstrings: List<MatchedSubstring> = ArrayList()
         @SerializedName("secondary_text")
         var secondaryText = ""
+
+        constructor(parcel: Parcel) : this() {
+            mainText = parcel.readString()
+            secondaryText = parcel.readString()
+        }
+
+        override fun writeToParcel(parcel: Parcel, flags: Int) {
+            parcel.writeString(mainText)
+            parcel.writeString(secondaryText)
+        }
+
+        override fun describeContents(): Int {
+            return 0
+        }
+
+        companion object CREATOR : Parcelable.Creator<StructuredFormatting> {
+            override fun createFromParcel(parcel: Parcel): StructuredFormatting {
+                return StructuredFormatting(parcel)
+            }
+
+            override fun newArray(size: Int): Array<StructuredFormatting?> {
+                return arrayOfNulls(size)
+            }
+        }
     }
 
-    inner class Term : Serializable {
+    class Term() : Parcelable {
 
         var offset = 0
         var value = ""
+
+        constructor(parcel: Parcel) : this() {
+            offset = parcel.readInt()
+            value = parcel.readString()
+        }
+
+        override fun writeToParcel(parcel: Parcel, flags: Int) {
+            parcel.writeInt(offset)
+            parcel.writeString(value)
+        }
+
+        override fun describeContents(): Int {
+            return 0
+        }
+
+        companion object CREATOR : Parcelable.Creator<Term> {
+            override fun createFromParcel(parcel: Parcel): Term {
+                return Term(parcel)
+            }
+
+            override fun newArray(size: Int): Array<Term?> {
+                return arrayOfNulls(size)
+            }
+        }
     }
 
     override fun getBody(): String? {
@@ -56,8 +131,11 @@ class Prediction() : SearchSuggestion {
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(description)
         parcel.writeString(id)
+        parcel.writeTypedList(matchedSubstrings)
         parcel.writeString(placeId)
         parcel.writeString(reference)
+        parcel.writeParcelable(structuredFormatting, flags)
+        parcel.writeTypedList(terms)
         parcel.writeStringList(types)
     }
 
@@ -74,6 +152,4 @@ class Prediction() : SearchSuggestion {
             return arrayOfNulls(size)
         }
     }
-
-
 }

@@ -2,6 +2,7 @@ package com.travlog.android.apps.viewmodels
 
 import com.travlog.android.apps.libs.ActivityViewModel
 import com.travlog.android.apps.libs.Environment
+import com.travlog.android.apps.libs.rx.transformers.Transformers.neverApiError
 import com.travlog.android.apps.libs.rx.transformers.Transformers.neverError
 import com.travlog.android.apps.models.Prediction
 import com.travlog.android.apps.services.ApiClientType
@@ -14,7 +15,8 @@ import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 
-class SearchLocationViewModel(environment: Environment) : ActivityViewModel<SearchLocationActivity>(environment), SearchLocationViewModelInputs, SearchLocationViewModelOutputs, SearchLocationViewModelErrors {
+class SearchLocationViewModel(environment: Environment) : ActivityViewModel<SearchLocationActivity>(environment),
+        SearchLocationViewModelInputs, SearchLocationViewModelOutputs, SearchLocationViewModelErrors {
 
     private val apiClient: ApiClientType = environment.apiClient
 
@@ -31,15 +33,11 @@ class SearchLocationViewModel(environment: Environment) : ActivityViewModel<Sear
     init {
         query
                 .debounce(200, TimeUnit.MILLISECONDS)
-                .filter { query -> !query.isEmpty() }
-                .switchMap { query ->
-                    this.search(query)
-                            .doOnSubscribe {
-
-                            }
-                            .doAfterTerminate {
-
-                            }
+                .filter { it.isNotEmpty() }
+                .switchMap {
+                    this.search(it)
+                            .doOnSubscribe {}
+                            .doAfterTerminate {}
                 }
                 .compose(bindToLifecycle())
                 .subscribe(swapSuggestions)
@@ -51,6 +49,7 @@ class SearchLocationViewModel(environment: Environment) : ActivityViewModel<Sear
 
     private fun search(query: String): Observable<List<Prediction>> {
         return apiClient.searchLocation(query)
+                .compose(neverApiError())
                 .compose(neverError())
                 .toObservable()
     }
