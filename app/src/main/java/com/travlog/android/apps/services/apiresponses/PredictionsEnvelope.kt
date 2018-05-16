@@ -4,5 +4,5 @@ import com.travlog.android.apps.models.Prediction
 
 data class PredictionsEnvelope(val data: Data) : Envelope() {
 
-    data class Data(val predictions: List<Prediction>)
+    data class Data(val list: List<Prediction>)
 }
