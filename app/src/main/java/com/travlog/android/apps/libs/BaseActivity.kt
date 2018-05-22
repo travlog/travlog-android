@@ -1,5 +1,6 @@
 package com.travlog.android.apps.libs
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.AnimRes
@@ -10,7 +11,7 @@ import butterknife.ButterKnife
 import com.travlog.android.apps.ApplicationComponent
 import com.travlog.android.apps.TravlogApplication
 import com.travlog.android.apps.libs.qualifiers.RequiresActivityViewModel
-import com.travlog.android.apps.libs.utils.maybeGetBundle
+import com.travlog.android.apps.libs.utils.BundleUtils.maybeGetBundle
 import com.travlog.android.apps.ui.data.ActivityResult
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -19,6 +20,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.CompletableSubject
 import timber.log.Timber
 
+@SuppressLint("Registered")
 open class BaseActivity<ViewModelType : ActivityViewModel<*>> : RxAppCompatActivity(), ActivityLifeCycleType {
 
     private val back = CompletableSubject.create()
@@ -53,11 +55,13 @@ open class BaseActivity<ViewModelType : ActivityViewModel<*>> : RxAppCompatActiv
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) {
-            back()
-            return true
+        return when {
+            item.itemId == android.R.id.home -> {
+                back()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
-        return super.onOptionsItemSelected(item)
     }
 
     override fun setContentView(layoutResID: Int) {
@@ -71,7 +75,7 @@ open class BaseActivity<ViewModelType : ActivityViewModel<*>> : RxAppCompatActiv
     @CallSuper
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        this.viewModel?.intent(intent)
+        viewModel?.intent(intent)
     }
 
     @CallSuper
@@ -80,9 +84,9 @@ open class BaseActivity<ViewModelType : ActivityViewModel<*>> : RxAppCompatActiv
         Timber.d("onStart %s", this.toString())
 
         addDisposable(
-                this.back
+                back
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe { this.goBack() })
+                        .subscribe { goBack() })
     }
 
     @CallSuper
@@ -91,7 +95,7 @@ open class BaseActivity<ViewModelType : ActivityViewModel<*>> : RxAppCompatActiv
         Timber.d("onResume %s", this.toString())
 
         assignViewModel(null)
-        this.viewModel?.onResume(this)
+        viewModel?.onResume(this)
     }
 
     @CallSuper
@@ -99,7 +103,7 @@ open class BaseActivity<ViewModelType : ActivityViewModel<*>> : RxAppCompatActiv
         super.onPause()
         Timber.d("onPause %s", this.toString())
 
-        this.viewModel?.onPause()
+        viewModel?.onPause()
     }
 
     @CallSuper
@@ -135,7 +139,7 @@ open class BaseActivity<ViewModelType : ActivityViewModel<*>> : RxAppCompatActiv
             "      <p>\n" +
             "      To avoid that situation, we need to ignore calls to `onBackPressed` after the activity has been saved. Since\n" +
             "      the activity is stopped after `onSaveInstanceState` is called, we can create an observable of back events,\n" +
-            "      and a disposables that calls super.onBackPressed() only when the activity has not been stopped.")
+            "      and a disposables that calls super.onBackPressed() only when the activity has not been stopped.", ReplaceWith("back()"))
     override fun onBackPressed() {
         back()
     }
@@ -161,8 +165,9 @@ open class BaseActivity<ViewModelType : ActivityViewModel<*>> : RxAppCompatActiv
         Timber.d("onSaveInstanceState %s", this.toString())
 
         val viewModelEnvelope = Bundle()
-        if (this.viewModel != null) {
-            ActivityViewModelManager.instance.save(this.viewModel!!, viewModelEnvelope)
+
+        viewModel?.let {
+            ActivityViewModelManager.instance.save(it, viewModelEnvelope)
         }
 
         outState.putBundle(VIEW_MODEL_KEY, viewModelEnvelope)
@@ -170,8 +175,9 @@ open class BaseActivity<ViewModelType : ActivityViewModel<*>> : RxAppCompatActiv
 
     protected fun startActivityWithTransition(intent: Intent, @AnimRes enterAnim: Int,
                                               @AnimRes exitAnim: Int) {
-        startActivity(intent)
-        overridePendingTransition(enterAnim, exitAnim)
+        startActivity(intent).run {
+            overridePendingTransition(enterAnim, exitAnim)
+        }
     }
 
     /**
@@ -206,25 +212,21 @@ open class BaseActivity<ViewModelType : ActivityViewModel<*>> : RxAppCompatActiv
     private fun goBack() {
         super.onBackPressed()
 
-        val exitTransitions = exitTransition()
-        if (exitTransitions != null) {
-            overridePendingTransition(exitTransitions.first, exitTransitions.second)
+        exitTransition()?.let {
+            overridePendingTransition(it.first, it.second)
         }
     }
 
     private fun assignViewModel(viewModelEnvelope: Bundle?) {
-        if (this.viewModel == null) {
-            val viewModelClass = javaClass.getAnnotation(RequiresActivityViewModel::class.java)?.value
-            if (viewModelClass != null) {
-                this.viewModel = ActivityViewModelManager.instance.fetch(this,
-                        viewModelClass,
+        if (viewModel == null) {
+            javaClass.getAnnotation(RequiresActivityViewModel::class.java)?.value?.let {
+                viewModel = ActivityViewModelManager.instance.fetch(this, it,
                         maybeGetBundle(viewModelEnvelope, VIEW_MODEL_KEY))
             }
         }
     }
 
     protected fun setDisplayHomeAsUpEnabled(enabled: Boolean) {
-        val actionBar = supportActionBar
-        actionBar?.setDisplayHomeAsUpEnabled(enabled)
+        supportActionBar?.setDisplayHomeAsUpEnabled(enabled)
     }
 }

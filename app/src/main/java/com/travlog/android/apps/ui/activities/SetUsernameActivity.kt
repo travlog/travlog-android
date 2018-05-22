@@ -7,7 +7,7 @@ import com.jakewharton.rxbinding2.widget.RxTextView
 import com.travlog.android.apps.R
 import com.travlog.android.apps.libs.BaseActivity
 import com.travlog.android.apps.libs.qualifiers.RequiresActivityViewModel
-import com.travlog.android.apps.libs.utils.slideInFromLeft
+import com.travlog.android.apps.libs.utils.TransitionUtils.slideInFromLeft
 import com.travlog.android.apps.viewmodels.SetUsernameViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.a_set_username.*

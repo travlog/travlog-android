@@ -1,29 +1,23 @@
 package com.travlog.android.apps.ui.activities
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Pair
 import android.view.Menu
 import android.view.MenuItem
-
 import com.travlog.android.apps.R
 import com.travlog.android.apps.libs.BaseActivity
 import com.travlog.android.apps.libs.qualifiers.RequiresActivityViewModel
+import com.travlog.android.apps.libs.utils.TransitionUtils.slideInFromLeft
 import com.travlog.android.apps.models.Note
-import com.travlog.android.apps.viewmodels.NoteDetailsViewModel
-
-import io.reactivex.android.schedulers.AndroidSchedulers
-
-import com.travlog.android.apps.libs.utils.slideInFromLeft
 import com.travlog.android.apps.ui.IntentKey
-
+import com.travlog.android.apps.viewmodels.NoteDetailsViewModel
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.a_note_details.*
 
 @RequiresActivityViewModel(NoteDetailsViewModel::class)
 class NoteDetailsActivity : BaseActivity<NoteDetailsViewModel>() {
 
-    @SuppressLint("CheckResult")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -55,16 +49,16 @@ class NoteDetailsActivity : BaseActivity<NoteDetailsViewModel>() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
 
-        when (id) {
+        return when (id) {
             R.id.menu_edit -> {
                 viewModel!!.inputs.editClick()
-                return true
+                true
             }
             R.id.menu_delete -> {
                 viewModel!!.inputs.deleteClick()
-                return true
+                true
             }
-            else -> return super.onOptionsItemSelected(item)
+            else -> super.onOptionsItemSelected(item)
         }
     }
 

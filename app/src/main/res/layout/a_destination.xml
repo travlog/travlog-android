@@ -4,51 +4,132 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_padding"
     tools:context=".ui.activities.DestinationActivity">
 
-    <android.support.design.button.MaterialButton
-        android:id="@id/start_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:minHeight="64dp"
-        android:text="Feb 28, 2018"
-        app:backgroundTint="@color/white"
-        app:icon="@drawable/ic_date_range_black_24dp"
-        app:iconTint="@color/black"
-        app:layout_constraintEnd_toStartOf="@id/end_date"
-        app:layout_constraintStart_toStartOf="parent" />
+    <android.support.design.widget.AppBarLayout
+        android:id="@id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <android.support.design.button.MaterialButton
-        android:id="@id/end_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:minHeight="64dp"
-        android:text="Feb 28, 2018"
-        app:backgroundTint="@color/white"
-        app:icon="@drawable/ic_date_range_black_24dp"
-        app:iconTint="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/start_date" />
+        <android.support.v7.widget.Toolbar
+            android:id="@id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            app:contentInsetStartWithNavigation="0dp">
 
-    <android.support.design.card.MaterialCardView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        app:layout_constraintEnd_toEndOf="@id/end_date"
-        app:layout_constraintStart_toStartOf="@id/start_date"
-        app:layout_constraintTop_toBottomOf="@id/start_date">
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@id/location_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:drawableLeft="@drawable/ic_location_on_black_24dp"
+                android:drawablePadding="8dp"
+                android:drawableStart="@drawable/ic_location_on_black_24dp"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:hint="@string/hint_where_do_you_want_to_go"
+                android:maxLines="1" />
+        </android.support.v7.widget.Toolbar>
 
-        <android.support.design.button.MaterialButton
-            android:id="@id/location_button"
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:hint="@string/hint_where_do_you_want_to_go"
-            android:minHeight="64dp"
-            app:backgroundTint="@color/white"
-            app:icon="@drawable/ic_location_on_black_24dp"
-            app:iconTint="@color/black" />
-    </android.support.design.card.MaterialCardView>
+            android:paddingBottom="@dimen/activity_horizontal_padding"
+            android:paddingEnd="@dimen/activity_horizontal_padding"
+            android:paddingStart="@dimen/activity_horizontal_padding"
+            android:paddingTop="@dimen/activity_vertical_padding">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@id/start_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/start"
+                app:layout_constraintEnd_toStartOf="@id/end_date"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@id/end_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/end"
+                app:backgroundTint="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/start_date" />
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/activity_vertical_padding">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/sunday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sunday"
+                app:layout_constraintEnd_toStartOf="@+id/monday"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/monday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/monday"
+                app:layout_constraintEnd_toStartOf="@+id/tuesday"
+                app:layout_constraintStart_toEndOf="@+id/sunday" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tuesday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tuesday"
+                app:layout_constraintEnd_toStartOf="@+id/wednesday"
+                app:layout_constraintStart_toEndOf="@+id/monday" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/wednesday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/wednesday"
+                app:layout_constraintEnd_toStartOf="@+id/thursday"
+                app:layout_constraintStart_toEndOf="@+id/tuesday" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/thursday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/thursday"
+                app:layout_constraintEnd_toStartOf="@+id/friday"
+                app:layout_constraintStart_toEndOf="@+id/wednesday" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/friday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/friday"
+                app:layout_constraintEnd_toStartOf="@+id/saturday"
+                app:layout_constraintStart_toEndOf="@+id/thursday" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/saturday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/saturday"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/friday" />
+        </android.support.constraint.ConstraintLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <com.savvi.rangedatepicker.CalendarPickerView
+        android:id="@+id/calendar_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/app_bar"
+        app:tsquare_displayHeader="false"
+        app:tsquare_dividerColor="@color/transparent" />
 </android.support.constraint.ConstraintLayout>

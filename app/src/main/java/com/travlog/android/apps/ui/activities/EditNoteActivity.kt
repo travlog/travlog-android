@@ -8,7 +8,7 @@ import com.jakewharton.rxbinding2.widget.RxTextView
 import com.travlog.android.apps.R
 import com.travlog.android.apps.libs.BaseActivity
 import com.travlog.android.apps.libs.qualifiers.RequiresActivityViewModel
-import com.travlog.android.apps.libs.utils.slideInFromLeft
+import com.travlog.android.apps.libs.utils.TransitionUtils.slideInFromLeft
 import com.travlog.android.apps.viewmodels.EditNoteViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.a_post_note.*
@@ -40,7 +40,7 @@ class EditNoteActivity : BaseActivity<EditNoteViewModel>() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_edit_note, menu)
+        menuInflater.inflate(R.menu.menu_save, menu)
         return super.onCreateOptionsMenu(menu)
     }
 

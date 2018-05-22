@@ -12,6 +12,7 @@ class Prediction() : SearchSuggestion, Serializable {
     var id = ""
     @SerializedName("matched_substrings")
     var matchedSubstrings: List<MatchedSubstring> = ArrayList()
+    @SerializedName("place_id")
     var placeId = ""
     var reference = ""
     @SerializedName("structured_formatting")

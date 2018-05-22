@@ -2,8 +2,9 @@ package com.travlog.android.apps.libs
 
 object ActivityRequestCodes {
 
-    val SIGN_UP_FLOW = 5120
-    val SIGN_IN_WITH_GOOGLE = 5121
-    val EDIT_DESTINATION = 5122
-    val SEARCH_LOCATION = 5123
+    const val SIGN_UP_FLOW = 5120
+    const val SIGN_IN_WITH_GOOGLE = 5121
+    const val EDIT_DESTINATION = 5122
+    const val SEARCH_LOCATION = 5123
+    const val DESTINATION = 5124
 }

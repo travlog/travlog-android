@@ -86,6 +86,7 @@ dependencies {
     implementation 'com.jakewharton.timber:timber:4.7.0'
 
     implementation "io.reactivex.rxjava2:rxjava:2.1.12"
+    implementation "io.reactivex.rxjava2:rxkotlin:2.2.0"
     implementation "com.trello.rxlifecycle2:rxlifecycle-android:$rxlifecycle2"
     implementation "com.trello.rxlifecycle2:rxlifecycle-components:$rxlifecycle2"
     implementation "com.jakewharton.rxbinding2:rxbinding:$rxbinding2"
@@ -113,6 +114,7 @@ dependencies {
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.2@aar') {
         transitive = true;
     }
+    implementation 'com.savvi.datepicker:rangepicker:1.2.0'
 }
 apply plugin: 'com.google.gms.google-services'
 

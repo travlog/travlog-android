@@ -95,7 +95,7 @@ class ApiClient(private val service: ApiService) : ApiClientType {
         return service.locations(query)
                 .lift<PredictionsEnvelope>(apiErrorOperator())
                 .subscribeOn(Schedulers.io())
-                .map { it.data.predictions }
+                .map { it.data.list }
     }
 
     /**

@@ -3,9 +3,7 @@ package com.travlog.android.apps.libs
 import android.content.Context
 import android.os.Bundle
 import com.travlog.android.apps.TravlogApplication
-import com.travlog.android.apps.libs.utils.estimatedDeliveryOn
-import com.travlog.android.apps.libs.utils.maybeGetBundle
-import timber.log.Timber
+import com.travlog.android.apps.libs.utils.BundleUtils.maybeGetBundle
 import java.lang.reflect.InvocationTargetException
 import java.util.*
 import kotlin.reflect.KClass
@@ -93,8 +91,8 @@ class ActivityViewModelManager {
 
     companion object {
 
-        private val VIEW_MODEL_ID_KEY = "view_model_id"
-        private val VIEW_MODEL_STATE_KEY = "view_model_state"
+        private const val VIEW_MODEL_ID_KEY = "view_model_id"
+        private const val VIEW_MODEL_STATE_KEY = "view_model_state"
 
         val instance = ActivityViewModelManager()
     }

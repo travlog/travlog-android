@@ -2,7 +2,7 @@ package com.travlog.android.apps.libs
 
 enum class ApiEndpoint(private val type: String, private var url: String) {
     PRODUCTION("Production", ""),
-    STAGING("Staging", ""),
+    STAGING("Staging", "http://fobid.synology.me:3000/api"),
     LOCAL("Local", "http://192.168.0.5:3000/api/"),
     CUSTOM("Custom", "");
 

@@ -11,7 +11,7 @@ import butterknife.ButterKnife
 import butterknife.Unbinder
 import com.travlog.android.apps.FragmentViewModel
 import com.travlog.android.apps.libs.qualifiers.RequiresFragmentViewModel
-import com.travlog.android.apps.libs.utils.maybeGetBundle
+import com.travlog.android.apps.libs.utils.BundleUtils.maybeGetBundle
 import com.trello.rxlifecycle2.components.support.RxFragment
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber

@@ -4,7 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import com.travlog.android.apps.FragmentViewModel
 import com.travlog.android.apps.TravlogApplication
-import com.travlog.android.apps.libs.utils.maybeGetBundle
+import com.travlog.android.apps.libs.utils.BundleUtils.maybeGetBundle
 import java.lang.reflect.InvocationTargetException
 import java.util.*
 import kotlin.reflect.KClass

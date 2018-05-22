@@ -14,7 +14,7 @@ import com.travlog.android.apps.R
 import com.travlog.android.apps.libs.BaseActivity
 import com.travlog.android.apps.libs.qualifiers.RequiresActivityViewModel
 import com.travlog.android.apps.libs.rx.views.RxFloatingSearchView
-import com.travlog.android.apps.libs.utils.slideInFromLeft
+import com.travlog.android.apps.libs.utils.TransitionUtils.slideInFromLeft
 import com.travlog.android.apps.models.Prediction
 import com.travlog.android.apps.ui.IntentKey.PREDICTION
 import com.travlog.android.apps.viewmodels.SearchLocationViewModel

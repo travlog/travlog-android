@@ -1,30 +1,21 @@
 package com.travlog.android.apps.ui.activities
 
-import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
-import android.support.v7.widget.Toolbar
 import android.util.Pair
-import android.view.View
-
 import com.facebook.login.LoginManager
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.GoogleApiClient
 import com.jakewharton.rxbinding2.view.RxView
 import com.travlog.android.apps.R
+import com.travlog.android.apps.libs.ActivityRequestCodes.SIGN_IN_WITH_GOOGLE
 import com.travlog.android.apps.libs.BaseActivity
 import com.travlog.android.apps.libs.qualifiers.RequiresActivityViewModel
+import com.travlog.android.apps.libs.utils.TransitionUtils.slideInFromLeft
 import com.travlog.android.apps.viewmodels.LinkedAccountsViewModel
-
-import java.util.Arrays
-
-import butterknife.BindView
-import timber.log.Timber
-
-import com.travlog.android.apps.libs.ActivityRequestCodes.SIGN_IN_WITH_GOOGLE
-import com.travlog.android.apps.libs.utils.slideInFromLeft
 import kotlinx.android.synthetic.main.a_linked_accounts.*
+import timber.log.Timber
+import java.util.*
 
 @RequiresActivityViewModel(LinkedAccountsViewModel::class)
 class LinkedAccountsActivity : BaseActivity<LinkedAccountsViewModel>() {

@@ -1,3 +1,12 @@
 package com.travlog.android.apps.viewmodels.inputs
 
-interface DestinationViewModelInputs
+import java.util.*
+
+interface DestinationViewModelInputs {
+
+    fun startDate(date: Date?)
+
+    fun endDate(date: Date?)
+
+    fun saveClick()
+}

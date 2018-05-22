@@ -65,10 +65,10 @@ constructor(environment: Environment) : ActivityViewModel<SignInActivity>(enviro
                 .filter { it.requestCode == SIGN_IN_WITH_GOOGLE }
                 .filter { it.resultCode == RESULT_OK }
                 .map { it.intent }
-                .map { GoogleSignIn::getSignedInAccountFromIntent as GoogleSignInAccount }
-                .map { it.idToken }
-                .switchMap { accessToken ->
-                    this.oAuth(accessToken, "google")
+                .map(GoogleSignIn::getSignedInAccountFromIntent)
+                .map { it.result.idToken }
+                .switchMap {
+                    this.oAuth(it, "google")
                             .doOnSubscribe {
 
                             }

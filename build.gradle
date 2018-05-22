@@ -17,26 +17,12 @@ buildscript {
     }
 }
 
-//plugins {
-//    id "org.jetbrains.kotlin.jvm" version "1.2.41"
-//}
-//plugins {
-//    id "me.tatarka.retrolambda" version "3.7.0"
-//}
-
-
-//compileKotlin {
-//    kotlinOptions.jvmTarget = "1.8"
-//}
-//compileTestKotlin {
-//    kotlinOptions.jvmTarget = "1.8"
-//}
-
 allprojects {
     repositories {
         google()
         jcenter()
         mavenCentral()
+
     }
 }
 
@@ -47,7 +33,7 @@ task clean(type: Delete) {
 ext {
     compileSdkVersion = 'android-P'
     buildToolsVersion = '28-rc2'
-    minSdkVersion = 15
+    minSdkVersion = 16
     targetSdkVersion = 28
 
     versionCode = 1
