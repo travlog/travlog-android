@@ -64,8 +64,10 @@ obj/
 
 # User-specific configurations
 .idea/caches/
+.idea/inspectionProfiles/
 .idea/libraries/
 .idea/shelf/
+.idea/assetWizardSettings.xml
 .idea/workspace.xml
 .idea/tasks.xml
 .idea/.name
