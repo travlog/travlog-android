@@ -10,7 +10,8 @@ import com.travlog.android.apps.libs.BaseActivity
 import com.travlog.android.apps.libs.qualifiers.RequiresActivityViewModel
 import com.travlog.android.apps.libs.utils.TransitionUtils.slideInFromLeft
 import com.travlog.android.apps.models.Note
-import com.travlog.android.apps.ui.IntentKey
+import com.travlog.android.apps.ui.IntentKey.NOTE
+import com.travlog.android.apps.ui.adapters.DestinationAdapter
 import com.travlog.android.apps.viewmodels.NoteDetailsViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.a_note_details.*
@@ -18,27 +19,42 @@ import kotlinx.android.synthetic.main.a_note_details.*
 @RequiresActivityViewModel(NoteDetailsViewModel::class)
 class NoteDetailsActivity : BaseActivity<NoteDetailsViewModel>() {
 
+    private lateinit var destinationAdapter: DestinationAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.a_note_details)
-        setSupportActionBar(this.toolbar)
-        setDisplayHomeAsUpEnabled(true)
+        setContentView(R.layout.a_note_details).run {
+            setSupportActionBar(toolbar)
+            setDisplayHomeAsUpEnabled(true)
+        }
 
-        viewModel!!.outputs.setTitleText()
-                .compose(bindToLifecycle())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { this.setTitleText(it) }
+        viewModel?.apply {
+            destinationAdapter = DestinationAdapter(this)
+            recycler_view.adapter = destinationAdapter
 
-        viewModel!!.outputs.showEditNoteActivity()
-                .compose(bindToLifecycle())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ this.showEditNoteActivity(it) })
+            outputs.setTitleText()
+                    .compose(bindToLifecycle())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe { setTitleText(it) }
 
-        addDisposable(
-                viewModel!!.outputs.back()
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe({ this.back() }))
+            outputs.updateDestinations()
+                    .compose(bindToLifecycle())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnNext { destinationAdapter.clearData() }
+                    .subscribe { destinationAdapter.updateData(it) }
+
+            outputs.showEditNoteActivity()
+                    .compose(bindToLifecycle())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe { showEditNoteActivity(it) }
+
+            addDisposable(
+                    outputs.back()
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe { back() }
+            )
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -47,18 +63,18 @@ class NoteDetailsActivity : BaseActivity<NoteDetailsViewModel>() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id = item.itemId
-
-        return when (id) {
-            R.id.menu_edit -> {
-                viewModel!!.inputs.editClick()
-                true
+        item.itemId.let {
+            return when (it) {
+                R.id.menu_edit -> {
+                    viewModel?.inputs?.editClick()
+                    true
+                }
+                R.id.menu_delete -> {
+                    viewModel?.inputs?.deleteClick()
+                    true
+                }
+                else -> super.onOptionsItemSelected(item)
             }
-            R.id.menu_delete -> {
-                viewModel!!.inputs.deleteClick()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
         }
     }
 
@@ -66,13 +82,11 @@ class NoteDetailsActivity : BaseActivity<NoteDetailsViewModel>() {
         this.note_title.text = title
     }
 
-    private fun showEditNoteActivity(note: Note) {
-        val intent = Intent(this, EditNoteActivity::class.java)
-        intent.putExtra(IntentKey.NOTE, note)
-        startActivityWithTransition(intent, R.anim.slide_in_right, R.anim.fade_out_slide_out_left)
-    }
+    private fun showEditNoteActivity(note: Note) =
+            Intent(this, EditNoteActivity::class.java).let {
+                it.putExtra(NOTE, note)
+                startActivityWithTransition(it, R.anim.slide_in_right, R.anim.fade_out_slide_out_left)
+            }
 
-    override fun exitTransition(): Pair<Int, Int>? {
-        return slideInFromLeft()
-    }
+    override fun exitTransition(): Pair<Int, Int>? = slideInFromLeft()
 }

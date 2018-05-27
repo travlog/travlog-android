@@ -5,23 +5,10 @@ import com.travlog.android.apps.models.User
 import com.travlog.android.apps.services.apirequests.OauthBody
 import com.travlog.android.apps.services.apirequests.SignInBody
 import com.travlog.android.apps.services.apirequests.SignUpBody
-import com.travlog.android.apps.services.apiresponses.AccessTokenEnvelope
-import com.travlog.android.apps.services.apiresponses.AccountsEnvelope
-import com.travlog.android.apps.services.apiresponses.NoteEnvelope
-import com.travlog.android.apps.services.apiresponses.NotesEnvelope
-import com.travlog.android.apps.services.apiresponses.PostNoteEnvelope
-import com.travlog.android.apps.services.apiresponses.PredictionsEnvelope
-import com.travlog.android.apps.services.apiresponses.ProfileEnvelope
-
+import com.travlog.android.apps.services.apiresponses.*
 import io.reactivex.Flowable
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.DELETE
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.PUT
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface ApiService {
 
@@ -54,14 +41,14 @@ interface ApiService {
     @GET("notes")
     fun notes(): Flowable<Response<NotesEnvelope>>
 
-    @GET("notes/{noteId}")
-    fun getNote(@Path("noteId") noteId: Int): Flowable<Response<NoteEnvelope>>
+    @GET("notes/{nid}")
+    fun getNote(@Path("nid") nid: String): Flowable<Response<NoteEnvelope>>
 
-    @PUT("notes/{noteId}")
-    fun updateNote(@Path("noteId") noteId: Int, @Body note: Note): Flowable<Response<NoteEnvelope>>
+    @PUT("notes/{nid}")
+    fun updateNote(@Path("nid") nid: String, @Body note: Note): Flowable<Response<NoteEnvelope>>
 
-    @DELETE("notes/{noteId}")
-    fun deleteNote(@Path("noteId") noteId: Int): Flowable<Response<NoteEnvelope>>
+    @DELETE("notes/{nid}")
+    fun deleteNote(@Path("nid") nid: String): Flowable<Response<NoteEnvelope>>
 
     @GET("maps")
     fun locations(@Query("query") query: String): Flowable<Response<PredictionsEnvelope>>

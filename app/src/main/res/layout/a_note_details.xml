@@ -13,8 +13,17 @@
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@id/note_title"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/activity_vertical_padding"
         app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/note_title"
+        tools:listitem="@layout/i_destination" />
 </android.support.constraint.ConstraintLayout>

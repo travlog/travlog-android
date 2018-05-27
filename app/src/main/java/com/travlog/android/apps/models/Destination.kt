@@ -2,27 +2,29 @@ package com.travlog.android.apps.models
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
 import java.util.*
 
 class Destination() : Parcelable {
 
-    var placeId: String = ""
-    var text: String = ""
+    var did = ""
     var startDate: Date? = null
     var endDate: Date? = null
+    @SerializedName("Location")
+    var location: Location? = null
 
     constructor(parcel: Parcel) : this() {
-        placeId = parcel.readString()
-        text = parcel.readString()
+        did = parcel.readString()
         startDate = Date(parcel.readLong())
         endDate = Date(parcel.readLong())
+        location = parcel.readParcelable<Location>(Location::class.java.classLoader)
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(placeId)
-        parcel.writeString(text)
+        parcel.writeString(did)
         parcel.writeLong(startDate?.time ?: -1)
         parcel.writeLong(endDate?.time ?: -1)
+        parcel.writeParcelable(location, 0)
     }
 
     override fun describeContents(): Int {
@@ -37,9 +39,5 @@ class Destination() : Parcelable {
         override fun newArray(size: Int): Array<Destination?> {
             return arrayOfNulls(size)
         }
-    }
-
-    override fun toString(): String {
-        return "Destination(placeId='$placeId', text='$text', startDate=$startDate, endDate=$endDate)"
     }
 }

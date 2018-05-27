@@ -60,7 +60,7 @@ class SignUpActivity : BaseActivity<SignUpViewModel>() {
         addDisposable(
                 viewModel!!.outputs.signUpSuccess()
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe({ this.back() }))
+                        .subscribe { this.back() })
     }
 
     private fun setNextButtonText(@StringRes resId: Int) {

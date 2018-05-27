@@ -38,9 +38,10 @@ class PostNoteActivity : BaseActivity<PostNoteViewModel>() {
                     .subscribe { showDestinationActivity() }
 
             addDisposable(
-                    outputs.back()
+                    outputs.setResultAndBack()
                             .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe { back() })
+                            .subscribe { back() }
+            )
         }
     }
 

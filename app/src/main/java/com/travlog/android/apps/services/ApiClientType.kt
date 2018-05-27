@@ -30,11 +30,11 @@ interface ApiClientType {
 
     fun notes(): Flowable<List<Note>>
 
-    fun getNote(noteId: Int): Flowable<Note>
+    fun getNote(nid: String): Flowable<Note>
 
     fun updateNote(note: Note): Flowable<Note>
 
-    fun deleteNote(noteId: Int): Flowable<Note>
+    fun deleteNote(nid: String): Flowable<Note>
 
     fun searchLocation(query: String): Flowable<List<Prediction>>
 }

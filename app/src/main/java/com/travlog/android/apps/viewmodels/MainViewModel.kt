@@ -32,7 +32,7 @@ class MainViewModel(environment: Environment) : ActivityViewModel<MainActivity>(
     private val updateData = BehaviorSubject.create<List<Note>>()
     private val showNoteDetailsActivity: Observable<Note>
     private val updateNote: Observable<Note>
-    private val deleteNote: Observable<Int>
+    private val deleteNote: Observable<String>
 
     val inputs: MainViewModelInputs = this
     val outputs: MainViewModelOutputs = this
@@ -56,7 +56,7 @@ class MainViewModel(environment: Environment) : ActivityViewModel<MainActivity>(
 
         updateNote = NoteEvent.getInstance().observable
 
-        deleteNote = DeleteNoteEvent.getInstance().observable.map { it.id }
+        deleteNote = DeleteNoteEvent.getInstance().observable.map { it.nid }
     }
 
     private fun notes(): Observable<List<Note>> {
@@ -90,7 +90,7 @@ class MainViewModel(environment: Environment) : ActivityViewModel<MainActivity>(
         return updateNote
     }
 
-    override fun deleteNote(): Observable<Int> {
+    override fun deleteNote(): Observable<String> {
         return deleteNote
     }
 

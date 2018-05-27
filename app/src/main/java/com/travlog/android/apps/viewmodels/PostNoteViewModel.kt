@@ -11,7 +11,6 @@ import com.travlog.android.apps.libs.rx.transformers.Transformers.neverError
 import com.travlog.android.apps.libs.rx.transformers.Transformers.takeWhen
 import com.travlog.android.apps.models.Destination
 import com.travlog.android.apps.models.Note
-import com.travlog.android.apps.models.Prediction
 import com.travlog.android.apps.services.ApiClientType
 import com.travlog.android.apps.ui.IntentKey
 import com.travlog.android.apps.ui.activities.PostNoteActivity
@@ -22,7 +21,6 @@ import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.subjects.CompletableSubject
 import io.reactivex.subjects.PublishSubject
-import timber.log.Timber
 
 class PostNoteViewModel(environment: Environment) : ActivityViewModel<PostNoteActivity>(environment), PostNoteViewModelInputs, PostNoteViewModelOutputs, PostNoteViewModelErrors {
 
@@ -31,29 +29,32 @@ class PostNoteViewModel(environment: Environment) : ActivityViewModel<PostNoteAc
     private val title = PublishSubject.create<String>()
     private val saveClick = PublishSubject.create<Optional<*>>()
 
-    private val back = CompletableSubject.create()
+    private val setResultAndBack = CompletableSubject.create()
 
     val inputs: PostNoteViewModelInputs = this
     val outputs: PostNoteViewModelOutputs = this
     val errors: PostNoteViewModelErrors = this
 
     init {
-        activityResult()
+        val note = Note()
+
+        val destinationObservable = activityResult()
                 .filter { it.requestCode == DESTINATION }
                 .filter { it.resultCode == RESULT_OK }
                 .map { it.intent?.getParcelableExtra(IntentKey.DESTINATION) as Destination }
-                .compose(bindToLifecycle())
-                .subscribe { Timber.d("%s", it) }
 
-        title
-                .map {
-                    val note = Note()
+        Observable.merge(
+                title.map {
                     note.title = it
                     note
-                }
+                },
+                destinationObservable.map {
+                    note.destinations.add(it)
+                    note
+                })
                 .compose<Note>(takeWhen(saveClick))
-                .switchMap { note ->
-                    this.post(note)
+                .switchMap {
+                    this.post(it)
                             .doOnSubscribe {
 
                             }
@@ -62,13 +63,13 @@ class PostNoteViewModel(environment: Environment) : ActivityViewModel<PostNoteAc
                             }
                 }
                 .compose(bindToLifecycle())
-                .subscribe(this::postSuccess)
+                .subscribe { postSuccess(it) }
     }
 
-    private fun postSuccess(note: Note) =
-            NoteEvent.getInstance().post(note).run {
-                back.onComplete()
-            }
+    private fun postSuccess(note: Note) {
+        NoteEvent.getInstance().post(note)
+        setResultAndBack.onComplete()
+    }
 
     private fun post(note: Note): Observable<Note> =
             apiClient.postNote(note)
@@ -80,5 +81,5 @@ class PostNoteViewModel(environment: Environment) : ActivityViewModel<PostNoteAc
 
     override fun saveClick() = this.saveClick.onNext(Optional<Any>(null))
 
-    override fun back(): Completable = back
+    override fun setResultAndBack(): Completable = setResultAndBack
 }

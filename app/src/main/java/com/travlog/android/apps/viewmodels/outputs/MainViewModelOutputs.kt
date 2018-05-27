@@ -14,5 +14,5 @@ interface MainViewModelOutputs {
 
     fun updateNote(): Observable<Note>
 
-    fun deleteNote(): Observable<Int>
+    fun deleteNote(): Observable<String>
 }

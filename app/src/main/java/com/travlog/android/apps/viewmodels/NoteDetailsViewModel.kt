@@ -8,10 +8,13 @@ import com.travlog.android.apps.libs.rx.bus.NoteEvent
 import com.travlog.android.apps.libs.rx.transformers.Transformers.neverApiError
 import com.travlog.android.apps.libs.rx.transformers.Transformers.neverError
 import com.travlog.android.apps.libs.rx.transformers.Transformers.takeWhen
+import com.travlog.android.apps.models.Destination
 import com.travlog.android.apps.models.Note
 import com.travlog.android.apps.services.ApiClientType
 import com.travlog.android.apps.ui.IntentKey.NOTE
 import com.travlog.android.apps.ui.activities.NoteDetailsActivity
+import com.travlog.android.apps.ui.adapters.DestinationAdapter
+import com.travlog.android.apps.ui.viewholders.DestinationViewHolder
 import com.travlog.android.apps.viewmodels.errors.NoteViewModelErrors
 import com.travlog.android.apps.viewmodels.inputs.NoteViewModelInputs
 import com.travlog.android.apps.viewmodels.outputs.NoteViewModelOutputs
@@ -20,10 +23,11 @@ import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.CompletableSubject
 import io.reactivex.subjects.PublishSubject
+import timber.log.Timber
 
 class NoteDetailsViewModel
 constructor(environment: Environment) : ActivityViewModel<NoteDetailsActivity>(environment),
-        NoteViewModelInputs, NoteViewModelOutputs, NoteViewModelErrors {
+        NoteViewModelInputs, NoteViewModelOutputs, NoteViewModelErrors, DestinationAdapter.Delegate {
 
     private val apiClient: ApiClientType = environment.apiClient
 
@@ -32,6 +36,7 @@ constructor(environment: Environment) : ActivityViewModel<NoteDetailsActivity>(e
     private val deleteClick = PublishSubject.create<Optional<*>>()
 
     private val setTitleText = BehaviorSubject.create<String>()
+    private val updateDestinations = BehaviorSubject.create<List<Destination>>()
     private val showEditNoteActivity = BehaviorSubject.create<Note>()
     private val back = CompletableSubject.create()
 
@@ -46,7 +51,8 @@ constructor(environment: Environment) : ActivityViewModel<NoteDetailsActivity>(e
 
         note
                 .compose(bindToLifecycle())
-                .subscribe { note -> setTitleText.onNext(note.title) }
+                .doOnNext { Timber.d("note? %s", it) }
+                .subscribe { setNote(it) }
 
         note
                 .compose<Note>(takeWhen(editClick))
@@ -56,7 +62,7 @@ constructor(environment: Environment) : ActivityViewModel<NoteDetailsActivity>(e
         note
                 .compose<Note>(takeWhen(deleteClick))
                 .switchMap {
-                    this.delete(it.id)
+                    this.delete(it.nid)
                             .doOnSubscribe {
 
                             }
@@ -69,12 +75,17 @@ constructor(environment: Environment) : ActivityViewModel<NoteDetailsActivity>(e
 
         Observable.merge(
                 noteIntent,
-                noteIntent.switchMap { note -> this.note(note.id) }
+                noteIntent.switchMap { note -> this.note(note.nid) }
                         .doOnNext({ NoteEvent.getInstance().post(it) }),
                 NoteEvent.getInstance().observable
         )
                 .compose(bindToLifecycle())
                 .subscribe(note)
+    }
+
+    private fun setNote(note: Note) {
+        setTitleText.onNext(note.title)
+        updateDestinations.onNext(note.destinations)
     }
 
     private fun deleteSuccess(note: Note) {
@@ -83,37 +94,31 @@ constructor(environment: Environment) : ActivityViewModel<NoteDetailsActivity>(e
         back.onComplete()
     }
 
-    private fun note(noteId: Int): Observable<Note> {
-        return apiClient.getNote(noteId)
-                .compose(neverApiError())
-                .compose(neverError())
-                .toObservable()
-    }
+    private fun note(nid: String): Observable<Note> =
+            apiClient.getNote(nid)
+                    .compose(neverApiError())
+                    .compose(neverError())
+                    .toObservable()
 
-    private fun delete(noteId: Int): Observable<Note> {
-        return apiClient.deleteNote(noteId)
-                .compose(neverApiError())
-                .compose(neverError())
-                .toObservable()
-    }
+    private fun delete(nid: String): Observable<Note> =
+            apiClient.deleteNote(nid)
+                    .compose(neverApiError())
+                    .compose(neverError())
+                    .toObservable()
 
-    override fun setTitleText(): Observable<String> {
-        return setTitleText
-    }
+    override fun setTitleText(): Observable<String> = setTitleText
 
-    override fun showEditNoteActivity(): Observable<Note> {
-        return showEditNoteActivity
-    }
+    override fun updateDestinations(): Observable<List<Destination>> = updateDestinations
 
-    override fun back(): Completable {
-        return back
-    }
+    override fun showEditNoteActivity(): Observable<Note> = showEditNoteActivity
 
-    override fun editClick() {
-        this.editClick.onNext(Optional<Any>(null))
-    }
+    override fun back(): Completable = back
 
-    override fun deleteClick() {
-        this.deleteClick.onNext(Optional<Any>(null))
+    override fun editClick() = this.editClick.onNext(Optional<Any>(null))
+
+    override fun deleteClick() = this.deleteClick.onNext(Optional<Any>(null))
+
+    override fun destinationViewHolderItemClick(viewHolder: DestinationViewHolder, destination: Destination) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

@@ -4,5 +4,5 @@ import io.reactivex.Completable
 
 interface PostNoteViewModelOutputs {
 
-    fun back(): Completable
+    fun setResultAndBack(): Completable
 }

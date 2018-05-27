@@ -129,7 +129,7 @@ open class BaseActivity<ViewModelType : ActivityViewModel<*>> : RxAppCompatActiv
 
 
     @CallSuper
-    @Deprecated("Use {@link #back()} instead.\n" +
+    @Deprecated("Use {@link #setResultAndBack()} instead.\n" +
             "      <p>\n" +
             "      In rare situations, onBackPressed can be triggered after {@link #onSaveInstanceState(Bundle)} has been called.\n" +
             "      This causes an {@link IllegalStateException} in the fragment manager's `checkStateLoss` method, because the\n" +
@@ -138,14 +138,14 @@ open class BaseActivity<ViewModelType : ActivityViewModel<*>> : RxAppCompatActiv
             "      onSaveInstanceState -> onStop -> onBackPressed\n" +
             "      <p>\n" +
             "      To avoid that situation, we need to ignore calls to `onBackPressed` after the activity has been saved. Since\n" +
-            "      the activity is stopped after `onSaveInstanceState` is called, we can create an observable of back events,\n" +
-            "      and a disposables that calls super.onBackPressed() only when the activity has not been stopped.", ReplaceWith("back()"))
+            "      the activity is stopped after `onSaveInstanceState` is called, we can create an observable of setResultAndBack events,\n" +
+            "      and a disposables that calls super.onBackPressed() only when the activity has not been stopped.", ReplaceWith("setResultAndBack()"))
     override fun onBackPressed() {
         back()
     }
 
     /**
-     * Call when the user wants triggers a back event, e.g. clicking back in a toolbar or pressing the device back button.
+     * Call when the user wants triggers a setResultAndBack event, e.g. clicking setResultAndBack in a toolbar or pressing the device setResultAndBack button.
      */
     fun back() {
         this.back.onComplete()
@@ -207,7 +207,7 @@ open class BaseActivity<ViewModelType : ActivityViewModel<*>> : RxAppCompatActiv
     }
 
     /**
-     * Triggers a back press with an optional transition.
+     * Triggers a setResultAndBack press with an optional transition.
      */
     private fun goBack() {
         super.onBackPressed()

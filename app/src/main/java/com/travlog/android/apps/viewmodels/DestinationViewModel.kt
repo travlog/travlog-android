@@ -8,6 +8,7 @@ import com.travlog.android.apps.libs.rx.Optional
 import com.travlog.android.apps.libs.rx.transformers.Transformers.takeWhen
 import com.travlog.android.apps.libs.utils.DateTimeUtils
 import com.travlog.android.apps.models.Destination
+import com.travlog.android.apps.models.Location
 import com.travlog.android.apps.models.Prediction
 import com.travlog.android.apps.ui.IntentKey.PREDICTION
 import com.travlog.android.apps.ui.activities.DestinationActivity
@@ -18,7 +19,6 @@ import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import org.joda.time.DateTime
-import timber.log.Timber
 import java.util.*
 
 class DestinationViewModel(environment: Environment) : ActivityViewModel<DestinationActivity>(environment),
@@ -71,8 +71,10 @@ class DestinationViewModel(environment: Environment) : ActivityViewModel<Destina
         val destination = Destination()
         Observable.merge(
                 predictionIntent.map {
-                    destination.placeId = it.placeId
-                    destination.text = it.structuredFormatting.mainText
+                    val location = Location()
+                    location.placeId = it.placeId
+                    location.name = it.structuredFormatting.mainText
+                    destination.location = location
                     destination
                 },
                 startDate.map {
