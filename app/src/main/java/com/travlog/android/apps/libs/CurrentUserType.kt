@@ -57,20 +57,20 @@ abstract class CurrentUserType {
      * each time the current user is updated.
      */
     fun isLoggedIn(): Observable<Boolean> {
-        return observable().map({ optional -> optional.isNotEmpty })
+        return observable().map { it.isNotEmpty }
     }
 
     /**
      * Emits only values of a logged in user. The returned observable may never emit.
      */
     fun loggedInUser(): Observable<User?> {
-        return observable().filter({ optional -> optional.isNotEmpty }).map({ optional -> optional.get() })
+        return observable().filter { it.isNotEmpty }.map { it.get() }
     }
 
     /**
      * Emits only values of a logged out user. The returned observable may never emit.
      */
     fun loggedOutUser(): Observable<Optional<User>> {
-        return observable().filter({ optional -> optional.isEmpty })
+        return observable().filter { it.isEmpty }
     }
 }

@@ -19,9 +19,9 @@ class CurrentUser(private var accessTokenPreference: StringPreferenceType, priva
 
         this.user
                 .skip(1)
-                .filter({ optional -> optional.isNotEmpty })
-                .map { optional -> optional.get() }
-                .subscribe({ user -> userPreference.set(gson.toJson(user, User::class.java)) })
+                .filter { it.isNotEmpty }
+                .map { it.get() }
+                .subscribe { userPreference.set(gson.toJson(it, User::class.java)) }
 
         this.user.onNext(Optional(gson.fromJson(userPreference.get(), User::class.java)))
     }
