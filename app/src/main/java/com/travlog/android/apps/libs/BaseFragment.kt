@@ -16,7 +16,7 @@ import timber.log.Timber
 
 open class BaseFragment<ViewModelType : FragmentViewModel<*>> : RxFragment(), FragmentLifeCycleType {
     private val disposables = CompositeDisposable()
-    private var unbinder: Unbinder? = null
+    private val VIEW_MODEL_KEY = "viewModel"
     protected var viewModel: ViewModelType? = null
 
     fun viewModel(): ViewModelType? {
@@ -50,49 +50,42 @@ open class BaseFragment<ViewModelType : FragmentViewModel<*>> : RxFragment(), Fr
     override fun onStart() {
         super.onStart()
         Timber.d("onStart %s", this.toString())
-        if (viewModel != null)
-            viewModel!!.onStart()
+        viewModel?.onStart()
     }
 
     @CallSuper
     override fun onResume() {
         super.onResume()
         Timber.d("onResume %s", this.toString())
-        if (viewModel != null)
-            viewModel!!.onResume()
+        viewModel?.onResume()
     }
 
     @CallSuper
     override fun onPause() {
         super.onPause()
         Timber.d("onPause %s", this.toString())
-        if (viewModel != null)
-            viewModel!!.onPause()
+        viewModel?.onPause()
     }
 
     @CallSuper
     override fun onStop() {
         super.onStop()
         Timber.d("onStop %s", this.toString())
-        if (viewModel != null)
-            viewModel!!.onStop()
+        viewModel?.onStop()
     }
 
     @CallSuper
     override fun onDestroyView() {
         super.onDestroyView()
         Timber.d("onDestroyView %s", this.toString())
-        if (viewModel != null)
-            viewModel!!.onDestroyView()
-        unbinder!!.unbind()
+        viewModel?.onDestroyView()
     }
 
     @CallSuper
     override fun onDestroy() {
         super.onDestroy()
         Timber.d("onDestroy %s", this.toString())
-        if (viewModel != null)
-            viewModel!!.onDestroy()
+        viewModel?.onDestroy()
     }
 
     @CallSuper
@@ -100,9 +93,9 @@ open class BaseFragment<ViewModelType : FragmentViewModel<*>> : RxFragment(), Fr
         Timber.d("onDetach %s", this.toString())
         super.onDetach()
 
-        if (activity!!.isFinishing) {
-            if (viewModel != null) {
-                viewModel!!.onDetach()
+        activity?.apply {
+            if (isFinishing) {
+                viewModel?.onDetach()
             }
         }
     }
@@ -116,10 +109,5 @@ open class BaseFragment<ViewModelType : FragmentViewModel<*>> : RxFragment(), Fr
                         maybeGetBundle(viewModelEnvelope, VIEW_MODEL_KEY))
             }
         }
-    }
-
-    companion object {
-
-        private val VIEW_MODEL_KEY = "viewModel"
     }
 }
