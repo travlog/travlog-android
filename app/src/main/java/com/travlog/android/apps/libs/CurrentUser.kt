@@ -31,7 +31,7 @@ class CurrentUser(private var accessTokenPreference: StringPreferenceType, priva
     }
 
     override fun getAccessToken(): String {
-        return this.accessTokenPreference.get()!!
+        return this.accessTokenPreference.get() ?: ""
     }
 
     override fun login(newUser: User, accessToken: String) {

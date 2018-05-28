@@ -10,7 +10,6 @@ import com.facebook.internal.CallbackManagerImpl
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.travlog.android.apps.libs.ActivityRequestCodes.SIGN_IN_WITH_GOOGLE
 import com.travlog.android.apps.libs.ActivityViewModel
 import com.travlog.android.apps.libs.CurrentUserType
@@ -29,8 +28,10 @@ import com.travlog.android.apps.ui.activities.SignInActivity
 import com.travlog.android.apps.viewmodels.errors.SignInViewModelErrors
 import com.travlog.android.apps.viewmodels.inputs.SignInViewModelInputs
 import com.travlog.android.apps.viewmodels.outputs.SignInViewModelOutputs
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.CompletableSubject
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 
@@ -47,7 +48,7 @@ constructor(environment: Environment) : ActivityViewModel<SignInActivity>(enviro
     private val signInClick = PublishSubject.create<Optional<*>>()
     private val signInError = PublishSubject.create<Envelope>()
 
-    private val signInSuccess = BehaviorSubject.create<Optional<*>>()
+    private val startMainActivity = CompletableSubject.create()
     private val facebookAuthorizationError = BehaviorSubject.create<FacebookException>()
     private val setSignInButtonEnabled = BehaviorSubject.create<Boolean>()
 
@@ -145,7 +146,7 @@ constructor(environment: Environment) : ActivityViewModel<SignInActivity>(enviro
 
     private fun signInSuccess(accessTokenEnvelope: AccessTokenEnvelope) {
         currentUser.login(accessTokenEnvelope.data.user, accessTokenEnvelope.data.accessToken)
-        signInSuccess.onNext(Optional<Any>(null))
+        startMainActivity.onComplete()
     }
 
     private fun isValid(loginId: String, password: String): Boolean {
@@ -156,22 +157,19 @@ constructor(environment: Environment) : ActivityViewModel<SignInActivity>(enviro
         LoginManager.getInstance().logOut()
     }
 
-    private fun oAuth(accessToken: String,
-                      provider: String): Observable<AccessTokenEnvelope> {
-
+    private fun oAuth(accessToken: String, provider: String): Observable<AccessTokenEnvelope> {
         val body = OauthBody()
         body.token = accessToken
         body.provider = provider
 
         return client.oAuth(body)
+                .compose(pipeApiErrorsTo(signInError))
                 .compose(neverError())
                 .toObservable()
     }
 
     private fun signIn(loginId: String, password: String): Observable<AccessTokenEnvelope> {
-        val body = SignInBody()
-        body.loginId = loginId
-        body.password = password
+        val body = SignInBody(loginId, password)
 
         return client.signIn(body)
                 .compose(pipeApiErrorsTo(signInError))
@@ -191,8 +189,8 @@ constructor(environment: Environment) : ActivityViewModel<SignInActivity>(enviro
         this.password.onNext(password)
     }
 
-    override fun signInSuccess(): Observable<Optional<*>> {
-        return signInSuccess
+    override fun startMainActivity(): Completable {
+        return startMainActivity
     }
 
     override fun showFacebookAuthorizationErrorDialog(): Observable<String> {
