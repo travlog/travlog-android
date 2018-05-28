@@ -1,5 +1,6 @@
 package com.travlog.android.apps.ui.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,17 +16,21 @@ import kotlinx.android.synthetic.main.f_sign_up_email.*
 @RequiresFragmentViewModel(SignUpEmailViewModel::class)
 class SignUpEmailFragment : BaseFragment<SignUpEmailViewModel>() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    @SuppressLint("InflateParams")
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+
         super.onCreateView(inflater, container, savedInstanceState)
+        return LayoutInflater.from(context).inflate(R.layout.f_sign_up_email, null)
+    }
 
-        val view = setContentView(R.layout.f_sign_up_email)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        RxTextView.textChanges(this.email_edit)
+        RxTextView.textChanges(email_edit)
                 .map<String> { it.toString() }
                 .compose(bindToLifecycle())
                 .subscribe({ (context as SignUpActivity).viewModel()!!.email(it) })
-
-        return view
     }
 
     companion object {

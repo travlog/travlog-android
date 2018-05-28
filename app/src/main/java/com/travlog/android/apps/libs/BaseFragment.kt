@@ -3,11 +3,9 @@ package com.travlog.android.apps.libs
 import android.content.Context
 import android.os.Bundle
 import android.support.annotation.CallSuper
-import android.support.annotation.LayoutRes
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import butterknife.ButterKnife
 import butterknife.Unbinder
 import com.travlog.android.apps.FragmentViewModel
 import com.travlog.android.apps.libs.qualifiers.RequiresFragmentViewModel
@@ -42,17 +40,10 @@ open class BaseFragment<ViewModelType : FragmentViewModel<*>> : RxFragment(), Fr
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         Timber.d("onCreateView %s", this.toString())
-        if (viewModel != null)
-            viewModel!!.onCreateView(inflater, container, savedInstanceState, this as Nothing)
 
+        viewModel?.onCreateView(inflater, container, savedInstanceState, this)
 
         return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
-    protected fun setContentView(@LayoutRes layoutResID: Int): View {
-        val view = LayoutInflater.from(context).inflate(layoutResID, null)
-        unbinder = ButterKnife.bind(this, view)
-        return view
     }
 
     @CallSuper

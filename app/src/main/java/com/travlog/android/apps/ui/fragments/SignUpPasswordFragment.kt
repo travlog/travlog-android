@@ -1,5 +1,6 @@
 package com.travlog.android.apps.ui.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,19 +16,21 @@ import kotlinx.android.synthetic.main.f_sign_up_password.*
 @RequiresFragmentViewModel(SignUpPasswordViewModel::class)
 class SignUpPasswordFragment : BaseFragment<SignUpPasswordViewModel>() {
 
+    @SuppressLint("InflateParams")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
         super.onCreateView(inflater, container, savedInstanceState)
+        return LayoutInflater.from(context).inflate(R.layout.f_sign_up_password, null)
+    }
 
-        val view = setContentView(R.layout.f_sign_up_password)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        RxTextView.textChanges(this.password_edit)
+        RxTextView.textChanges(password_edit)
                 .map<String> { it.toString() }
                 .compose(bindToLifecycle())
                 .subscribe({ (context as SignUpActivity).viewModel()!!.password(it) })
-
-        return view
     }
 
     companion object {

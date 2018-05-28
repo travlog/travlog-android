@@ -45,7 +45,7 @@ open class FragmentViewModel<ViewType : FragmentLifeCycleType>(environment: Envi
 
     @CallSuper
     fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                     savedInstanceState: Bundle?, view: ViewType) {
+                     savedInstanceState: Bundle?, view: Any) {
         Timber.d("onCreateView %s", this.toString())
         onTakeView(view)
     }
@@ -86,10 +86,14 @@ open class FragmentViewModel<ViewType : FragmentLifeCycleType>(environment: Envi
         Timber.d("onCreateView %s", this.toString())
     }
 
-    private fun onTakeView(view: ViewType) {
+    private fun onTakeView(view: Any) {
         Timber.d("onTakeView %s %s", this.toString(), view.toString())
-        fragmentView = view
-        this.viewChange.onNext(Optional(view))
+
+        if (view is FragmentLifeCycleType) {
+            fragmentView = view as ViewType
+            this.viewChange.onNext(Optional(view))
+        }
+
     }
 
     private fun dropView() {

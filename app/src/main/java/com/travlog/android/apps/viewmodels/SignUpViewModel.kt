@@ -53,25 +53,27 @@ constructor(environment: Environment) : ActivityViewModel<SignUpActivity>(enviro
                 isValidPassword
         )
                 .compose(bindToLifecycle())
-                .subscribe { setNextButtonEnabled }
+                .subscribe { setNextButtonEnabled.onNext(it) }
 
 
-//        email.compose(combineLatestPair(password))
-//                .compose<Pair<String, String>>(takeWhen(signUpClick))
-//                .switchMap({
-//                    this.signUp(it.first, it.second)
-//                            .doOnSubscribe {
-//
-//                            }
-//                            .doAfterTerminate {
-//
-//                            }
-//                })
-//                .compose(bindToLifecycle())
-//                .subscribe {
-//                    environment.currentUser.login(it.data.user, it.data.accessToken)
-//                    signUpSuccess.onComplete()
-//                }
+        val emailAndPassword: Observable<Pair<String, String>> = email.compose(combineLatestPair(password))
+
+        emailAndPassword
+                .compose<Pair<String, String>>(takeWhen(signUpClick))
+                .switchMap {
+                    this.signUp(it.first, it.second)
+                            .doOnSubscribe {
+
+                            }
+                            .doAfterTerminate {
+
+                            }
+                }
+                .compose(bindToLifecycle())
+                .subscribe {
+                    environment.currentUser.login(it.data.user, it.data.accessToken)
+                    signUpSuccess.onComplete()
+                }
 
         duplicatedError()
                 .compose(bindToLifecycle())
