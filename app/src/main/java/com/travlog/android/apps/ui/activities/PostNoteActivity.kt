@@ -40,15 +40,15 @@ class PostNoteActivity : BaseActivity<PostNoteViewModel>() {
             addDisposable(
                     outputs.setResultAndBack()
                             .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe { back() }
+                            .subscribe { this@PostNoteActivity.back() }
             )
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_save, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
+    override fun onCreateOptionsMenu(menu: Menu): Boolean =
+            menuInflater.inflate(R.menu.menu_save, menu).run {
+                return super.onCreateOptionsMenu(menu)
+            }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean =
             when {
@@ -59,14 +59,11 @@ class PostNoteActivity : BaseActivity<PostNoteViewModel>() {
                 else -> super.onOptionsItemSelected(item)
             }
 
-    private fun showDestinationActivity() {
-        Intent(this, DestinationActivity::class.java).let {
-            startActivityForResult(it, DESTINATION)
-            overridePendingTransition(R.anim.slide_in_right, R.anim.fade_out_slide_out_left)
-        }
-    }
+    private fun showDestinationActivity() =
+            Intent(this, DestinationActivity::class.java).let {
+                startActivityForResult(it, DESTINATION)
+                overridePendingTransition(R.anim.slide_in_right, R.anim.fade_out_slide_out_left)
+            }
 
-    override fun exitTransition(): Pair<Int, Int>? {
-        return slideInFromLeft()
-    }
+    override fun exitTransition(): Pair<Int, Int>? = slideInFromLeft()
 }
