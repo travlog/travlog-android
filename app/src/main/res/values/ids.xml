@@ -62,4 +62,5 @@
     <item name="profile_container" type="id" />
     <item name="sign_out_button" type="id" />
     <item name="close_button" type="id" />
+    <item name="save_button" type="id" />
 </resources>

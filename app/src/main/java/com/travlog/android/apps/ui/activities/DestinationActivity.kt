@@ -3,9 +3,9 @@ package com.travlog.android.apps.ui.activities
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
+import android.support.design.widget.BottomSheetBehavior
 import android.util.Pair
-import android.view.Menu
-import android.view.MenuItem
+import android.view.View
 import com.jakewharton.rxbinding2.view.RxView
 import com.savvi.rangedatepicker.CalendarPickerView
 import com.travlog.android.apps.R
@@ -13,10 +13,10 @@ import com.travlog.android.apps.libs.ActivityRequestCodes.SEARCH_LOCATION
 import com.travlog.android.apps.libs.BaseActivity
 import com.travlog.android.apps.libs.qualifiers.RequiresActivityViewModel
 import com.travlog.android.apps.libs.utils.TransitionUtils.slideInFromLeft
-import com.travlog.android.apps.ui.IntentKey
 import com.travlog.android.apps.ui.IntentKey.DESTINATION
-import com.travlog.android.apps.ui.IntentKey.PREDICTION
+import com.travlog.android.apps.ui.widgets.HandleableBottomSheetBehavior
 import com.travlog.android.apps.viewmodels.DestinationViewModel
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.a_destination.*
 import org.joda.time.DateTime
@@ -26,15 +26,23 @@ import java.util.*
 @RequiresActivityViewModel(DestinationViewModel::class)
 class DestinationActivity : BaseActivity<DestinationViewModel>() {
 
+    var bottomSheetCalendar: HandleableBottomSheetBehavior<View>? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.a_destination)
 
-        setSupportActionBar(toolbar)
-                .apply { setDisplayHomeAsUpEnabled(true) }
+        setSupportActionBar(toolbar).run {
+            setDisplayHomeAsUpEnabled(true)
+        }
 
-        DateTime().let {
+        bottomSheetCalendar = HandleableBottomSheetBehavior.from(bottom_sheet_calenar)
+        bottomSheetCalendar?.setHandleView(weekdays_container)
+
+        val currentDateTime = DateTime()
+
+        currentDateTime.let {
             calendar_view.init(it.minusYears(100).toDate(), it.plusYears(100).toDate(),
                     SimpleDateFormat("MMMM, YYYY", Locale.getDefault()))
                     .inMode(CalendarPickerView.SelectionMode.RANGE)
@@ -43,15 +51,15 @@ class DestinationActivity : BaseActivity<DestinationViewModel>() {
             calendar_view.scrollToDate(it.toDate())
         }
 
-
         viewModel?.apply {
             calendar_view.setOnDateSelectedListener(object : CalendarPickerView.OnDateSelectedListener {
 
                 override fun onDateSelected(date: Date?) {
-                    if (start_date.text.isEmpty()) {
-                        inputs.startDate(date)
-                    } else {
-                        inputs.endDate(date)
+                    when {
+                        start_date.text.isEmpty() -> inputs.startDate(date)
+                        end_date.text.isEmpty() -> inputs.endDate(date).run {
+                            bottomSheetCalendar?.state = BottomSheetBehavior.STATE_COLLAPSED
+                        }
                     }
                 }
 
@@ -64,6 +72,18 @@ class DestinationActivity : BaseActivity<DestinationViewModel>() {
             RxView.clicks(location_button)
                     .compose(bindToLifecycle())
                     .subscribe { showSearchLocationActivity() }
+
+            Observable.merge(RxView.clicks(start_date), RxView.clicks(end_date))
+                    .compose(bindToLifecycle())
+                    .subscribe {
+                        calendar_view.scrollToDate(currentDateTime.toDate()).run {
+                            bottomSheetCalendar?.state = BottomSheetBehavior.STATE_EXPANDED
+                        }
+                    }
+
+            RxView.clicks(save_button)
+                    .compose(bindToLifecycle())
+                    .subscribe { inputs.saveClick() }
 
             outputs.setLocationText()
                     .compose(bindToLifecycle())
@@ -86,18 +106,11 @@ class DestinationActivity : BaseActivity<DestinationViewModel>() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean =
-            menuInflater.inflate(R.menu.menu_save, menu).run {
-                super.onCreateOptionsMenu(menu)
-            }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean =
+    override fun onBackPressed() =
             when {
-                item.itemId == R.id.menu_save -> {
-                    viewModel?.inputs?.saveClick()
-                    true
-                }
-                else -> super.onOptionsItemSelected(item)
+                bottomSheetCalendar?.state == BottomSheetBehavior.STATE_EXPANDED ->
+                    bottomSheetCalendar?.state = BottomSheetBehavior.STATE_COLLAPSED
+                else -> super.onBackPressed()
             }
 
     private fun setLocationText(location: String) {
