@@ -2,7 +2,6 @@ package com.travlog.android.apps.models
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.google.gson.annotations.SerializedName
 import java.util.ArrayList
 
 class Note() : Parcelable {
@@ -10,7 +9,6 @@ class Note() : Parcelable {
     var nid = ""
     var title = ""
     var memo = ""
-    @SerializedName("Destinations")
     var destinations: MutableList<Destination> = ArrayList()
 
     constructor(parcel: Parcel) : this() {

@@ -41,7 +41,8 @@ constructor(environment: Environment) : ActivityViewModel<EditNoteActivity>(envi
         intent()
                 .map { i -> i.getParcelableExtra(NOTE) as Note }
                 .doOnNext { this.note = it }
-                .subscribe { setTitleText }
+                .map { it.title }
+                .subscribe { setTitleText.onNext(it) }
 
         title
                 .compose(bindToLifecycle())

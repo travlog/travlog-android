@@ -17,16 +17,43 @@
         android:id="@id/end_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/start_date"
+        app:layout_constraintBottom_toBottomOf="@+id/stepper_vertical_line"
         tools:text="4/2" />
+
+    <View
+        android:id="@+id/stepper_circle"
+        android:layout_width="8dp"
+        android:layout_height="8dp"
+        android:layout_marginLeft="@dimen/activity_horizontal_padding"
+        android:layout_marginStart="@dimen/activity_horizontal_padding"
+        android:background="@drawable/stepper_circle"
+        app:layout_constraintBottom_toBottomOf="@+id/start_date"
+        app:layout_constraintStart_toEndOf="@+id/start_date"
+        app:layout_constraintTop_toTopOf="@+id/start_date" />
+
+    <View
+        android:id="@+id/stepper_vertical_line"
+        android:layout_width="1dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="2dp"
+        android:background="@color/accent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/stepper_circle"
+        app:layout_constraintStart_toStartOf="@+id/stepper_circle"
+        app:layout_constraintTop_toBottomOf="@+id/stepper_circle" />
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@id/name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_horizontal_padding"
-        android:layout_marginStart="@dimen/activity_horizontal_padding"
+        android:drawableLeft="@drawable/ic_location_on_black_16dp"
+        android:drawablePadding="8dp"
+        android:drawableStart="@drawable/ic_location_on_black_16dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/activity_horizontal_padding"
+        android:paddingStart="@dimen/activity_horizontal_padding"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/start_date"
+        app:layout_constraintStart_toEndOf="@+id/stepper_circle"
+        tools:ignore="RtlSymmetry"
         tools:text="name" />
 </android.support.constraint.ConstraintLayout>

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Pair
 import android.view.Menu
 import android.view.MenuItem
+import com.jakewharton.rxbinding2.view.RxView
 import com.travlog.android.apps.R
 import com.travlog.android.apps.libs.BaseActivity
 import com.travlog.android.apps.libs.qualifiers.RequiresActivityViewModel
@@ -32,6 +33,10 @@ class NoteDetailsActivity : BaseActivity<NoteDetailsViewModel>() {
         viewModel?.apply {
             destinationAdapter = DestinationAdapter(this)
             recycler_view.adapter = destinationAdapter
+
+            RxView.clicks(delete_button)
+                    .compose(bindToLifecycle())
+                    .subscribe { inputs.deleteClick() }
 
             outputs.setTitleText()
                     .compose(bindToLifecycle())
@@ -67,10 +72,6 @@ class NoteDetailsActivity : BaseActivity<NoteDetailsViewModel>() {
             return when (it) {
                 R.id.menu_edit -> {
                     viewModel?.inputs?.editClick()
-                    true
-                }
-                R.id.menu_delete -> {
-                    viewModel?.inputs?.deleteClick()
                     true
                 }
                 else -> super.onOptionsItemSelected(item)

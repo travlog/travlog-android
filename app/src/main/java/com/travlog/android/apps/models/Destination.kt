@@ -2,7 +2,6 @@ package com.travlog.android.apps.models
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.google.gson.annotations.SerializedName
 import java.util.*
 
 class Destination() : Parcelable {
@@ -10,7 +9,6 @@ class Destination() : Parcelable {
     var did = ""
     var startDate: Date? = null
     var endDate: Date? = null
-    @SerializedName("Location")
     var location: Location? = null
 
     constructor(parcel: Parcel) : this() {
