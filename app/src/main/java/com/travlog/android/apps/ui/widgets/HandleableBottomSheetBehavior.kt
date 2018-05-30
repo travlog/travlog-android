@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Rect
 import android.support.design.widget.BottomSheetBehavior
 import android.support.design.widget.CoordinatorLayout
+import android.support.v7.widget.Toolbar
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
@@ -33,13 +34,26 @@ class HandleableBottomSheetBehavior<V : View> : BottomSheetBehavior<V> {
     }
 
     override fun onInterceptTouchEvent(parent: CoordinatorLayout, child: V, event: MotionEvent): Boolean {
-        handle?.apply {
-            val handle = Rect(left, top, right, bottom)
-
-            handleable = handle.contains(event.x.toInt(), event.y.toInt())
-            return handleable
+        if (parent.getChildAt(0) is Toolbar) {
+            parent.getChildAt(0).apply {
+                Rect(left, top, right, bottom).let {
+                    if (it.contains(event.x.toInt(), event.y.toInt())) {
+                        handleable = true
+                        return super.onInterceptTouchEvent(parent, child, event)
+                    }
+                }
+            }
         }
-        return onInterceptTouchEvent(parent, child, event)
+
+        handle?.apply {
+            Rect(left, top, right, bottom).let {
+                it.contains(event.x.toInt(), event.y.toInt()).let {
+                    handleable = it
+                    return handleable
+                }
+            }
+        }
+        return super.onInterceptTouchEvent(parent, child, event)
     }
 
     override fun onTouchEvent(parent: CoordinatorLayout, child: V, event: MotionEvent): Boolean {

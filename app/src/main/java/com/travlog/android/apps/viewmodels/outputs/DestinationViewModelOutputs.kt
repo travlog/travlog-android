@@ -11,5 +11,7 @@ interface DestinationViewModelOutputs {
 
     fun setEndDateText(): Observable<String>
 
+    fun setSaveButtonEnabled(): Observable<Boolean>
+
     fun setResultAndBack(): Observable<Destination>
 }

@@ -37,6 +37,15 @@ class PostNoteActivity : BaseActivity<PostNoteViewModel>() {
                     .compose(bindToLifecycle())
                     .subscribe { showDestinationActivity() }
 
+            RxView.clicks(save_button)
+                    .compose(bindToLifecycle())
+                    .subscribe { inputs.saveClick() }
+
+            outputs.setSaveButtonEnabled()
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .compose(bindToLifecycle())
+                    .subscribe { setSaveButtonEnabled(it) }
+
             addDisposable(
                     outputs.setResultAndBack()
                             .observeOn(AndroidSchedulers.mainThread())
@@ -45,19 +54,9 @@ class PostNoteActivity : BaseActivity<PostNoteViewModel>() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean =
-            menuInflater.inflate(R.menu.menu_save, menu).run {
-                return super.onCreateOptionsMenu(menu)
-            }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean =
-            when {
-                item.itemId == R.id.menu_save -> {
-                    viewModel?.inputs?.saveClick()
-                    true
-                }
-                else -> super.onOptionsItemSelected(item)
-            }
+    private fun setSaveButtonEnabled(enabled: Boolean) {
+        save_button.isEnabled = enabled
+    }
 
     private fun showDestinationActivity() =
             Intent(this, DestinationActivity::class.java).let {

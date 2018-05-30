@@ -48,4 +48,15 @@
             app:icon="@drawable/ic_add_white_24dp"
             app:iconTint="@color/black" />
     </LinearLayout>
+
+    <android.support.design.button.MaterialButton
+        android:id="@id/save_button"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_marginHorizontal="8dp"
+        android:enabled="false"
+        android:gravity="center"
+        android:text="@string/save"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent" />
 </android.support.constraint.ConstraintLayout>

@@ -9,19 +9,25 @@ class Destination() : Parcelable {
     var did = ""
     var startDate: Date? = null
     var endDate: Date? = null
-    var location: Location? = null
+    lateinit var location: Location
 
     constructor(parcel: Parcel) : this() {
-        did = parcel.readString()
-        startDate = Date(parcel.readLong())
-        endDate = Date(parcel.readLong())
-        location = parcel.readParcelable<Location>(Location::class.java.classLoader)
+        did = parcel.readString() ?: ""
+        startDate = when {
+            parcel.readLong() == -1L -> null
+            else -> Date(parcel.readLong())
+        }
+        endDate = when {
+            parcel.readLong() == -1L -> null
+            else -> Date(parcel.readLong())
+        }
+        location = parcel.readParcelable(Location::class.java.classLoader)
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(did)
-        parcel.writeLong(startDate?.time ?: -1)
-        parcel.writeLong(endDate?.time ?: -1)
+        parcel.writeLong(startDate?.time ?: -1L)
+        parcel.writeLong(endDate?.time ?: -1L)
         parcel.writeParcelable(location, 0)
     }
 

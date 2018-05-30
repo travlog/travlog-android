@@ -14,9 +14,15 @@ class DestinationViewHolder(itemView: View, private val delegate: Delegate) : Re
     }
 
     fun bindData(item: Destination) {
-        itemView.start_date.text = DateTimeUtils.mediumDate(DateTime(item.startDate))
-        itemView.end_date.text = DateTimeUtils.mediumDate(DateTime(item.endDate))
-        itemView.name.text = item.location?.locality ?: ""
+        if (item.startDate != null && item.endDate != null) {
+            itemView.start_date.text = DateTimeUtils.mediumDate(DateTime(item.startDate))
+            itemView.end_date.text = DateTimeUtils.mediumDate(DateTime(item.endDate))
+        } else {
+            itemView.start_date.text = ""
+            itemView.end_date.text = ""
+        }
+
+        itemView.name.text = item.location.locality
 
         itemView.setOnClickListener { delegate.destinationViewHolderItemClick(this, item) }
     }

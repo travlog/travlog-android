@@ -89,12 +89,13 @@
 
         <activity
             android:name=".ui.activities.PostNoteActivity"
-            android:label="" />
+            android:label=""
+            android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".ui.activities.DestinationActivity"
             android:label=""
-            android:windowSoftInputMode="stateAlwaysHidden" />
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
 
         <activity
             android:name=".ui.activities.SearchLocationActivity"

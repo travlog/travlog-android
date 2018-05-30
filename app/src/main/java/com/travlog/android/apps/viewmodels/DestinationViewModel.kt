@@ -31,6 +31,7 @@ class DestinationViewModel(environment: Environment) : ActivityViewModel<Destina
     private val setLocationText = BehaviorSubject.create<String>()
     private val setStartDateText = BehaviorSubject.create<String>()
     private val setEndDateText = BehaviorSubject.create<String>()
+    private val setSaveButtonEnabled = BehaviorSubject.create<Boolean>()
     private val setResultAndBack = BehaviorSubject.create<Destination>()
 
     val inputs: DestinationViewModelInputs = this
@@ -42,6 +43,7 @@ class DestinationViewModel(environment: Environment) : ActivityViewModel<Destina
                 .filter { it.requestCode == SEARCH_LOCATION }
                 .filter { it.resultCode == RESULT_OK }
                 .map { it.intent?.getParcelableExtra(PREDICTION) as Prediction }
+                .doOnNext { setSaveButtonEnabled.onNext(true) }
 
         predictionIntent
                 .map { it.structuredFormatting.mainText }
@@ -113,6 +115,8 @@ class DestinationViewModel(environment: Environment) : ActivityViewModel<Destina
     override fun setStartDateText(): Observable<String> = setStartDateText
 
     override fun setEndDateText(): Observable<String> = setEndDateText
+
+    override fun setSaveButtonEnabled(): Observable<Boolean> = setSaveButtonEnabled
 
     override fun setResultAndBack(): Observable<Destination> = setResultAndBack
 }

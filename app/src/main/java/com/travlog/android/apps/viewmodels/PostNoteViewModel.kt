@@ -19,16 +19,19 @@ import com.travlog.android.apps.viewmodels.inputs.PostNoteViewModelInputs
 import com.travlog.android.apps.viewmodels.outputs.PostNoteViewModelOutputs
 import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.CompletableSubject
 import io.reactivex.subjects.PublishSubject
 
-class PostNoteViewModel(environment: Environment) : ActivityViewModel<PostNoteActivity>(environment), PostNoteViewModelInputs, PostNoteViewModelOutputs, PostNoteViewModelErrors {
+class PostNoteViewModel(environment: Environment) : ActivityViewModel<PostNoteActivity>(environment),
+        PostNoteViewModelInputs, PostNoteViewModelOutputs, PostNoteViewModelErrors {
 
     private val apiClient: ApiClientType = environment.apiClient
 
     private val title = PublishSubject.create<String>()
     private val saveClick = PublishSubject.create<Optional<*>>()
 
+    private val setSaveButtonEnabled = BehaviorSubject.create<Boolean>()
     private val setResultAndBack = CompletableSubject.create()
 
     val inputs: PostNoteViewModelInputs = this
@@ -42,6 +45,10 @@ class PostNoteViewModel(environment: Environment) : ActivityViewModel<PostNoteAc
                 .filter { it.requestCode == DESTINATION }
                 .filter { it.resultCode == RESULT_OK }
                 .map { it.intent?.getParcelableExtra(IntentKey.DESTINATION) as Destination }
+
+        title.map(this::isValid)
+                .compose(bindToLifecycle())
+                .subscribe(setSaveButtonEnabled)
 
         Observable.merge(
                 title.map {
@@ -66,6 +73,10 @@ class PostNoteViewModel(environment: Environment) : ActivityViewModel<PostNoteAc
                 .subscribe { postSuccess(it) }
     }
 
+    private fun isValid(title: String): Boolean {
+        return title.isNotBlank()
+    }
+
     private fun postSuccess(note: Note) {
         NoteEvent.getInstance().post(note)
         setResultAndBack.onComplete()
@@ -80,6 +91,8 @@ class PostNoteViewModel(environment: Environment) : ActivityViewModel<PostNoteAc
     override fun title(title: String) = this.title.onNext(title)
 
     override fun saveClick() = this.saveClick.onNext(Optional<Any>(null))
+
+    override fun setSaveButtonEnabled(): Observable<Boolean> = setSaveButtonEnabled
 
     override fun setResultAndBack(): Completable = setResultAndBack
 }

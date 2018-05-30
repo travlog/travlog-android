@@ -33,9 +33,8 @@ class DestinationActivity : BaseActivity<DestinationViewModel>() {
 
         setContentView(R.layout.a_destination)
 
-        setSupportActionBar(toolbar).run {
-            setDisplayHomeAsUpEnabled(true)
-        }
+        setSupportActionBar(toolbar)
+        setDisplayHomeAsUpEnabled(true)
 
         bottomSheetCalendar = HandleableBottomSheetBehavior.from(bottom_sheet_calenar)
         bottomSheetCalendar?.setHandleView(weekdays_container)
@@ -98,6 +97,10 @@ class DestinationActivity : BaseActivity<DestinationViewModel>() {
                     .compose(bindToLifecycle())
                     .subscribe { setEndDateText(it) }
 
+            outputs.setSaveButtonEnabled()
+                    .compose(bindToLifecycle())
+                    .subscribe { setSaveButtonEnabled(it) }
+
             outputs.setResultAndBack()
                     .map { Intent().putExtra(DESTINATION, it as Parcelable) }
                     .doOnNext { setResult(RESULT_OK, it) }
@@ -129,6 +132,10 @@ class DestinationActivity : BaseActivity<DestinationViewModel>() {
 
     private fun setEndDateText(endDate: String) {
         end_date.text = endDate
+    }
+
+    private fun setSaveButtonEnabled(enabled: Boolean) {
+        save_button.isEnabled = enabled
     }
 
     override fun exitTransition(): Pair<Int, Int>? = slideInFromLeft()

@@ -7,18 +7,33 @@
     android:paddingEnd="@dimen/activity_horizontal_padding"
     android:paddingStart="@dimen/activity_horizontal_padding">
 
+    <android.support.constraint.Guideline
+        android:id="@+id/stepper_guideline"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".16" />
+
     <android.support.v7.widget.AppCompatTextView
         android:id="@id/start_date"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        tools:text="2/28" />
+        android:gravity="end"
+        app:layout_constraintEnd_toEndOf="@+id/stepper_guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Sep 10, 2018" />
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@id/end_date"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/stepper_vertical_line"
-        tools:text="4/2" />
+        android:gravity="end"
+        android:paddingTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/stepper_guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/start_date"
+        tools:text="May 16, 2018" />
 
     <View
         android:id="@+id/stepper_circle"
@@ -26,15 +41,15 @@
         android:layout_height="8dp"
         android:layout_marginLeft="@dimen/activity_horizontal_padding"
         android:layout_marginStart="@dimen/activity_horizontal_padding"
+        android:layout_marginTop="8dp"
         android:background="@drawable/stepper_circle"
-        app:layout_constraintBottom_toBottomOf="@+id/start_date"
-        app:layout_constraintStart_toEndOf="@+id/start_date"
-        app:layout_constraintTop_toTopOf="@+id/start_date" />
+        app:layout_constraintStart_toEndOf="@+id/stepper_guideline"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <View
         android:id="@+id/stepper_vertical_line"
         android:layout_width="1dp"
-        android:layout_height="36dp"
+        android:layout_height="0dp"
         android:layout_marginTop="2dp"
         android:background="@color/accent"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -3,7 +3,7 @@ package com.travlog.android.apps.models
 import android.os.Parcel
 import android.os.Parcelable
 
-class Location() : Parcelable{
+class Location() : Parcelable {
 
     var lid = ""
     var locality = ""
@@ -18,17 +18,17 @@ class Location() : Parcelable{
     var reference = ""
 
     constructor(parcel: Parcel) : this() {
-        lid = parcel.readString()
-        locality = parcel.readString()
-        administrativeAreaLevel1 = parcel.readString()
-        administrativeAreaLevel2 = parcel.readString()
-        country = parcel.readString()
-        address = parcel.readString()
+        lid = parcel.readString() ?: ""
+        locality = parcel.readString() ?: ""
+        administrativeAreaLevel1 = parcel.readString() ?: ""
+        administrativeAreaLevel2 = parcel.readString() ?: ""
+        country = parcel.readString() ?: ""
+        address = parcel.readString() ?: ""
         latitude = parcel.readFloat()
         longitude = parcel.readFloat()
-        name = parcel.readString()
-        placeId = parcel.readString()
-        reference = parcel.readString()
+        name = parcel.readString() ?: ""
+        placeId = parcel.readString() ?: ""
+        reference = parcel.readString() ?: ""
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
