@@ -128,6 +128,13 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
+# Keystore
+keystore/
+
+# properties
+debug.properties
+release.properties
+
 ### AndroidStudio Patch ###
 
 !/gradle/wrapper/gradle-wrapper.jar
