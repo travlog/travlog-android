@@ -1,4 +1,4 @@
-package com.travlog.android;
+package com.travlog.android.app;
 
 import org.junit.Test;
 
