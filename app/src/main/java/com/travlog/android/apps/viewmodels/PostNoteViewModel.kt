@@ -14,6 +14,8 @@ import com.travlog.android.apps.models.Note
 import com.travlog.android.apps.services.ApiClientType
 import com.travlog.android.apps.ui.IntentKey
 import com.travlog.android.apps.ui.activities.PostNoteActivity
+import com.travlog.android.apps.ui.adapters.DestinationAdapter
+import com.travlog.android.apps.ui.viewholders.DestinationViewHolder
 import com.travlog.android.apps.viewmodels.errors.PostNoteViewModelErrors
 import com.travlog.android.apps.viewmodels.inputs.PostNoteViewModelInputs
 import com.travlog.android.apps.viewmodels.outputs.PostNoteViewModelOutputs
@@ -24,7 +26,7 @@ import io.reactivex.subjects.CompletableSubject
 import io.reactivex.subjects.PublishSubject
 
 class PostNoteViewModel(environment: Environment) : ActivityViewModel<PostNoteActivity>(environment),
-        PostNoteViewModelInputs, PostNoteViewModelOutputs, PostNoteViewModelErrors {
+        PostNoteViewModelInputs, PostNoteViewModelOutputs, PostNoteViewModelErrors, DestinationAdapter.Delegate {
 
     private val apiClient: ApiClientType = environment.apiClient
 
@@ -32,6 +34,7 @@ class PostNoteViewModel(environment: Environment) : ActivityViewModel<PostNoteAc
     private val saveClick = PublishSubject.create<Optional<*>>()
 
     private val setSaveButtonEnabled = BehaviorSubject.create<Boolean>()
+    private val addDestination = BehaviorSubject.create<Destination>()
     private val setResultAndBack = CompletableSubject.create()
 
     val inputs: PostNoteViewModelInputs = this
@@ -45,6 +48,10 @@ class PostNoteViewModel(environment: Environment) : ActivityViewModel<PostNoteAc
                 .filter { it.requestCode == DESTINATION }
                 .filter { it.resultCode == RESULT_OK }
                 .map { it.intent?.getParcelableExtra(IntentKey.DESTINATION) as Destination }
+
+        destinationObservable
+                .compose(bindToLifecycle())
+                .subscribe(addDestination)
 
         title.map(this::isValid)
                 .compose(bindToLifecycle())
@@ -94,5 +101,11 @@ class PostNoteViewModel(environment: Environment) : ActivityViewModel<PostNoteAc
 
     override fun setSaveButtonEnabled(): Observable<Boolean> = setSaveButtonEnabled
 
+    override fun addDestination(): Observable<Destination> = addDestination
+
     override fun setResultAndBack(): Completable = setResultAndBack
+
+    override fun destinationViewHolderItemClick(viewHolder: DestinationViewHolder, destination: Destination) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }

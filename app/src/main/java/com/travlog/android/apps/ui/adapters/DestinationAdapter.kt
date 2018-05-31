@@ -32,6 +32,12 @@ class DestinationAdapter(private val delegate: Delegate) : RecyclerView.Adapter<
                 return it
             }
 
+    fun addData(destination: Destination): Boolean =
+            destinations.add(destination).let {
+                notifyItemInserted(destinations.size - 1)
+                return it
+            }
+
     fun clearData() {
         destinations.clear()
         notifyDataSetChanged()

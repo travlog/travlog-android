@@ -27,27 +27,27 @@
             android:layout_height="wrap_content" />
     </android.support.design.widget.TextInputLayout>
 
-    <LinearLayout
-        android:id="@+id/destination_container"
+    <android.support.design.button.MaterialButton
+        android:id="@id/add_destination"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:animateLayoutChanges="true"
-        android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@+id/title_input_layout">
+        android:gravity="center_vertical"
+        android:minHeight="55dp"
+        android:text="@string/add_destination"
+        android:textAllCaps="true"
+        app:backgroundTint="@color/white"
+        app:icon="@drawable/ic_add_white_24dp"
+        app:iconTint="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/title_input_layout" />
 
-        <android.support.design.button.MaterialButton
-            android:id="@id/add_destination"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:minHeight="64dp"
-            android:text="@string/add_destination"
-            android:textAllCaps="true"
-            app:backgroundTint="@color/white"
-            app:icon="@drawable/ic_add_white_24dp"
-            app:iconTint="@color/black" />
-    </LinearLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@id/destination_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        app:layout_constraintTop_toBottomOf="@id/add_destination"
+        tools:listitem="@layout/i_destination" />
 
     <android.support.design.button.MaterialButton
         android:id="@id/save_button"

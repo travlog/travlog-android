@@ -15,8 +15,10 @@ import com.travlog.android.apps.ui.viewholders.NoteViewHolder
 import com.travlog.android.apps.viewmodels.errors.MainViewModelErrors
 import com.travlog.android.apps.viewmodels.inputs.MainViewModelInputs
 import com.travlog.android.apps.viewmodels.outputs.MainViewModelOutputs
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.CompletableSubject
 import io.reactivex.subjects.PublishSubject
 
 class MainViewModel(environment: Environment) : ActivityViewModel<MainActivity>(environment),
@@ -29,6 +31,7 @@ class MainViewModel(environment: Environment) : ActivityViewModel<MainActivity>(
     private val refresh = PublishSubject.create<Optional<*>>()
 
     private val setRefreshing = BehaviorSubject.create<Boolean>()
+    private val clearNotes = BehaviorSubject.create<Optional<*>>()
     private val updateData = BehaviorSubject.create<List<Note>>()
     private val showNoteDetailsActivity: Observable<Note>
     private val updateNote: Observable<Note>
@@ -41,7 +44,7 @@ class MainViewModel(environment: Environment) : ActivityViewModel<MainActivity>(
     init {
         this.showNoteDetailsActivity = this.noteItemClick
 
-        Observable.merge(loadMore, refresh)
+        Observable.merge(loadMore, refresh.doOnNext { clearNotes.onNext(Optional(null)) })
                 .switchMap {
                     this.notes()
                             .doOnSubscribe {
@@ -59,42 +62,27 @@ class MainViewModel(environment: Environment) : ActivityViewModel<MainActivity>(
         deleteNote = DeleteNoteEvent.getInstance().observable.map { it.nid }
     }
 
-    private fun notes(): Observable<List<Note>> {
-        return apiClient.notes()
-                .compose(neverApiError())
-                .compose(neverError())
-                .toObservable()
-    }
+    private fun notes(): Observable<List<Note>> =
+            apiClient.notes()
+                    .compose(neverApiError())
+                    .compose(neverError())
+                    .toObservable()
 
-    override fun loadMore() {
-        loadMore.onNext(Optional(null))
-    }
+    override fun loadMore() = loadMore.onNext(Optional(null))
 
-    override fun refresh() {
-        refresh.onNext(Optional(null))
-    }
+    override fun refresh() = refresh.onNext(Optional(null))
 
-    override fun setRefreshing(): Observable<Boolean> {
-        return setRefreshing
-    }
+    override fun setRefreshing(): Observable<Boolean> = setRefreshing
 
-    override fun updateData(): Observable<List<Note>> {
-        return updateData
-    }
+    override fun clearNotes(): Observable<Optional<*>> = clearNotes
 
-    override fun showNoteDetailsActivity(): Observable<Note> {
-        return showNoteDetailsActivity
-    }
+    override fun updateData(): Observable<List<Note>> = updateData
 
-    override fun updateNote(): Observable<Note> {
-        return updateNote
-    }
+    override fun showNoteDetailsActivity(): Observable<Note> = showNoteDetailsActivity
 
-    override fun deleteNote(): Observable<String> {
-        return deleteNote
-    }
+    override fun updateNotes(): Observable<Note> = updateNote
 
-    override fun noteViewHolderItemClick(viewHolder: NoteViewHolder, note: Note) {
-        noteItemClick.onNext(note)
-    }
+    override fun deleteNote(): Observable<String> = deleteNote
+
+    override fun noteViewHolderItemClick(viewHolder: NoteViewHolder, note: Note) = noteItemClick.onNext(note)
 }

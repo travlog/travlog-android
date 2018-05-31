@@ -63,4 +63,5 @@
     <item name="sign_out_button" type="id" />
     <item name="close_button" type="id" />
     <item name="save_button" type="id" />
+    <item name="destination_recycler" type="id" />
 </resources>

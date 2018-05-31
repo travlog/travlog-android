@@ -35,6 +35,13 @@ class NoteAdapter(private val delegate: Delegate) : RecyclerView.Adapter<Recycle
 
     override fun getItemCount(): Int = notes.size
 
+    fun clearData() =
+            notes.clear().run {
+                Timber.d("clearData")
+                noteMap.clear()
+                notifyDataSetChanged()
+            }
+
     fun updateData(notes: List<Note>): Boolean {
         Timber.d("updateData? %s", notes)
         this.notes.addAll(notes).let {
@@ -49,7 +56,7 @@ class NoteAdapter(private val delegate: Delegate) : RecyclerView.Adapter<Recycle
     }
 
     fun updateNote(note: Note) {
-        Timber.d("updateNote? %s", note)
+        Timber.d("updateNotes? %s", note)
         val originNote = noteMap.get(note.nid)
 
         noteMap[note.nid] = note

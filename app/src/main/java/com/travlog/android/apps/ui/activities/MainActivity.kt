@@ -14,6 +14,7 @@ import com.travlog.android.apps.ui.fragments.MainMenuBottomSheetDialogFragment
 import com.travlog.android.apps.viewmodels.MainViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.a_main.*
+import timber.log.Timber
 
 @RequiresActivityViewModel(MainViewModel::class)
 class MainActivity : BaseActivity<MainViewModel>() {
@@ -45,27 +46,32 @@ class MainActivity : BaseActivity<MainViewModel>() {
                     .compose(bindToLifecycle())
                     .subscribe()
 
-            this.outputs.setRefreshing()
+            outputs.setRefreshing()
                     .compose(bindToLifecycle())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe { setRefreshing(it) }
 
-            this.outputs.updateData()
+            outputs.clearNotes()
+                    .compose(bindToLifecycle())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe { adapter.clearData() }
+
+            outputs.updateData()
                     .compose(bindToLifecycle())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe { adapter.updateData(it) }
 
-            this.outputs.showNoteDetailsActivity()
+            outputs.showNoteDetailsActivity()
                     .compose(bindToLifecycle())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe { showNoteDetailsActivity(it) }
 
-            this.outputs.updateNote()
+            outputs.updateNotes()
                     .compose(bindToLifecycle())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe { adapter.updateNote(it) }
 
-            this.outputs.deleteNote()
+            outputs.deleteNote()
                     .compose(bindToLifecycle())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe { adapter.deleteData(it) }

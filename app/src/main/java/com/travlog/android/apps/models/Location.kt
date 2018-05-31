@@ -58,4 +58,8 @@ class Location() : Parcelable {
             return arrayOfNulls(size)
         }
     }
+
+    override fun toString(): String {
+        return "Location(lid='$lid', locality='$locality', administrativeAreaLevel1='$administrativeAreaLevel1', administrativeAreaLevel2='$administrativeAreaLevel2', country='$country', address='$address', latitude=$latitude, longitude=$longitude, name='$name', placeId='$placeId', reference='$reference')"
+    }
 }

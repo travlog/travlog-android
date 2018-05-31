@@ -44,4 +44,8 @@ class Destination() : Parcelable {
             return arrayOfNulls(size)
         }
     }
+
+    override fun toString(): String {
+        return "Destination(did='$did', startDate=$startDate, endDate=$endDate, location=$location)"
+    }
 }

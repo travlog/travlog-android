@@ -12,6 +12,7 @@ import com.travlog.android.apps.libs.ActivityRequestCodes.DESTINATION
 import com.travlog.android.apps.libs.BaseActivity
 import com.travlog.android.apps.libs.qualifiers.RequiresActivityViewModel
 import com.travlog.android.apps.libs.utils.TransitionUtils.slideInFromLeft
+import com.travlog.android.apps.ui.adapters.DestinationAdapter
 import com.travlog.android.apps.viewmodels.PostNoteViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.a_post_note.*
@@ -27,7 +28,11 @@ class PostNoteActivity : BaseActivity<PostNoteViewModel>() {
             setDisplayHomeAsUpEnabled(true)
         }
 
+
         viewModel?.apply {
+            val destinationsAdapter = DestinationAdapter(this)
+            destination_recycler.adapter = destinationsAdapter
+
             RxTextView.textChanges(title_edit)
                     .map { it.toString() }
                     .compose(bindToLifecycle())
@@ -45,6 +50,11 @@ class PostNoteActivity : BaseActivity<PostNoteViewModel>() {
                     .observeOn(AndroidSchedulers.mainThread())
                     .compose(bindToLifecycle())
                     .subscribe { setSaveButtonEnabled(it) }
+
+            outputs.addDestination()
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .compose(bindToLifecycle())
+                    .subscribe { destinationsAdapter.addData(it) }
 
             addDisposable(
                     outputs.setResultAndBack()
