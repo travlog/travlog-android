@@ -35,14 +35,53 @@ android {
         buildConfigField "String", "GIT_SHA", "\"${commitSha()}\""
         buildConfigField "String", "BUILD_DATE", "\"${commitTime()}\""
     }
+
+    Properties properties = new Properties()
+
+    signingConfigs {
+        debug {
+            properties.load(rootProject.file('debug.properties').newDataInputStream())
+
+            keyAlias properties['KEY_ALIAS']
+            keyPassword properties['KEY_PASSWORD']
+            storeFile file(project.rootProject.file(properties['STORE_FILE']))
+            storePassword properties['STORE_PASSWORD']
+        }
+        release {
+            properties.load(rootProject.file('release.properties').newDataInputStream())
+
+            keyAlias properties['KEY_ALIAS']
+            keyPassword properties['KEY_PASSWORD']
+            storeFile file(project.rootProject.file(properties['STORE_FILE']))
+            storePassword properties['STORE_PASSWORD']
+        }
+    }
     buildTypes {
         debug {
             applicationIdSuffix ".debug"
             minifyEnabled false
         }
+        staging {
+            applicationIdSuffix ".staging"
+            debuggable true
+            minifyEnabled false
+            signingConfig signingConfigs.debug
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def newName = "travlog-${output.name}"
+
+            if (output.zipAlign) {
+                outputFileName = newName + ".apk"
+            } else {
+                output.packageApplication.outputFile = newName + "-unaligned.apk"
+            }
         }
     }
 }
@@ -51,11 +90,16 @@ task debug() {
     dependsOn('clean', 'assembleDebug')
 }
 
+task staging() {
+    dependsOn('clean', 'assembleStaging')
+}
+
 task release() {
     dependsOn('clean', 'assembleRelease')
 }
 
 debug.mustRunAfter clean
+staging.mustRunAfter clean
 release.mustRunAfter clean
 
 dependencies {

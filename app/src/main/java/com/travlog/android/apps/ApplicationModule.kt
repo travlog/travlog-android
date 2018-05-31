@@ -39,7 +39,7 @@ class ApplicationModule(private val application: Application) {
     @Singleton
     @ApiEndpointPreference
     internal fun provideApiEndpointPreference(sharedPreferences: SharedPreferences): StringPreferenceType {
-        return StringPreference(sharedPreferences, "debug_api_endpoint", ApiEndpoint.LOCAL.url())
+        return StringPreference(sharedPreferences, "staging_api_endpoint", ApiEndpoint.STAGING.url())
     }
 
     @Provides
