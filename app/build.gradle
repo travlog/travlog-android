@@ -40,20 +40,21 @@ android {
 
     signingConfigs {
         debug {
-            properties.load(rootProject.file('debug.properties').newDataInputStream())
-
-            keyAlias properties['KEY_ALIAS']
-            keyPassword properties['KEY_PASSWORD']
-            storeFile file(project.rootProject.file(properties['STORE_FILE']))
-            storePassword properties['STORE_PASSWORD']
+            storeFile rootProject.file('debug.keystore')
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
         }
-        release {
-            properties.load(rootProject.file('release.properties').newDataInputStream())
 
-            keyAlias properties['KEY_ALIAS']
-            keyPassword properties['KEY_PASSWORD']
-            storeFile file(project.rootProject.file(properties['STORE_FILE']))
-            storePassword properties['STORE_PASSWORD']
+        if (System.getenv('TRAVIS')) {
+            release {
+                properties.load(rootProject.file('release.properties').newDataInputStream())
+
+                storeFile rootProject.file('travlog.jks')
+                storePassword System.env('KEYSTORE_PASS')
+                keyAlias System.env('ALIAS_NAME')
+                keyPassword System.env('ALIAS_PASS')
+            }
         }
     }
     buildTypes {
@@ -73,6 +74,7 @@ android {
             signingConfig signingConfigs.release
         }
     }
+
     applicationVariants.all { variant ->
         variant.outputs.all { output ->
             def newName = "travlog-${output.name}"

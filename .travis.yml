@@ -1,25 +1,49 @@
 language: android
-language: android
+
+before_cache:
+ - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+ - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
+ cache:
+  directories:
+  - $HOME/.gradle/caches/
+  - $HOME/.gradle/wrapper/
+
+env:
+  - ANDROID_API=P
+  - ANDROID_BUILD_TOOLS=28-rc2
+
 android:
   components:
     # Uncomment the lines below if you want to
     # use the latest revision of Android SDK Tools
-    # - tools
-    # - platform-tools
+     - tools
+     - platform-tools
 
     # The BuildTools version used by your project
-    - build-tools-28-rc2
+    - build-tools-$ANDROID_BUILD_TOOLS
 
     # The SDK version used to compile your project
-    - android-P
+    - android-$ANDROID_API
 
     # Additional components
-#    - extra-google-google_play_services
-#    - extra-google-m2repository
-#    - extra-android-m2repository
-#    - addon-google_apis-google-26
+    - extra-google-google_play_services
+    - extra-google-m2repository
+    - extra-android-m2repository
+    - addon-google_apis-google-26
 
     # Specify at least one system image,
     # if you need to run emulator(s) during your tests
 #    - sys-img-armeabi-v7a-android-26
 #    - sys-img-armeabi-v7a-android-17
+
+  licenses:
+   - android-sdk-preview-license-.+
+   - android-sdk-license-.+
+   - google-gdk-license-.+
+
+before_install:
+  - openssl aes-256-cbc -K $encrypted_key -iv $encrypted_iv -in travlog.jks.enc -out travlog.jks -d
+
+script:
+  - "./gradlew release"
