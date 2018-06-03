@@ -52,8 +52,14 @@ android {
                 keyPassword System.getenv("ALIAS_PASS")
             }
         } else {
-            release {
+            Properties properties = new Properties()
+            properties.load(rootProject.file('release.properties').newDataInputStream())
 
+            release {
+                storeFile rootProject.file('travlog.jks')
+                storePassword properties['KEYSTORE_PASS']
+                keyAlias properties['ALIAS_NAME']
+                keyPassword properties['ALIAS_PASS']
             }
         }
     }
