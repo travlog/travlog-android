@@ -48,8 +48,6 @@ android {
 
         if (System.getenv('TRAVIS')) {
             release {
-                properties.load(rootProject.file('release.properties').newDataInputStream())
-
                 storeFile rootProject.file('travlog.jks')
                 storePassword System.env('KEYSTORE_PASS')
                 keyAlias System.env('ALIAS_NAME')
