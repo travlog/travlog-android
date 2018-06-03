@@ -51,6 +51,10 @@ before_install:
   - chmod +x gradlew
   - ./gradlew dependencies || true # DON'T ADD unless you are getting "Install missing components using SDK manager"
 
+install:
+  - echo yes | sdkmanager "tools"
+  - echo yes | sdkmanager "platforms;android-$ANDROID_API" # Latest platform required by SDK tools
+
 script:
   - "./gradlew release --stacktrace"
 
