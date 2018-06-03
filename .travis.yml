@@ -47,7 +47,7 @@ before_install:
   - openssl aes-256-cbc -K $encrypted_key -iv $encrypted_iv -in travlog.jks.enc -out travlog.jks
 
 script:
-  - "./gradlew release"
+  - "./gradlew release --stacktrace"
 
 #branches:
 #  only:
