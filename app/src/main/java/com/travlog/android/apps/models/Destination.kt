@@ -13,14 +13,8 @@ class Destination() : Parcelable {
 
     constructor(parcel: Parcel) : this() {
         did = parcel.readString() ?: ""
-        startDate = when {
-            parcel.readLong() == -1L -> null
-            else -> Date(parcel.readLong())
-        }
-        endDate = when {
-            parcel.readLong() == -1L -> null
-            else -> Date(parcel.readLong())
-        }
+        startDate = Date(parcel.readLong())
+        endDate = Date(parcel.readLong())
         location = parcel.readParcelable(Location::class.java.classLoader)
     }
 
