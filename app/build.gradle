@@ -36,8 +36,6 @@ android {
         buildConfigField "String", "BUILD_DATE", "\"${commitTime()}\""
     }
 
-    Properties properties = new Properties()
-
     signingConfigs {
         debug {
             storeFile rootProject.file('debug.keystore')
@@ -46,12 +44,16 @@ android {
             keyPassword 'android'
         }
 
-        if (System.getenv('TRAVIS')) {
+        if (System.getenv("TRAVIS")) {
             release {
                 storeFile rootProject.file('travlog.jks')
-                storePassword System.getenv('KEYSTORE_PASS')
-                keyAlias System.getenv('ALIAS_NAME')
-                keyPassword System.getenv('ALIAS_PASS')
+                storePassword System.getenv("KEYSTORE_PASS")
+                keyAlias System.getenv("ALIAS_NAME")
+                keyPassword System.getenv("ALIAS_PASS")
+            }
+        } else {
+            release {
+
             }
         }
     }
