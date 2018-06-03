@@ -49,9 +49,9 @@ android {
         if (System.getenv('TRAVIS')) {
             release {
                 storeFile rootProject.file('travlog.jks')
-                storePassword System.env('KEYSTORE_PASS')
-                keyAlias System.env('ALIAS_NAME')
-                keyPassword System.env('ALIAS_PASS')
+                storePassword System.getenv('KEYSTORE_PASS')
+                keyAlias System.getenv('ALIAS_NAME')
+                keyPassword System.getenv('ALIAS_PASS')
             }
         }
     }
