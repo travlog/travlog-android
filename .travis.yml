@@ -55,11 +55,17 @@ install:
   - echo yes | sdkmanager "tools"
   - echo yes | sdkmanager "platforms;android-$ANDROID_API" # Latest platform required by SDK tools
 
-script: "./gradlew connectedCheck --stacktrace"
+script: ./build.sh
+
+branches:
+  only:
+    - staging
+    - master
 
 deploy:
   provider: script
-  script: "./gradlew staging crashlyticsUploadDistributionDevStaging --stacktrace"
+  script: ./deploy.sh
   on:
     branch:
       - staging
+      - master
