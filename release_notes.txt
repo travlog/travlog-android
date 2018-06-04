@@ -1,0 +1,4 @@
+Beta (v0.0.4) - Released on 2018-06-04
+
+∙ Features
+- 배포 자동화 시스템 구축

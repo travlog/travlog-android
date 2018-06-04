@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "722040356892",
+    "firebase_url": "https://travlog-service.firebaseio.com",
+    "project_id": "travlog-service",
+    "storage_bucket": "travlog-service.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:722040356892:android:bbd9bdfb05a567f2",
+        "android_client_info": {
+          "package_name": "com.travlog.android.apps"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "722040356892-a1hjg3mems6lrl92rqfi73d5v9g880av.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkY_jTDRhHaOCs36RWQ4b3hWdq4g3phSw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

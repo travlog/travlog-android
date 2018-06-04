@@ -1,0 +1,139 @@
+{
+  "project_info": {
+    "project_number": "561274576099",
+    "firebase_url": "https://travlog-debug.firebaseio.com",
+    "project_id": "travlog-debug",
+    "storage_bucket": "travlog-debug.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:561274576099:android:0e7580f3a531b9b1",
+        "android_client_info": {
+          "package_name": "com.travlog.android.apps.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "561274576099-96q0v7u5vt9rabhhqbe2uie9hr9fot44.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.travlog.android.apps.debug",
+            "certificate_hash": "cedebd26a503d4f60bb6165e3044d2aadc93a870"
+          }
+        },
+        {
+          "client_id": "561274576099-g162o8eps8npus8054fe0pk8tv34hd0n.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "561274576099-8ch4jjvg2ghsgffc8k57r6inb0bgeip3.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "561274576099-2jkpt6jqhrdlimgjk4r656ht3hurlog2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.travlog.android.apps.debug",
+            "certificate_hash": "3d69a4fd811183f7f3a030049a7d0e7f5cdbbca3"
+          }
+        },
+        {
+          "client_id": "561274576099-ufdsdfu6d5ep8kotghapohl1u13dhft4.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "561274576099-ufdsdfu6d5ep8kotghapohl1u13dhft4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDF_uydBr520-F-8LThnkq6J7g1W73934U"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "561274576099-g162o8eps8npus8054fe0pk8tv34hd0n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:561274576099:android:b16182e7a5586b5e",
+        "android_client_info": {
+          "package_name": "com.travlog.android.apps.staging"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "561274576099-bp15o74ptt3vec0ircgt996gg6shrnlm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.travlog.android.apps.staging",
+            "certificate_hash": "3d69a4fd811183f7f3a030049a7d0e7f5cdbbca3"
+          }
+        },
+        {
+          "client_id": "561274576099-blnbqkoupj2g36scdmggbk774rvg432d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.travlog.android.apps.staging",
+            "certificate_hash": "cedebd26a503d4f60bb6165e3044d2aadc93a870"
+          }
+        },
+        {
+          "client_id": "561274576099-g162o8eps8npus8054fe0pk8tv34hd0n.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "561274576099-8ch4jjvg2ghsgffc8k57r6inb0bgeip3.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "561274576099-ufdsdfu6d5ep8kotghapohl1u13dhft4.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "561274576099-ufdsdfu6d5ep8kotghapohl1u13dhft4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDF_uydBr520-F-8LThnkq6J7g1W73934U"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "561274576099-g162o8eps8npus8054fe0pk8tv34hd0n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

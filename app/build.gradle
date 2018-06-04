@@ -73,6 +73,11 @@ android {
             debuggable true
             minifyEnabled false
             signingConfig signingConfigs.debug
+
+            if (System.getenv("TRAVIS")) {
+                ext.betaDistributionEmailsFilePath = "beta_distribution_emails.txt"
+                ext.betaDistributionReleaseNotesFilePath = "release_notes.txt"
+            }
         }
         release {
             minifyEnabled false
