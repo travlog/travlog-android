@@ -44,18 +44,18 @@ android {
             keyPassword 'android'
         }
 
-        if (System.getenv("TRAVIS")) {
-            release {
-                storeFile rootProject.file('travlog.jks')
-                storePassword System.getenv("KEYSTORE_PASS")
-                keyAlias System.getenv("ALIAS_NAME")
-                keyPassword System.getenv("ALIAS_PASS")
-            }
-        } else {
-            Properties properties = new Properties()
-            properties.load(rootProject.file('release.properties').newDataInputStream())
+        release {
+            if (System.getenv("TRAVIS")) {
+                if (System.getenv("TRAVIS_BRANCH") == "master") {
+                    storeFile rootProject.file('travlog.jks')
+                    storePassword System.getenv("KEYSTORE_PASS")
+                    keyAlias System.getenv("ALIAS_NAME")
+                    keyPassword System.getenv("ALIAS_PASS")
+                }
+            } else {
+                Properties properties = new Properties()
+                properties.load(rootProject.file('release.properties').newDataInputStream())
 
-            release {
                 storeFile rootProject.file('travlog.jks')
                 storePassword properties['KEYSTORE_PASS']
                 keyAlias properties['ALIAS_NAME']
