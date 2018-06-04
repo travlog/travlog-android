@@ -56,7 +56,7 @@ install:
   - echo yes | sdkmanager "tools"
   - echo yes | sdkmanager "platforms;android-$ANDROID_API" # Latest platform required by SDK tools
 
-script: ./build.sh
+script: "sh ./build.sh"
 
 branches:
   only:
@@ -65,7 +65,7 @@ branches:
 
 deploy:
   provider: script
-  script: ./deploy.sh
+  script: "sh ./deploy.sh"
   on:
     branch:
       - staging
