@@ -27,10 +27,15 @@
             android:layout_height="wrap_content" />
     </android.support.design.widget.TextInputLayout>
 
-    <android.support.v7.widget.AppCompatButton
+    <android.support.design.button.MaterialButton
         android:id="@+id/done"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:gravity="center"
+        android:minHeight="55dp"
         android:text="@string/done"
+        android:textColor="@color/white"
+        app:backgroundTint="@color/color_button"
         app:layout_constraintBottom_toBottomOf="parent" />
 </android.support.constraint.ConstraintLayout>

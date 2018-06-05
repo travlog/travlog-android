@@ -71,6 +71,8 @@
 
         <activity
             android:name=".ui.activities.MyPageActivity"
+            android:label=""
+            android:theme="@style/TravlogTheme.MyPage"
             android:windowSoftInputMode="stateAlwaysHidden" />
 
         <activity

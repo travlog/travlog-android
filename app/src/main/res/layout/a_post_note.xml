@@ -58,5 +58,6 @@
         android:gravity="center"
         android:text="@string/save"
         android:textColor="@color/white"
+        app:backgroundTint="@color/color_button"
         app:layout_constraintBottom_toBottomOf="parent" />
 </android.support.constraint.ConstraintLayout>

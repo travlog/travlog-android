@@ -21,7 +21,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/ksr_green_700" />
+                    android:background="@color/primary_light" />
 
                 <android.support.v7.widget.AppCompatImageButton
                     android:id="@id/settings"
@@ -60,6 +60,12 @@
                         tools:ignore="RtlHardcoded"
                         tools:text="username" />
                 </android.support.constraint.ConstraintLayout>
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?actionBarSize"
+                    app:layout_collapseMode="pin" />
             </android.support.design.widget.CollapsingToolbarLayout>
         </android.support.design.widget.AppBarLayout>
     </android.support.design.widget.CoordinatorLayout>

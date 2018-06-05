@@ -14,12 +14,15 @@ class DestinationViewHolder(itemView: View, private val delegate: Delegate) : Re
         fun destinationViewHolderItemClick(viewHolder: DestinationViewHolder, destination: Destination)
     }
 
-    fun bindData(item: Destination) {
+    fun bindData(item: Destination, last: Boolean) {
         Timber.d("bindData? %s", item)
 
         if (item.startDate != null && item.endDate != null) {
             itemView.start_date.text = DateTimeUtils.mediumDate(DateTime(item.startDate))
-            itemView.end_date.text = DateTimeUtils.mediumDate(DateTime(item.endDate))
+            itemView.end_date.text = when {
+                last -> DateTimeUtils.mediumDate(DateTime(item.endDate))
+                else -> ""
+            }
         } else {
             itemView.start_date.text = ""
             itemView.end_date.text = ""

@@ -74,11 +74,15 @@
             android:inputType="textPassword" />
     </android.support.design.widget.TextInputLayout>
 
-    <android.support.v7.widget.AppCompatButton
+    <android.support.design.button.MaterialButton
         android:id="@id/sign_in_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
+        android:minHeight="55dp"
         android:text="@string/sign_in"
+        android:textColor="@color/white"
+        app:backgroundTint="@color/color_button"
         app:layout_constraintTop_toBottomOf="@id/password_input_layout" />
 
     <android.support.v7.widget.AppCompatButton

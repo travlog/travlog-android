@@ -24,7 +24,7 @@ class DestinationAdapter(private val delegate: Delegate) : RecyclerView.Adapter<
     override fun getItemCount(): Int = destinations.size
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) =
-            (holder as DestinationViewHolder).bindData(destinations[position])
+            (holder as DestinationViewHolder).bindData(destinations[position], position == destinations.size - 1)
 
     fun updateData(destinations: List<Destination>): Boolean =
             this.destinations.addAll(destinations).let {

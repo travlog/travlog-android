@@ -35,11 +35,12 @@
     <android.support.design.button.MaterialButton
         android:id="@id/delete_button"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
+        android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:gravity="center"
+        android:minHeight="55dp"
         android:text="@string/delete"
         android:textColor="@color/white"
-        app:backgroundTint="@color/color_red"
+        app:backgroundTint="@color/error"
         app:layout_constraintBottom_toBottomOf="parent" />
 </android.support.constraint.ConstraintLayout>

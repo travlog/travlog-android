@@ -19,6 +19,8 @@ class MyPageActivity : BaseActivity<MyPageViewModel>() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.a_my_page)
+        setSupportActionBar(toolbar)
+        setDisplayHomeAsUpEnabled(true)
 
         RxView.clicks(this.settings)
                 .compose(bindToLifecycle())
@@ -28,35 +30,36 @@ class MyPageActivity : BaseActivity<MyPageViewModel>() {
                 .compose(bindToLifecycle())
                 .subscribe { this.startSetUserNameActivity() }
 
-        viewModel!!.outputs.setProfilePicture()
-                .compose(bindToLifecycle())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ this.setProfilePicture(it) })
+        viewModel?.apply {
+            outputs.setProfilePicture()
+                    .compose(bindToLifecycle())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({ setProfilePicture(it) })
 
-        viewModel!!.outputs.setUsernameText()
-                .compose(bindToLifecycle())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ this.setUsernameText(it) })
+            outputs.setUsernameText()
+                    .compose(bindToLifecycle())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({ setUsernameText(it) })
+        }
     }
 
-    private fun setProfilePicture(profilePicture: String) {
-        GlideApp.with(this)
-                .load(profilePicture)
-                .apply(circleCropTransform())
-                .into(this.profile_picture)
-    }
+    private fun setProfilePicture(profilePicture: String) =
+            GlideApp.with(this)
+                    .load(profilePicture)
+                    .apply(circleCropTransform())
+                    .into(this.profile_picture)
 
     private fun setUsernameText(username: String) {
         this.username.text = username
     }
 
-    private fun startSettingsActivity() {
-        val intent = Intent(this, SettingsActivity::class.java)
-        startActivityWithTransition(intent, R.anim.slide_in_right, R.anim.fade_out_slide_out_left)
-    }
+    private fun startSettingsActivity() =
+            Intent(this, SettingsActivity::class.java).let {
+                startActivityWithTransition(it, R.anim.slide_in_right, R.anim.fade_out_slide_out_left)
+            }
 
-    private fun startSetUserNameActivity() {
-        val intent = Intent(this, SetUsernameActivity::class.java)
-        startActivityWithTransition(intent, R.anim.slide_in_right, R.anim.fade_out_slide_out_left)
-    }
+    private fun startSetUserNameActivity() =
+            Intent(this, SetUsernameActivity::class.java).let {
+                startActivityWithTransition(it, R.anim.slide_in_right, R.anim.fade_out_slide_out_left)
+            }
 }

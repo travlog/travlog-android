@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Theme colors -->
-    <color name="primary">@color/white</color>
-    <color name="primary_dark">@color/black_alpha_17</color>
-    <color name="accent">@color/ksr_green_700</color>
+    <color name="primary">#5082ff</color>
+    <color name="primary_dark">#0032aa</color>
+    <color name="primary_light">#bed2ff</color>
+    <color name="secondary">#ff96a0</color>
+    <color name="secondary_dark">#ff3c50</color>
+    <color name="secondary_light">#ffdcdc</color>
+    <color name="accent">@color/secondary</color>
     <color name="window_background">@color/white</color>
-    <color name="status_bar">@color/primary_dark</color>
+    <color name="status_bar">#f0f0f0</color>
+    <color name="error">#ef5350</color>
+
+    <!-- Rangepicker -->
+    <color name="color_red">@color/accent</color>
 
     <!-- Travelog colors. NB: we should be transitioning to using this color palette. -->
     <color name="white">@android:color/white</color>
