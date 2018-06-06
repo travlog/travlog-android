@@ -70,22 +70,22 @@ class ApiClient(private val service: ApiService) : ApiClientType {
                 .map { it.data.list }
     }
 
-    override fun getNote(nid: String): Flowable<Note> {
-        return service.getNote(nid)
+    override fun getNote(noteId: String): Flowable<Note> {
+        return service.getNote(noteId)
                 .lift<NoteEnvelope>(apiErrorOperator())
                 .subscribeOn(Schedulers.io())
                 .map { it.data }
     }
 
     override fun updateNote(note: Note): Flowable<Note> {
-        return service.updateNote(note.nid, note)
+        return service.updateNote(note.id, note)
                 .lift<NoteEnvelope>(apiErrorOperator())
                 .subscribeOn(Schedulers.io())
                 .map { it.data }
     }
 
-    override fun deleteNote(nid: String): Flowable<Note> {
-        return service.deleteNote(nid)
+    override fun deleteNote(noteId: String): Flowable<Note> {
+        return service.deleteNote(noteId)
                 .lift<NoteEnvelope>(apiErrorOperator())
                 .subscribeOn(Schedulers.io())
                 .map { it.data }

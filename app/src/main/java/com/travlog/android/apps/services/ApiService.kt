@@ -41,14 +41,14 @@ interface ApiService {
     @GET("notes")
     fun notes(): Flowable<Response<NotesEnvelope>>
 
-    @GET("notes/{nid}")
-    fun getNote(@Path("nid") nid: String): Flowable<Response<NoteEnvelope>>
+    @GET("notes/{noteId}")
+    fun getNote(@Path("noteId") noteId: String): Flowable<Response<NoteEnvelope>>
 
-    @PUT("notes/{nid}")
-    fun updateNote(@Path("nid") nid: String, @Body note: Note): Flowable<Response<NoteEnvelope>>
+    @PUT("notes/{noteId}")
+    fun updateNote(@Path("noteId") noteId: String, @Body note: Note): Flowable<Response<NoteEnvelope>>
 
-    @DELETE("notes/{nid}")
-    fun deleteNote(@Path("nid") nid: String): Flowable<Response<NoteEnvelope>>
+    @DELETE("notes/{noteId}")
+    fun deleteNote(@Path("noteId") noteId: String): Flowable<Response<NoteEnvelope>>
 
     @GET("maps")
     fun locations(@Query("query") query: String): Flowable<Response<PredictionsEnvelope>>

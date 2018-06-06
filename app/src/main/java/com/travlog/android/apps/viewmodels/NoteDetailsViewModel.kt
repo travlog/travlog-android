@@ -62,7 +62,7 @@ constructor(environment: Environment) : ActivityViewModel<NoteDetailsActivity>(e
         note
                 .compose<Note>(takeWhen(deleteClick))
                 .switchMap {
-                    this.delete(it.nid)
+                    this.delete(it.id)
                             .doOnSubscribe {
 
                             }
@@ -75,7 +75,7 @@ constructor(environment: Environment) : ActivityViewModel<NoteDetailsActivity>(e
 
         Observable.merge(
                 noteIntent,
-                noteIntent.switchMap { note -> this.note(note.nid) }
+                noteIntent.switchMap { note -> this.note(note.id) }
                         .doOnNext({ NoteEvent.getInstance().post(it) }),
                 NoteEvent.getInstance().observable
         )
@@ -94,14 +94,14 @@ constructor(environment: Environment) : ActivityViewModel<NoteDetailsActivity>(e
         back.onComplete()
     }
 
-    private fun note(nid: String): Observable<Note> =
-            apiClient.getNote(nid)
+    private fun note(noteId: String): Observable<Note> =
+            apiClient.getNote(noteId)
                     .compose(neverApiError())
                     .compose(neverError())
                     .toObservable()
 
-    private fun delete(nid: String): Observable<Note> =
-            apiClient.deleteNote(nid)
+    private fun delete(noteId: String): Observable<Note> =
+            apiClient.deleteNote(noteId)
                     .compose(neverApiError())
                     .compose(neverError())
                     .toObservable()

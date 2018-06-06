@@ -15,10 +15,8 @@ import com.travlog.android.apps.ui.viewholders.NoteViewHolder
 import com.travlog.android.apps.viewmodels.errors.MainViewModelErrors
 import com.travlog.android.apps.viewmodels.inputs.MainViewModelInputs
 import com.travlog.android.apps.viewmodels.outputs.MainViewModelOutputs
-import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.CompletableSubject
 import io.reactivex.subjects.PublishSubject
 
 class MainViewModel(environment: Environment) : ActivityViewModel<MainActivity>(environment),
@@ -59,7 +57,7 @@ class MainViewModel(environment: Environment) : ActivityViewModel<MainActivity>(
 
         updateNote = NoteEvent.getInstance().observable
 
-        deleteNote = DeleteNoteEvent.getInstance().observable.map { it.nid }
+        deleteNote = DeleteNoteEvent.getInstance().observable.map { it.id }
     }
 
     private fun notes(): Observable<List<Note>> =

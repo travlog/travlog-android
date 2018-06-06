@@ -6,20 +6,20 @@ import java.util.*
 
 class Destination() : Parcelable {
 
-    var did = ""
+    var id = ""
     var startDate: Date? = null
     var endDate: Date? = null
     lateinit var location: Location
 
     constructor(parcel: Parcel) : this() {
-        did = parcel.readString() ?: ""
+        id = parcel.readString() ?: ""
         startDate = Date(parcel.readLong())
         endDate = Date(parcel.readLong())
         location = parcel.readParcelable(Location::class.java.classLoader)
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(did)
+        parcel.writeString(id)
         parcel.writeLong(startDate?.time ?: -1L)
         parcel.writeLong(endDate?.time ?: -1L)
         parcel.writeParcelable(location, 0)
@@ -40,6 +40,6 @@ class Destination() : Parcelable {
     }
 
     override fun toString(): String {
-        return "Destination(did='$did', startDate=$startDate, endDate=$endDate, location=$location)"
+        return "Destination(id='$id', startDate=$startDate, endDate=$endDate, location=$location)"
     }
 }

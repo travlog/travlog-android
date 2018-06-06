@@ -5,7 +5,7 @@ import android.os.Parcelable
 
 class Location() : Parcelable {
 
-    var lid = ""
+    var id = ""
     var locality = ""
     var administrativeAreaLevel1 = ""
     var administrativeAreaLevel2 = ""
@@ -18,7 +18,7 @@ class Location() : Parcelable {
     var reference = ""
 
     constructor(parcel: Parcel) : this() {
-        lid = parcel.readString() ?: ""
+        id = parcel.readString() ?: ""
         locality = parcel.readString() ?: ""
         administrativeAreaLevel1 = parcel.readString() ?: ""
         administrativeAreaLevel2 = parcel.readString() ?: ""
@@ -32,7 +32,7 @@ class Location() : Parcelable {
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(lid)
+        parcel.writeString(id)
         parcel.writeString(locality)
         parcel.writeString(administrativeAreaLevel1)
         parcel.writeString(administrativeAreaLevel2)
@@ -60,6 +60,6 @@ class Location() : Parcelable {
     }
 
     override fun toString(): String {
-        return "Location(lid='$lid', locality='$locality', administrativeAreaLevel1='$administrativeAreaLevel1', administrativeAreaLevel2='$administrativeAreaLevel2', country='$country', address='$address', latitude=$latitude, longitude=$longitude, name='$name', placeId='$placeId', reference='$reference')"
+        return "Location(id='$id', locality='$locality', administrativeAreaLevel1='$administrativeAreaLevel1', administrativeAreaLevel2='$administrativeAreaLevel2', country='$country', address='$address', latitude=$latitude, longitude=$longitude, name='$name', placeId='$placeId', reference='$reference')"
     }
 }

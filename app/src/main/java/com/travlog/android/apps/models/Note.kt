@@ -6,20 +6,20 @@ import java.util.ArrayList
 
 class Note() : Parcelable {
 
-    var nid = ""
+    var id = ""
     var title = ""
     var memo = ""
     var destinations: MutableList<Destination> = ArrayList()
 
     constructor(parcel: Parcel) : this() {
-        nid = parcel.readString() ?: ""
+        id = parcel.readString() ?: ""
         title = parcel.readString() ?: ""
         memo = parcel.readString() ?: ""
         destinations = parcel.createTypedArrayList(Destination)
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(nid)
+        parcel.writeString(id)
         parcel.writeString(title)
         parcel.writeString(memo)
         parcel.writeTypedList(destinations)
@@ -40,6 +40,6 @@ class Note() : Parcelable {
     }
 
     override fun toString(): String {
-        return "Note(nid='$nid', title='$title', memo='$memo', destinations=$destinations)"
+        return "Note(id='$id', title='$title', memo='$memo', destinations=$destinations)"
     }
 }

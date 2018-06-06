@@ -46,7 +46,7 @@ class NoteAdapter(private val delegate: Delegate) : RecyclerView.Adapter<Recycle
         Timber.d("updateData? %s", notes)
         this.notes.addAll(notes).let {
             for (note in notes) {
-                noteMap[note.nid] = note
+                noteMap[note.id] = note
             }
 
             notifyDataSetChanged()
@@ -57,9 +57,9 @@ class NoteAdapter(private val delegate: Delegate) : RecyclerView.Adapter<Recycle
 
     fun updateNote(note: Note) {
         Timber.d("updateNotes? %s", note)
-        val originNote = noteMap.get(note.nid)
+        val originNote = noteMap.get(note.id)
 
-        noteMap[note.nid] = note
+        noteMap[note.id] = note
 
         if (originNote != null) {
             val index = notes.indexOf(originNote)

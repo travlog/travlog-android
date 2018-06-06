@@ -5,6 +5,7 @@ import android.os.Parcelable
 
 class User() : Parcelable {
 
+    var id = ""
     var userId = ""
     var name = ""
     var username = ""
