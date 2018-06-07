@@ -84,11 +84,11 @@ class ApiClient(private val service: ApiService) : ApiClientType {
                 .map { it.data }
     }
 
-    override fun deleteNote(noteId: String): Flowable<Note> {
+    override fun deleteNote(noteId: String): Flowable<String> {
         return service.deleteNote(noteId)
                 .lift<NoteEnvelope>(apiErrorOperator())
                 .subscribeOn(Schedulers.io())
-                .map { it.data }
+                .map { it.data.id }
     }
 
     override fun searchLocation(query: String): Flowable<List<Prediction>> {

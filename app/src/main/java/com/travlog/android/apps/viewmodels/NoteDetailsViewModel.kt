@@ -38,7 +38,7 @@ constructor(environment: Environment) : ActivityViewModel<NoteDetailsActivity>(e
     private val setTitleText = BehaviorSubject.create<String>()
     private val updateDestinations = BehaviorSubject.create<List<Destination>>()
     private val showEditNoteActivity = BehaviorSubject.create<Note>()
-    private val back = CompletableSubject.create()
+    private val finish = CompletableSubject.create()
 
     val inputs: NoteViewModelInputs = this
     val outputs: NoteViewModelOutputs = this
@@ -88,10 +88,10 @@ constructor(environment: Environment) : ActivityViewModel<NoteDetailsActivity>(e
         updateDestinations.onNext(note.destinations)
     }
 
-    private fun deleteSuccess(note: Note) {
+    private fun deleteSuccess(noteId: String) {
         // TODO: 2018. 5. 12. note not found error 발생 시에도 delete 성공과 똑같이 처리한다
-        DeleteNoteEvent.getInstance().post(note)
-        back.onComplete()
+        DeleteNoteEvent.getInstance().post(noteId)
+        finish.onComplete()
     }
 
     private fun note(noteId: String): Observable<Note> =
@@ -100,7 +100,7 @@ constructor(environment: Environment) : ActivityViewModel<NoteDetailsActivity>(e
                     .compose(neverError())
                     .toObservable()
 
-    private fun delete(noteId: String): Observable<Note> =
+    private fun delete(noteId: String): Observable<String> =
             apiClient.deleteNote(noteId)
                     .compose(neverApiError())
                     .compose(neverError())
@@ -112,7 +112,7 @@ constructor(environment: Environment) : ActivityViewModel<NoteDetailsActivity>(e
 
     override fun showEditNoteActivity(): Observable<Note> = showEditNoteActivity
 
-    override fun back(): Completable = back
+    override fun finish(): Completable = finish
 
     override fun editClick() = this.editClick.onNext(Optional<Any>(null))
 

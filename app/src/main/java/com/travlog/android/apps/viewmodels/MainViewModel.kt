@@ -57,7 +57,7 @@ class MainViewModel(environment: Environment) : ActivityViewModel<MainActivity>(
 
         updateNote = NoteEvent.getInstance().observable
 
-        deleteNote = DeleteNoteEvent.getInstance().observable.map { it.id }
+        deleteNote = DeleteNoteEvent.getInstance().observable
     }
 
     private fun notes(): Observable<List<Note>> =

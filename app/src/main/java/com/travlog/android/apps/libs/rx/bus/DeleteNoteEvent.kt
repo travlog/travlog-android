@@ -7,13 +7,13 @@ import io.reactivex.subjects.PublishSubject
 
 class DeleteNoteEvent private constructor() {
 
-    private val subject: PublishSubject<Note> = PublishSubject.create()
+    private val subject: PublishSubject<String> = PublishSubject.create()
 
-    val observable: Observable<Note>
+    val observable: Observable<String>
         get() = subject
 
-    fun post(note: Note) {
-        this.subject.onNext(note)
+    fun post(noteId: String) {
+        this.subject.onNext(noteId)
     }
 
     companion object {

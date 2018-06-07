@@ -14,5 +14,5 @@ interface NoteViewModelOutputs {
 
     fun showEditNoteActivity(): Observable<Note>
 
-    fun back(): Completable
+    fun finish(): Completable
 }

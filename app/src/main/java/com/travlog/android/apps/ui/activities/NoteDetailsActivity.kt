@@ -55,7 +55,7 @@ class NoteDetailsActivity : BaseActivity<NoteDetailsViewModel>() {
                     .subscribe { showEditNoteActivity(it) }
 
             addDisposable(
-                    outputs.back()
+                    outputs.finish()
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe { back() }
             )

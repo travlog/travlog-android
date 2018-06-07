@@ -76,9 +76,11 @@ class NoteAdapter(private val delegate: Delegate) : RecyclerView.Adapter<Recycle
         val note = noteMap[nid]
         val index = notes.indexOf(note)
 
-        notes.removeAt(index)
-        noteMap.remove(nid)
-        notifyItemRemoved(index)
+        if (index >= 0) {
+            notes.removeAt(index)
+            noteMap.remove(nid)
+            notifyItemRemoved(index)
+        }
 
         return note
     }
