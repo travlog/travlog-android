@@ -29,8 +29,9 @@ class DestinationViewHolder(itemView: View, private val delegate: Delegate) : Re
         }
 
         itemView.name.text = when {
-            item.location.locality.isNotEmpty() -> item.location.locality
-            else -> item.location.name
+            item.location == null -> ""
+            item.location!!.locality.isNotEmpty() -> item.location!!.locality
+            else -> item.location!!.name
         }
 
         itemView.setOnClickListener { delegate.destinationViewHolderItemClick(this, item) }

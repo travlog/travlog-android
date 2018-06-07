@@ -9,7 +9,7 @@ class Destination() : Parcelable {
     var id = ""
     var startDate: Date? = null
     var endDate: Date? = null
-    lateinit var location: Location
+    var location: Location? = null
 
     constructor(parcel: Parcel) : this() {
         id = parcel.readString() ?: ""
