@@ -2,6 +2,8 @@ package com.travlog.android.apps.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import com.bumptech.glide.request.RequestOptions.circleCropTransform
 import com.jakewharton.rxbinding2.view.RxView
 import com.travlog.android.apps.R
@@ -22,10 +24,6 @@ class MyPageActivity : BaseActivity<MyPageViewModel>() {
         setSupportActionBar(toolbar)
         setDisplayHomeAsUpEnabled(true)
 
-        RxView.clicks(this.settings)
-                .compose(bindToLifecycle())
-                .subscribe { this.startSettingsActivity() }
-
         RxView.clicks(this.username)
                 .compose(bindToLifecycle())
                 .subscribe { this.startSetUserNameActivity() }
@@ -40,6 +38,21 @@ class MyPageActivity : BaseActivity<MyPageViewModel>() {
                     .compose(bindToLifecycle())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({ setUsernameText(it) })
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean =
+            menuInflater.inflate(R.menu.menu_settings, menu).run {
+                return super.onCreateOptionsMenu(menu)
+            }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_settings -> {
+                startSettingsActivity()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
