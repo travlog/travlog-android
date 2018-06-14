@@ -39,7 +39,12 @@ class ApplicationModule(private val application: Application) {
     @Singleton
     @ApiEndpointPreference
     internal fun provideApiEndpointPreference(sharedPreferences: SharedPreferences): StringPreferenceType {
-        return StringPreference(sharedPreferences, "staging_api_endpoint", ApiEndpoint.STAGING.url())
+        return when (BuildConfig.BUILD_TYPE) {
+            "debug" -> StringPreference(sharedPreferences, "debug_api_endpoint", ApiEndpoint.LOCAL.url())
+            "staging" -> StringPreference(sharedPreferences, "staging_api_endpoint", ApiEndpoint.STAGING.url())
+            "release" -> StringPreference(sharedPreferences, "release_api_endpoint", ApiEndpoint.PRODUCTION.url())
+            else -> StringPreference(sharedPreferences, "custom_api_endpoint", ApiEndpoint.CUSTOM.url())
+        }
     }
 
     @Provides
