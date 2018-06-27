@@ -27,7 +27,7 @@ class SignUpEmailFragment : BaseFragment<SignUpEmailViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        RxTextView.textChanges(email_edit)
+        RxTextView.textChanges(email_edit.getEditText())
                 .map<String> { it.toString() }
                 .compose(bindToLifecycle())
                 .subscribe({ (context as SignUpActivity).viewModel()!!.email(it) })

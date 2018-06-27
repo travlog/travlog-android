@@ -36,4 +36,5 @@
     <string name="thursday">T</string>
     <string name="friday">F</string>
     <string name="saturday">S</string>
+    <string name="or">or</string>
 </resources>

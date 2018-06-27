@@ -45,6 +45,7 @@
     <item name="cost_container" type="id" />
     <item name="add_cost_button" type="id" />
 
+    <item name="header" type="id" />
     <item name="start_date" type="id" />
     <item name="end_date" type="id" />
     <item name="location_button" type="id" />
