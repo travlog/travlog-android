@@ -10,7 +10,6 @@
     <color name="accent">@color/secondary</color>
     <color name="window_background">@color/white</color>
     <color name="status_bar">#f0f0f0</color>
-    <color name="error">#ef5350</color>
 
     <!-- Rangepicker -->
     <color name="color_red">@color/accent</color>
@@ -22,4 +21,23 @@
     <!-- Colors with hex opacity:
    http://stackoverflow.com/questions/5445085/understanding-colors-in-android-6-characters/11019879#11019879 -->
     <color name="black_alpha_17">#2B000000</color>
+
+    <color name="p1">#0032aa</color>
+    <color name="p2">#5082ff</color>
+    <color name="p3">#bdd2ff</color>
+    <color name="s1">#ff3c50</color>
+    <color name="s2">#ff96a0</color>
+    <color name="s3">#ffdcdc</color>
+    <color name="success">#329600</color>
+    <color name="warning">#ff9600</color>
+    <color name="error">#ff0032</color>
+    <color name="info">#3232ff</color>
+    <color name="g0">#ffffff</color>
+    <color name="g1">#e6e6e6</color>
+    <color name="g2">#c8c8c8</color>
+    <color name="g3">#aaaaaa</color>
+    <color name="g4">#8c8c8c</color>
+    <color name="g5">#6e6e6e</color>
+    <color name="g6">#505055</color>
+    <color name="g7">#323232</color>
 </resources>
