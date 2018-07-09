@@ -28,7 +28,6 @@ class MainViewModel(environment: Environment) : ActivityViewModel<MainActivity>(
     private val loadMore = PublishSubject.create<Optional<*>>()
     private val refresh = PublishSubject.create<Optional<*>>()
 
-    private val setRefreshing = BehaviorSubject.create<Boolean>()
     private val clearNotes = BehaviorSubject.create<Optional<*>>()
     private val updateData = BehaviorSubject.create<List<Note>>()
     private val showNoteDetailsActivity: Observable<Note>
@@ -46,10 +45,8 @@ class MainViewModel(environment: Environment) : ActivityViewModel<MainActivity>(
                 .switchMap {
                     this.notes()
                             .doOnSubscribe {
-
                             }
                             .doAfterTerminate {
-                                setRefreshing.onNext(false)
                             }
                 }
                 .compose(bindToLifecycle())
@@ -69,8 +66,6 @@ class MainViewModel(environment: Environment) : ActivityViewModel<MainActivity>(
     override fun loadMore() = loadMore.onNext(Optional(null))
 
     override fun refresh() = refresh.onNext(Optional(null))
-
-    override fun setRefreshing(): Observable<Boolean> = setRefreshing
 
     override fun clearNotes(): Observable<Optional<*>> = clearNotes
 

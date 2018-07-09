@@ -1,8 +1,8 @@
 package com.travlog.android.apps.ui.activities
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
 import com.jakewharton.rxbinding2.view.RxView
 import com.travlog.android.apps.R
 import com.travlog.android.apps.libs.BaseActivity
@@ -11,10 +11,10 @@ import com.travlog.android.apps.models.Note
 import com.travlog.android.apps.ui.IntentKey.NOTE
 import com.travlog.android.apps.ui.adapters.NoteAdapter
 import com.travlog.android.apps.ui.fragments.MainMenuBottomSheetDialogFragment
+import com.travlog.android.apps.ui.widgets.StartSnapHelper
 import com.travlog.android.apps.viewmodels.MainViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.a_main.*
-import timber.log.Timber
 
 @RequiresActivityViewModel(MainViewModel::class)
 class MainActivity : BaseActivity<MainViewModel>() {
@@ -24,13 +24,15 @@ class MainActivity : BaseActivity<MainViewModel>() {
 
         setContentView(R.layout.a_main)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            this.app_bar.outlineProvider = null
+        when (recycler_view.layoutManager) {
+            is LinearLayoutManager -> (recycler_view.layoutManager as LinearLayoutManager).orientation = LinearLayoutManager.HORIZONTAL
+        }
+
+        StartSnapHelper().apply {
+            attachToRecyclerView(recycler_view)
         }
 
         viewModel?.apply {
-            swipe_refresh.setOnRefreshListener(this::refresh)
-
             val adapter = NoteAdapter(this)
             recycler_view.adapter = adapter
 
@@ -42,14 +44,13 @@ class MainActivity : BaseActivity<MainViewModel>() {
                     .compose(bindToLifecycle())
                     .subscribe { showMainMenuBottomSheet() }
 
-            RxView.clicks(overflow)
+            RxView.clicks(my_info)
                     .compose(bindToLifecycle())
-                    .subscribe()
-
-            outputs.setRefreshing()
-                    .compose(bindToLifecycle())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe { setRefreshing(it) }
+                    .subscribe {
+                        Intent(this@MainActivity, MyPageActivity::class.java).apply {
+                            startActivityWithTransition(this, R.anim.slide_in_up, R.anim.fade_out)
+                        }
+                    }
 
             outputs.clearNotes()
                     .compose(bindToLifecycle())
@@ -78,10 +79,6 @@ class MainActivity : BaseActivity<MainViewModel>() {
 
             this.loadMore()
         }
-    }
-
-    private fun setRefreshing(refreshing: Boolean) {
-        swipe_refresh.isRefreshing = refreshing
     }
 
     private fun showPostActivity() {

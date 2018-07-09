@@ -37,4 +37,5 @@
     <string name="friday">F</string>
     <string name="saturday">S</string>
     <string name="or">or</string>
+    <string name="note_date">%1$s - %2$s</string>
 </resources>
