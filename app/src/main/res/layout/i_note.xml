@@ -10,7 +10,7 @@
     android:paddingBottom="8dp"
     android:paddingTop="56dp">
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@id/note_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -20,7 +20,7 @@
         android:textSize="44sp"
         tools:text="title" />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@id/note_destination"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
         app:layout_constraintTop_toBottomOf="@id/note_title"
         tools:text="destination" />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@id/note_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
         app:layout_constraintTop_toBottomOf="@id/note_destination"
         tools:text="2018.07.10 - 2018.07.17" />
 
-    <android.support.v7.widget.AppCompatImageButton
+    <androidx.appcompat.widget.AppCompatImageButton
         android:id="@id/edit_button"
         style="?actionButtonStyle"
         android:layout_width="wrap_content"

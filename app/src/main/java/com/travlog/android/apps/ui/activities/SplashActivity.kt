@@ -25,7 +25,8 @@ class SplashActivity : BaseActivity<SplashViewModel>() {
             addDisposable(
                     it.outputs.startSignInActivity()
                             .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe { startSignInActivity() })
+//                            .subscribe { startSignInActivity() })
+                    .subscribe { startMainActivity() })
 
             addDisposable(
                     it.outputs.startMainActivity()

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,7 +9,7 @@
     android:paddingStart="@dimen/activity_horizontal_padding"
     tools:context=".ui.activities.SignUpActivity">
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@id/header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -19,7 +19,7 @@
         android:textColor="@color/g6"
         android:textSize="@dimen/text_size_header" />
 
-    <ImageButton
+    <androidx.appcompat.widget.AppCompatImageButton
         android:id="@id/close_button"
         style="?actionButtonStyle"
         android:layout_width="wrap_content"
@@ -50,7 +50,7 @@
         app:cornerRadius="@dimen/radius"
         app:layout_constraintTop_toBottomOf="@+id/view_pager" />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/label_or"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -68,7 +68,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/label_or"
         app:layout_constraintTop_toTopOf="@+id/label_or" />
 
-    <android.support.design.button.MaterialButton
+    <com.google.android.material.button.MaterialButton
         android:id="@id/sign_in_with_facebook_button"
         android:layout_width="56dp"
         android:layout_height="56dp"
@@ -78,7 +78,7 @@
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <android.support.design.button.MaterialButton
+    <com.google.android.material.button.MaterialButton
         android:id="@id/sign_in_with_google_button"
         android:layout_width="56dp"
         android:layout_height="56dp"
@@ -87,4 +87,4 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/sign_in_with_facebook_button" />
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

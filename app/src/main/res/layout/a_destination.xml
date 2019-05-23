@@ -75,7 +75,7 @@
         app:behavior_peekHeight="0dp"
         app:layout_behavior="com.travlog.android.apps.ui.widgets.HandleableBottomSheetBehavior">
 
-        <android.support.design.widget.AppBarLayout
+        <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/weekdays_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -83,7 +83,7 @@
             android:paddingHorizontal="24dp"
             android:paddingVertical="@dimen/activity_vertical_padding">
 
-            <android.support.constraint.ConstraintLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -143,8 +143,8 @@
                     android:text="@string/saturday"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/friday" />
-            </android.support.constraint.ConstraintLayout>
-        </android.support.design.widget.AppBarLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.appbar.AppBarLayout>
 
         <com.savvi.rangedatepicker.CalendarPickerView
             android:id="@+id/calendar_view"
