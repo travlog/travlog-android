@@ -24,9 +24,10 @@ import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.CompletableSubject
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
+import javax.inject.Inject
 
-class NoteDetailsViewModel
-constructor(environment: Environment) : ActivityViewModel<NoteDetailsActivity>(environment),
+class NoteDetailsViewModel @Inject constructor(environment: Environment
+) : ActivityViewModel<NoteDetailsActivity>(environment),
         NoteViewModelInputs, NoteViewModelOutputs, NoteViewModelErrors, DestinationAdapter.Delegate {
 
     private val apiClient: ApiClientType = environment.apiClient

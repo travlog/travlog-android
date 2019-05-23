@@ -11,6 +11,9 @@ import butterknife.BindColor
 import com.arlib.floatingsearchview.FloatingSearchView
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion
 import com.travlog.android.apps.R
+import com.travlog.android.apps.ViewModelFactory
+import com.travlog.android.apps.getAppInjector
+import com.travlog.android.apps.getViewModel
 import com.travlog.android.apps.libs.BaseActivity
 import com.travlog.android.apps.libs.rx.views.RxFloatingSearchView
 import com.travlog.android.apps.libs.utils.TransitionUtils.slideInFromLeft
@@ -19,14 +22,21 @@ import com.travlog.android.apps.ui.IntentKey.PREDICTION
 import com.travlog.android.apps.viewmodels.SearchLocationViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.a_search_location.*
+import javax.inject.Inject
 
 class SearchLocationActivity : BaseActivity<SearchLocationViewModel>() {
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
 
     @BindColor(R.color.accent)
     @JvmField
     var accentColor = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        getAppInjector().inject(this)
+        viewModel = getViewModel(viewModelFactory)
+
         super.onCreate(savedInstanceState)
 
         window.apply {

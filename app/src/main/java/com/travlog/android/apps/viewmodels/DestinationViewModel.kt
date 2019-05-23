@@ -20,8 +20,10 @@ import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import org.joda.time.DateTime
 import java.util.*
+import javax.inject.Inject
 
-class DestinationViewModel(environment: Environment) : ActivityViewModel<DestinationActivity>(environment),
+class DestinationViewModel @Inject constructor(environment: Environment
+) : ActivityViewModel<DestinationActivity>(environment),
         DestinationViewModelInputs, DestinationViewModelOutputs, DestinationViewModelErrors {
 
     private val startDate = PublishSubject.create<Optional<Date?>>()

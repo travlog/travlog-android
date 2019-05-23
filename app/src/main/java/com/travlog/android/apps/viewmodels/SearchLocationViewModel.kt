@@ -14,8 +14,10 @@ import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
-class SearchLocationViewModel(environment: Environment) : ActivityViewModel<SearchLocationActivity>(environment),
+class SearchLocationViewModel @Inject constructor(environment: Environment
+) : ActivityViewModel<SearchLocationActivity>(environment),
         SearchLocationViewModelInputs, SearchLocationViewModelOutputs, SearchLocationViewModelErrors {
 
     private val apiClient: ApiClientType = environment.apiClient

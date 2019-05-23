@@ -7,15 +7,25 @@ import android.view.MenuItem
 import com.bumptech.glide.request.RequestOptions.circleCropTransform
 import com.jakewharton.rxbinding3.view.clicks
 import com.travlog.android.apps.R
+import com.travlog.android.apps.ViewModelFactory
+import com.travlog.android.apps.getAppInjector
+import com.travlog.android.apps.getViewModel
 import com.travlog.android.apps.libs.BaseActivity
 import com.travlog.android.apps.libs.glide.GlideApp
 import com.travlog.android.apps.viewmodels.MyPageViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.a_my_page.*
+import javax.inject.Inject
 
 class MyPageActivity : BaseActivity<MyPageViewModel>() {
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        getAppInjector().inject(this)
+        viewModel = getViewModel(viewModelFactory)
+
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.a_my_page)

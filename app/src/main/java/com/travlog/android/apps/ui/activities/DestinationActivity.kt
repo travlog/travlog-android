@@ -9,6 +9,9 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.jakewharton.rxbinding3.view.clicks
 import com.savvi.rangedatepicker.CalendarPickerView
 import com.travlog.android.apps.R
+import com.travlog.android.apps.ViewModelFactory
+import com.travlog.android.apps.getAppInjector
+import com.travlog.android.apps.getViewModel
 import com.travlog.android.apps.libs.ActivityRequestCodes.SEARCH_LOCATION
 import com.travlog.android.apps.libs.BaseActivity
 import com.travlog.android.apps.libs.utils.TransitionUtils.slideInFromLeft
@@ -21,12 +24,19 @@ import kotlinx.android.synthetic.main.a_destination.*
 import org.joda.time.DateTime
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
 class DestinationActivity : BaseActivity<DestinationViewModel>() {
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
 
     var bottomSheetCalendar: HandleableBottomSheetBehavior<View>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        getAppInjector().inject(this)
+        viewModel = getViewModel(viewModelFactory)
+
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.a_destination)

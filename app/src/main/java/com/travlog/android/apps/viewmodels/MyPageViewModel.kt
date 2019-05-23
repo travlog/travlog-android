@@ -11,8 +11,10 @@ import com.travlog.android.apps.viewmodels.outputs.MyPageViewModelOutputs
 
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
+import javax.inject.Inject
 
-class MyPageViewModel(environment: Environment) : ActivityViewModel<MyPageActivity>(environment),
+class MyPageViewModel @Inject constructor(environment: Environment
+) : ActivityViewModel<MyPageActivity>(environment),
         MyPageViewModelInputs, MyPageViewModelOutputs, MyPageViewModelErrors {
 
     val inputs: MyPageViewModelInputs = this

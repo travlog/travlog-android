@@ -18,9 +18,10 @@ import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.CompletableSubject
 import io.reactivex.subjects.PublishSubject
+import javax.inject.Inject
 
-class EditNoteViewModel
-constructor(environment: Environment) : ActivityViewModel<EditNoteActivity>(environment),
+class EditNoteViewModel @Inject constructor(environment: Environment
+) : ActivityViewModel<EditNoteActivity>(environment),
         EditNoteViewModelInputs, EditNoteViewModelOutputs, EditNoteViewModelErrors {
 
     private val apiClient: ApiClientType = environment.apiClient

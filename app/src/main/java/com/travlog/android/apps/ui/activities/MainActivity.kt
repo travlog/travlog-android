@@ -5,6 +5,9 @@ import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jakewharton.rxbinding3.view.clicks
 import com.travlog.android.apps.R
+import com.travlog.android.apps.ViewModelFactory
+import com.travlog.android.apps.getAppInjector
+import com.travlog.android.apps.getViewModel
 import com.travlog.android.apps.libs.BaseActivity
 import com.travlog.android.apps.models.Note
 import com.travlog.android.apps.ui.IntentKey.NOTE
@@ -14,10 +17,17 @@ import com.travlog.android.apps.ui.widgets.StartSnapHelper
 import com.travlog.android.apps.viewmodels.MainViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.a_main.*
+import javax.inject.Inject
 
 class MainActivity : BaseActivity<MainViewModel>() {
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        getAppInjector().inject(this)
+        viewModel = getViewModel(viewModelFactory)
+
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.a_main)

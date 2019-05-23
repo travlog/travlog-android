@@ -21,9 +21,10 @@ import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.CompletableSubject
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
-class SetUsernameViewModel
-constructor(environment: Environment) : ActivityViewModel<SetUsernameActivity>(environment),
+class SetUsernameViewModel @Inject constructor(environment: Environment
+) : ActivityViewModel<SetUsernameActivity>(environment),
         SetUsernameViewModelInputs, SetUsernameViewModelOutputs, SetUsernameViewModelErrors {
 
     private val currentUser: CurrentUserType = environment.currentUser

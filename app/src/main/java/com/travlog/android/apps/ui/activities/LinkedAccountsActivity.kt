@@ -8,6 +8,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.GoogleApiClient
 import com.jakewharton.rxbinding3.view.clicks
 import com.travlog.android.apps.R
+import com.travlog.android.apps.ViewModelFactory
+import com.travlog.android.apps.getAppInjector
+import com.travlog.android.apps.getViewModel
 import com.travlog.android.apps.libs.ActivityRequestCodes.SIGN_IN_WITH_GOOGLE
 import com.travlog.android.apps.libs.BaseActivity
 import com.travlog.android.apps.libs.utils.TransitionUtils.slideInFromLeft
@@ -15,12 +18,19 @@ import com.travlog.android.apps.viewmodels.LinkedAccountsViewModel
 import kotlinx.android.synthetic.main.a_linked_accounts.*
 import timber.log.Timber
 import java.util.*
+import javax.inject.Inject
 
 class LinkedAccountsActivity : BaseActivity<LinkedAccountsViewModel>() {
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
 
     private var googleApiClient: GoogleApiClient? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        getAppInjector().inject(this)
+        viewModel = getViewModel(viewModelFactory)
+
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.a_linked_accounts)

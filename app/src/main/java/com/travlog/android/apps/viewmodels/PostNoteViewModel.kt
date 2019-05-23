@@ -24,8 +24,10 @@ import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.CompletableSubject
 import io.reactivex.subjects.PublishSubject
+import javax.inject.Inject
 
-class PostNoteViewModel(environment: Environment) : ActivityViewModel<PostNoteActivity>(environment),
+class PostNoteViewModel @Inject constructor(environment: Environment
+) : ActivityViewModel<PostNoteActivity>(environment),
         PostNoteViewModelInputs, PostNoteViewModelOutputs, PostNoteViewModelErrors, DestinationAdapter.Delegate {
 
     private val apiClient: ApiClientType = environment.apiClient

@@ -6,15 +6,25 @@ import androidx.annotation.StringRes
 import com.jakewharton.rxbinding3.view.clicks
 import com.jakewharton.rxbinding3.viewpager.pageSelections
 import com.travlog.android.apps.R
+import com.travlog.android.apps.ViewModelFactory
+import com.travlog.android.apps.getAppInjector
+import com.travlog.android.apps.getViewModel
 import com.travlog.android.apps.libs.BaseActivity
 import com.travlog.android.apps.ui.adapters.SignUpPagerAdapter
 import com.travlog.android.apps.viewmodels.SignUpViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.a_sign_up.*
+import javax.inject.Inject
 
 class SignUpActivity : BaseActivity<SignUpViewModel>() {
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        getAppInjector().inject(this)
+        viewModel = getViewModel(viewModelFactory)
+
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.a_sign_up)

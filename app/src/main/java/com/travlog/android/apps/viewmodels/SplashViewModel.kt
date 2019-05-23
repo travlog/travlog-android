@@ -9,7 +9,8 @@ import io.reactivex.subjects.CompletableSubject
 import timber.log.Timber
 import javax.inject.Inject
 
-class SplashViewModel @Inject constructor(environment: Environment) : ActivityViewModel<SplashActivity>(environment),
+class SplashViewModel @Inject constructor(environment: Environment
+) : ActivityViewModel<SplashActivity>(environment),
         SplashViewModelOutputs {
 
     private val startSignInActivity = CompletableSubject.create()

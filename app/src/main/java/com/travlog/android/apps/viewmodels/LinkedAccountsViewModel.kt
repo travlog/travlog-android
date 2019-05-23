@@ -25,8 +25,10 @@ import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
+import javax.inject.Inject
 
-class LinkedAccountsViewModel(environment: Environment) : ActivityViewModel<LinkedAccountsActivity>(environment), LinkedAccountsViewModelInputs, LinkedAccountsViewModelOutputs, LinkedAccountsViewModelErrors {
+class LinkedAccountsViewModel @Inject constructor(environment: Environment
+) : ActivityViewModel<LinkedAccountsActivity>(environment), LinkedAccountsViewModelInputs, LinkedAccountsViewModelOutputs, LinkedAccountsViewModelErrors {
 
     private val apiClient: ApiClientType = environment.apiClient
     private val callbackManager: CallbackManager = CallbackManager.Factory.create()
