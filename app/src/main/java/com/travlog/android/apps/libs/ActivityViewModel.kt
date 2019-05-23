@@ -13,6 +13,7 @@ import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.PublishSubject
+import io.realm.Realm
 import timber.log.Timber
 
 open class ActivityViewModel<ViewType : ActivityLifeCycleType>(environment: Environment) : ViewModel() {
@@ -22,6 +23,8 @@ open class ActivityViewModel<ViewType : ActivityLifeCycleType>(environment: Envi
     private val disposables = CompositeDisposable()
     private val activityResult = PublishSubject.create<ActivityResult>()
     private val intent = PublishSubject.create<Intent>()
+
+    protected lateinit var realm: Realm
 
     /**
      * Takes activity result data from the activity.
@@ -41,6 +44,7 @@ open class ActivityViewModel<ViewType : ActivityLifeCycleType>(environment: Envi
     fun onCreate(context: Context, savedInstanceState: Bundle?) {
         Timber.d("onCreate %s", this.toString())
         dropView()
+        realm = Realm.getDefaultInstance()
     }
 
     @CallSuper
@@ -61,6 +65,7 @@ open class ActivityViewModel<ViewType : ActivityLifeCycleType>(environment: Envi
 
         this.disposables.clear()
         this.viewChange.onComplete()
+        realm.close()
     }
 
     private fun onTakeView(view: Any) {

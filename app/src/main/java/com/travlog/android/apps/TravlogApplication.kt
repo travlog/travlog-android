@@ -26,7 +26,7 @@ class TravlogApplication : Application() {
         Crashlytics.setString("git-sha", component!!.environment().build.sha())
         AppEventsLogger.activateApp(this)
 
-        RealmHelper.getInstance().init(this)
+        RealmHelper.init(this)
 
         //        Stetho.initialize(
         //                Stetho.newInitializerBuilder(this)

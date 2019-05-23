@@ -34,7 +34,6 @@ class PostNoteActivity : BaseActivity<PostNoteViewModel>() {
             setDisplayHomeAsUpEnabled(true)
         }
 
-
         viewModel?.apply {
             val destinationsAdapter = DestinationAdapter(this)
             destination_recycler.adapter = destinationsAdapter

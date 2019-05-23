@@ -14,6 +14,7 @@ import com.travlog.android.apps.libs.BaseActivity
 import com.travlog.android.apps.libs.utils.TransitionUtils.slideInFromLeft
 import com.travlog.android.apps.models.Note
 import com.travlog.android.apps.ui.IntentKey.NOTE
+import com.travlog.android.apps.ui.IntentKey.NOTE_ID
 import com.travlog.android.apps.ui.adapters.DestinationAdapter
 import com.travlog.android.apps.viewmodels.NoteDetailsViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -93,7 +94,7 @@ class NoteDetailsActivity : BaseActivity<NoteDetailsViewModel>() {
 
     private fun showEditNoteActivity(note: Note) =
             Intent(this, EditNoteActivity::class.java).let {
-                it.putExtra(NOTE, note)
+                it.putExtra(NOTE_ID, note.id)
                 startActivityWithTransition(it, R.anim.slide_in_right, R.anim.fade_out_slide_out_left)
             }
 

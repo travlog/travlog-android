@@ -1,7 +1,9 @@
 package com.travlog.android.apps.viewmodels
 
+import android.annotation.SuppressLint
 import com.travlog.android.apps.libs.ActivityViewModel
 import com.travlog.android.apps.libs.Environment
+import com.travlog.android.apps.libs.db.realm.RealmHelper
 import com.travlog.android.apps.libs.rx.Optional
 import com.travlog.android.apps.libs.rx.bus.DeleteNoteEvent
 import com.travlog.android.apps.libs.rx.bus.NoteEvent
@@ -20,6 +22,7 @@ import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
+@SuppressLint("CheckResult")
 class MainViewModel @Inject constructor(environment: Environment
 ) : ActivityViewModel<MainActivity>(environment),
         MainViewModelInputs, MainViewModelOutputs, MainViewModelErrors, NoteAdapter.Delegate {
@@ -44,13 +47,14 @@ class MainViewModel @Inject constructor(environment: Environment
         this.showNoteDetailsActivity = this.noteItemClick
 
         Observable.merge(loadMore, refresh.doOnNext { clearNotes.onNext(Optional(null)) })
-                .switchMap {
-                    this.notes()
-                            .doOnSubscribe {
-                            }
-                            .doAfterTerminate {
-                            }
-                }
+//                .switchMap {
+//                    this.notes()
+//                            .doOnSubscribe {
+//                            }
+//                            .doAfterTerminate {
+//                            }
+//                }
+                .map { RealmHelper.getAllNotesAsync(realm) }
                 .compose(bindToLifecycle())
                 .subscribe { updateData.onNext(it) }
 

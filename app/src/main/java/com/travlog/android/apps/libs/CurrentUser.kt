@@ -48,7 +48,7 @@ class CurrentUser(private var accessTokenPreference: StringPreferenceType, priva
         this.accessTokenPreference.delete()
         this.user.onNext(Optional(null))
         LoginManager.getInstance().logOut()
-        RealmHelper.getInstance().deleteAllAsync()
+        RealmHelper.deleteAllAsync()
     }
 
     override fun refresh(freshUser: User) {

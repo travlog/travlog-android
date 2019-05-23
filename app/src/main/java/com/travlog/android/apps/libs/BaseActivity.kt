@@ -48,6 +48,7 @@ open class BaseActivity<ViewModelType : ActivityViewModel<*>> : RxAppCompatActiv
         Timber.d("onCreate %s", this.toString())
 
         this.viewModel?.intent(intent)
+        this.viewModel?.onCreate(this, savedInstanceState)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

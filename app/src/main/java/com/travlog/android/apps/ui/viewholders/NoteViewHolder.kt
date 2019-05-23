@@ -19,12 +19,12 @@ class NoteViewHolder(itemView: View, private val delegate: Delegate) : RecyclerV
 
         when {
             item.destinations.isNotEmpty() -> {
-                val destination = item.destinations.get(0)
+                val destination = item.destinations[0]
 
-                this.itemView.note_destination.text = destination.location?.name.orEmpty()
+                this.itemView.note_destination.text = destination?.location?.name.orEmpty()
                 this.itemView.note_date.text = itemView.context.getString(R.string.note_date,
-                        DateTimeUtils.mediumDate(DateTime(destination.startDate)),
-                        DateTimeUtils.mediumDate(DateTime(destination.endDate)))
+                        DateTimeUtils.mediumDate(DateTime(destination?.startDate)),
+                        DateTimeUtils.mediumDate(DateTime(destination?.endDate)))
             }
             else -> {
                 this.itemView.note_destination.text = ""

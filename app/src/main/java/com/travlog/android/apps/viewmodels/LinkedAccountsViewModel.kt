@@ -1,5 +1,6 @@
 package com.travlog.android.apps.viewmodels
 
+import android.annotation.SuppressLint
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
@@ -27,6 +28,7 @@ import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 import javax.inject.Inject
 
+@SuppressLint("CheckResult")
 class LinkedAccountsViewModel @Inject constructor(environment: Environment
 ) : ActivityViewModel<LinkedAccountsActivity>(environment), LinkedAccountsViewModelInputs, LinkedAccountsViewModelOutputs, LinkedAccountsViewModelErrors {
 

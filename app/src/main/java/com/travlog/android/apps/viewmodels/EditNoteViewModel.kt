@@ -1,14 +1,16 @@
 package com.travlog.android.apps.viewmodels
 
+import android.annotation.SuppressLint
 import com.travlog.android.apps.libs.ActivityViewModel
 import com.travlog.android.apps.libs.Environment
+import com.travlog.android.apps.libs.db.realm.RealmHelper
 import com.travlog.android.apps.libs.rx.Optional
 import com.travlog.android.apps.libs.rx.bus.NoteEvent
 import com.travlog.android.apps.libs.rx.transformers.Transformers.neverApiError
 import com.travlog.android.apps.libs.rx.transformers.Transformers.neverError
 import com.travlog.android.apps.models.Note
 import com.travlog.android.apps.services.ApiClientType
-import com.travlog.android.apps.ui.IntentKey.NOTE
+import com.travlog.android.apps.ui.IntentKey.NOTE_ID
 import com.travlog.android.apps.ui.activities.EditNoteActivity
 import com.travlog.android.apps.viewmodels.errors.EditNoteViewModelErrors
 import com.travlog.android.apps.viewmodels.inputs.EditNoteViewModelInputs
@@ -20,6 +22,7 @@ import io.reactivex.subjects.CompletableSubject
 import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
+@SuppressLint("CheckResult")
 class EditNoteViewModel @Inject constructor(environment: Environment
 ) : ActivityViewModel<EditNoteActivity>(environment),
         EditNoteViewModelInputs, EditNoteViewModelOutputs, EditNoteViewModelErrors {
@@ -40,7 +43,9 @@ class EditNoteViewModel @Inject constructor(environment: Environment
 
     init {
         intent()
-                .map { i -> i.getParcelableExtra(NOTE) as Note }
+                .compose(bindToLifecycle())
+                .map { i -> i.getStringExtra(NOTE_ID) ?: "" }
+                .map { RealmHelper.getNoteAsync(realm, it) }
                 .doOnNext { this.note = it }
                 .map { it.title }
                 .subscribe { setTitleText.onNext(it) }

@@ -25,7 +25,6 @@ class MyPageViewModel @Inject constructor(environment: Environment
     private val setUsernameText = BehaviorSubject.create<String>()
 
     init {
-
         environment.currentUser.loggedInUser()
                 .map { user -> if (TextUtils.isEmpty(user.username)) "" else user.username }
                 .compose(bindToLifecycle())

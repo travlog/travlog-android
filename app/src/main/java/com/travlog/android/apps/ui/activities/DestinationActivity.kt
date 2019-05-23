@@ -2,7 +2,6 @@ package com.travlog.android.apps.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Parcelable
 import android.util.Pair
 import android.view.View
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -15,7 +14,7 @@ import com.travlog.android.apps.getViewModel
 import com.travlog.android.apps.libs.ActivityRequestCodes.SEARCH_LOCATION
 import com.travlog.android.apps.libs.BaseActivity
 import com.travlog.android.apps.libs.utils.TransitionUtils.slideInFromLeft
-import com.travlog.android.apps.ui.IntentKey.DESTINATION
+import com.travlog.android.apps.ui.IntentKey.DESTINATION_ID
 import com.travlog.android.apps.ui.widgets.HandleableBottomSheetBehavior
 import com.travlog.android.apps.viewmodels.DestinationViewModel
 import io.reactivex.Observable
@@ -111,7 +110,7 @@ class DestinationActivity : BaseActivity<DestinationViewModel>() {
                     .subscribe { setSaveButtonEnabled(it) }
 
             outputs.setResultAndBack()
-                    .map { Intent().putExtra(DESTINATION, it as Parcelable) }
+                    .map { Intent().putExtra(DESTINATION_ID, it.id) }
                     .doOnNext { setResult(RESULT_OK, it) }
                     .compose(bindToLifecycle())
                     .subscribe { back() }

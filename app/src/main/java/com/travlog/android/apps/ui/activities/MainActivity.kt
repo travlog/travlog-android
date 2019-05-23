@@ -10,7 +10,7 @@ import com.travlog.android.apps.getAppInjector
 import com.travlog.android.apps.getViewModel
 import com.travlog.android.apps.libs.BaseActivity
 import com.travlog.android.apps.models.Note
-import com.travlog.android.apps.ui.IntentKey.NOTE
+import com.travlog.android.apps.ui.IntentKey.NOTE_ID
 import com.travlog.android.apps.ui.adapters.NoteAdapter
 import com.travlog.android.apps.ui.fragments.MainMenuBottomSheetDialogFragment
 import com.travlog.android.apps.ui.widgets.StartSnapHelper
@@ -102,7 +102,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
 
     private fun showNoteDetailsActivity(note: Note) {
         Intent(this, NoteDetailsActivity::class.java).let {
-            it.putExtra(NOTE, note)
+            it.putExtra(NOTE_ID, note.id)
             startActivityWithTransition(it, R.anim.slide_in_right, R.anim.fade_out_slide_out_left)
         }
     }

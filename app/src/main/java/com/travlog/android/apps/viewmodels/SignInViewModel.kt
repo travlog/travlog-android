@@ -1,5 +1,6 @@
 package com.travlog.android.apps.viewmodels
 
+import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
 import android.text.TextUtils
 import android.util.Pair
@@ -36,6 +37,7 @@ import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 import javax.inject.Inject
 
+@SuppressLint("CheckResult")
 class SignInViewModel @Inject constructor(environment: Environment
 ) : ActivityViewModel<SignInActivity>(environment),
         SignInViewModelInputs, SignInViewModelOutputs, SignInViewModelErrors {

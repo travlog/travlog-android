@@ -1,7 +1,9 @@
 package com.travlog.android.apps.viewmodels
 
+import android.annotation.SuppressLint
 import com.travlog.android.apps.libs.ActivityViewModel
 import com.travlog.android.apps.libs.Environment
+import com.travlog.android.apps.libs.db.realm.RealmHelper
 import com.travlog.android.apps.libs.rx.Optional
 import com.travlog.android.apps.libs.rx.bus.DeleteNoteEvent
 import com.travlog.android.apps.libs.rx.bus.NoteEvent
@@ -11,7 +13,7 @@ import com.travlog.android.apps.libs.rx.transformers.Transformers.takeWhen
 import com.travlog.android.apps.models.Destination
 import com.travlog.android.apps.models.Note
 import com.travlog.android.apps.services.ApiClientType
-import com.travlog.android.apps.ui.IntentKey.NOTE
+import com.travlog.android.apps.ui.IntentKey.NOTE_ID
 import com.travlog.android.apps.ui.activities.NoteDetailsActivity
 import com.travlog.android.apps.ui.adapters.DestinationAdapter
 import com.travlog.android.apps.ui.viewholders.DestinationViewHolder
@@ -26,6 +28,7 @@ import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 import javax.inject.Inject
 
+@SuppressLint("CheckResult")
 class NoteDetailsViewModel @Inject constructor(environment: Environment
 ) : ActivityViewModel<NoteDetailsActivity>(environment),
         NoteViewModelInputs, NoteViewModelOutputs, NoteViewModelErrors, DestinationAdapter.Delegate {
@@ -46,9 +49,9 @@ class NoteDetailsViewModel @Inject constructor(environment: Environment
     val errors: NoteViewModelErrors = this
 
     init {
-
         val noteIntent = intent()
-                .map { i -> i.getParcelableExtra(NOTE) as Note }
+                .map { i -> i.getStringExtra(NOTE_ID) ?: "" }
+                .map { RealmHelper.getNoteAsync(realm, it) }
 
         note
                 .compose(bindToLifecycle())

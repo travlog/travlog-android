@@ -1,9 +1,11 @@
 package com.travlog.android.apps.viewmodels
 
+import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
 import com.travlog.android.apps.libs.ActivityRequestCodes.DESTINATION
 import com.travlog.android.apps.libs.ActivityViewModel
 import com.travlog.android.apps.libs.Environment
+import com.travlog.android.apps.libs.db.realm.RealmHelper
 import com.travlog.android.apps.libs.rx.Optional
 import com.travlog.android.apps.libs.rx.bus.NoteEvent
 import com.travlog.android.apps.libs.rx.transformers.Transformers.neverApiError
@@ -26,6 +28,7 @@ import io.reactivex.subjects.CompletableSubject
 import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
+@SuppressLint("CheckResult")
 class PostNoteViewModel @Inject constructor(environment: Environment
 ) : ActivityViewModel<PostNoteActivity>(environment),
         PostNoteViewModelInputs, PostNoteViewModelOutputs, PostNoteViewModelErrors, DestinationAdapter.Delegate {
@@ -49,7 +52,12 @@ class PostNoteViewModel @Inject constructor(environment: Environment
         val destinationObservable = activityResult()
                 .filter { it.requestCode == DESTINATION }
                 .filter { it.resultCode == RESULT_OK }
-                .map { it.intent?.getParcelableExtra(IntentKey.DESTINATION) as Destination }
+                .map { it.intent?.getStringExtra(IntentKey.DESTINATION_ID) ?: "" }
+                .switchMap {
+                    RealmHelper.getDestinationAsync(realm, it)
+                            .asFlowable<Destination>()
+                            .toObservable()
+                }
 
         destinationObservable
                 .compose(bindToLifecycle())
@@ -69,15 +77,17 @@ class PostNoteViewModel @Inject constructor(environment: Environment
                     note
                 })
                 .compose<Note>(takeWhen(saveClick))
-                .switchMap {
-                    this.post(it)
-                            .doOnSubscribe {
-
-                            }
-                            .doAfterTerminate {
-
-                            }
-                }
+                .doOnNext { it.id = RealmHelper.getAllNotesAsync(realm).size.toString() }
+                .doOnNext { RealmHelper.saveNoteAsync(it) }
+//                .switchMap {
+//                    this.post(it)
+//                            .doOnSubscribe {
+//
+//                            }
+//                            .doAfterTerminate {
+//
+//                            }
+//                }
                 .compose(bindToLifecycle())
                 .subscribe { postSuccess(it) }
     }

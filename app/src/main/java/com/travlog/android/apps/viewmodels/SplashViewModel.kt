@@ -1,14 +1,15 @@
 package com.travlog.android.apps.viewmodels
 
+import android.annotation.SuppressLint
 import com.travlog.android.apps.libs.ActivityViewModel
 import com.travlog.android.apps.libs.Environment
 import com.travlog.android.apps.ui.activities.SplashActivity
 import com.travlog.android.apps.viewmodels.outputs.SplashViewModelOutputs
 import io.reactivex.Completable
 import io.reactivex.subjects.CompletableSubject
-import timber.log.Timber
 import javax.inject.Inject
 
+@SuppressLint("CheckResult")
 class SplashViewModel @Inject constructor(environment: Environment
 ) : ActivityViewModel<SplashActivity>(environment),
         SplashViewModelOutputs {
@@ -20,12 +21,10 @@ class SplashViewModel @Inject constructor(environment: Environment
 
     init {
         environment.currentUser.loggedOutUser()
-                .doOnNext { Timber.d("loggedOutUser: ") }
                 .compose(bindToLifecycle())
                 .subscribe { startSignInActivity.onComplete() }
 
         environment.currentUser.loggedInUser()
-                .doOnNext { Timber.d("loggedInUser: ") }
                 .compose(bindToLifecycle())
                 .subscribe { startMainActivity.onComplete() }
     }

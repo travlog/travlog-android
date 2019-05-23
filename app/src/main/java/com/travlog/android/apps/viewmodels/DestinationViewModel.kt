@@ -1,9 +1,11 @@
 package com.travlog.android.apps.viewmodels
 
+import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
 import com.travlog.android.apps.libs.ActivityRequestCodes.SEARCH_LOCATION
 import com.travlog.android.apps.libs.ActivityViewModel
 import com.travlog.android.apps.libs.Environment
+import com.travlog.android.apps.libs.db.realm.RealmHelper
 import com.travlog.android.apps.libs.rx.Optional
 import com.travlog.android.apps.libs.rx.transformers.Transformers.takeWhen
 import com.travlog.android.apps.libs.utils.DateTimeUtils
@@ -22,6 +24,7 @@ import org.joda.time.DateTime
 import java.util.*
 import javax.inject.Inject
 
+@SuppressLint("CheckResult")
 class DestinationViewModel @Inject constructor(environment: Environment
 ) : ActivityViewModel<DestinationActivity>(environment),
         DestinationViewModelInputs, DestinationViewModelOutputs, DestinationViewModelErrors {
@@ -96,6 +99,11 @@ class DestinationViewModel @Inject constructor(environment: Environment
                     destination
                 })
                 .compose<Destination>(takeWhen(saveClick))
+                .doOnNext {
+                    it.id = RealmHelper.getAllDestinationsAsync(realm).size.toString()
+
+                    RealmHelper.saveDestinationAsync(it)
+                }
                 .compose(bindToLifecycle())
                 .subscribe { setResultAndBack.onNext(it) }
     }

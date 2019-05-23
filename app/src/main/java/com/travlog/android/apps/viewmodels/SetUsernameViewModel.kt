@@ -1,5 +1,6 @@
 package com.travlog.android.apps.viewmodels
 
+import android.annotation.SuppressLint
 import android.text.TextUtils
 import com.travlog.android.apps.libs.ActivityViewModel
 import com.travlog.android.apps.libs.CurrentUserType
@@ -23,6 +24,7 @@ import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
+@SuppressLint("CheckResult")
 class SetUsernameViewModel @Inject constructor(environment: Environment
 ) : ActivityViewModel<SetUsernameActivity>(environment),
         SetUsernameViewModelInputs, SetUsernameViewModelOutputs, SetUsernameViewModelErrors {
@@ -42,8 +44,7 @@ class SetUsernameViewModel @Inject constructor(environment: Environment
     private val back = CompletableSubject.create()
 
     init {
-
-        val isValid = username.map<Boolean>({ this.isValid(it) })
+        val isValid = username.map<Boolean>(this::isValid)
 
         isValid
                 .compose(bindToLifecycle())
