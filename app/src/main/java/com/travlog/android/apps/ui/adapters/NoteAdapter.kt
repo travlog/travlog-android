@@ -1,17 +1,14 @@
 package com.travlog.android.apps.ui.adapters
 
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.travlog.android.apps.R
 import com.travlog.android.apps.models.Note
 import com.travlog.android.apps.ui.viewholders.NoteViewHolder
 import timber.log.Timber
 import java.util.ArrayList
 import kotlin.collections.HashMap
-import kotlin.collections.List
-import kotlin.collections.MutableList
-import kotlin.collections.indexOf
 import kotlin.collections.set
 
 class NoteAdapter(private val delegate: Delegate) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {

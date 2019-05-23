@@ -4,16 +4,14 @@ import android.os.Bundle
 import android.util.Pair
 import android.view.Menu
 import android.view.MenuItem
-import com.jakewharton.rxbinding2.widget.RxTextView
+import com.jakewharton.rxbinding3.widget.textChanges
 import com.travlog.android.apps.R
 import com.travlog.android.apps.libs.BaseActivity
-import com.travlog.android.apps.libs.qualifiers.RequiresActivityViewModel
 import com.travlog.android.apps.libs.utils.TransitionUtils.slideInFromLeft
 import com.travlog.android.apps.viewmodels.EditNoteViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.a_post_note.*
 
-@RequiresActivityViewModel(EditNoteViewModel::class)
 class EditNoteActivity : BaseActivity<EditNoteViewModel>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,7 +21,7 @@ class EditNoteActivity : BaseActivity<EditNoteViewModel>() {
         setSupportActionBar(this.toolbar)
         setDisplayHomeAsUpEnabled(true)
 
-        RxTextView.textChanges(this.title_edit)
+        title_edit.textChanges()
                 .map<String>({ it.toString() })
                 .compose(bindToLifecycle())
                 .subscribe({ viewModel!!.inputs.title(it) })

@@ -2,13 +2,13 @@ package com.travlog.android.apps
 
 import android.content.Context
 import android.os.Bundle
-import android.support.annotation.CallSuper
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.annotation.CallSuper
 import com.travlog.android.apps.libs.Environment
 import com.travlog.android.apps.libs.FragmentLifeCycleType
 import com.travlog.android.apps.libs.rx.Optional
-import com.trello.rxlifecycle2.android.FragmentEvent
+import com.trello.rxlifecycle3.android.FragmentEvent
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
 import io.reactivex.subjects.PublishSubject

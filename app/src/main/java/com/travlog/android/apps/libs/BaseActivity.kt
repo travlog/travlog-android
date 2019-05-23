@@ -3,17 +3,15 @@ package com.travlog.android.apps.libs
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.support.annotation.AnimRes
-import android.support.annotation.CallSuper
 import android.util.Pair
 import android.view.MenuItem
+import androidx.annotation.AnimRes
+import androidx.annotation.CallSuper
 import butterknife.ButterKnife
 import com.travlog.android.apps.ApplicationComponent
 import com.travlog.android.apps.TravlogApplication
-import com.travlog.android.apps.libs.qualifiers.RequiresActivityViewModel
-import com.travlog.android.apps.libs.utils.BundleUtils.maybeGetBundle
 import com.travlog.android.apps.ui.data.ActivityResult
-import com.trello.rxlifecycle2.components.support.RxAppCompatActivity
+import com.trello.rxlifecycle3.components.support.RxAppCompatActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -48,8 +46,6 @@ open class BaseActivity<ViewModelType : ActivityViewModel<*>> : RxAppCompatActiv
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Timber.d("onCreate %s", this.toString())
-
-        assignViewModel(savedInstanceState)
 
         this.viewModel?.intent(intent)
     }
@@ -94,7 +90,6 @@ open class BaseActivity<ViewModelType : ActivityViewModel<*>> : RxAppCompatActiv
         super.onResume()
         Timber.d("onResume %s", this.toString())
 
-        assignViewModel(null)
         viewModel?.onResume(this)
     }
 
@@ -121,7 +116,6 @@ open class BaseActivity<ViewModelType : ActivityViewModel<*>> : RxAppCompatActiv
 
         if (isFinishing) {
             if (this.viewModel != null) {
-                ActivityViewModelManager.instance.destroy(this.viewModel!!)
                 this.viewModel = null
             }
         }
@@ -165,10 +159,6 @@ open class BaseActivity<ViewModelType : ActivityViewModel<*>> : RxAppCompatActiv
         Timber.d("onSaveInstanceState %s", this.toString())
 
         val viewModelEnvelope = Bundle()
-
-        viewModel?.let {
-            ActivityViewModelManager.instance.save(it, viewModelEnvelope)
-        }
 
         outState.putBundle(VIEW_MODEL_KEY, viewModelEnvelope)
     }
@@ -214,15 +204,6 @@ open class BaseActivity<ViewModelType : ActivityViewModel<*>> : RxAppCompatActiv
 
         exitTransition()?.let {
             overridePendingTransition(it.first, it.second)
-        }
-    }
-
-    private fun assignViewModel(viewModelEnvelope: Bundle?) {
-        if (viewModel == null) {
-            javaClass.getAnnotation(RequiresActivityViewModel::class.java)?.value?.let {
-                viewModel = ActivityViewModelManager.instance.fetch(this, it,
-                        maybeGetBundle(viewModelEnvelope, VIEW_MODEL_KEY))
-            }
         }
     }
 

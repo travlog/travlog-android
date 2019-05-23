@@ -6,31 +6,27 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_input_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:focusable="false"
         android:focusableInTouchMode="false"
         app:boxBackgroundMode="outline"
-        app:boxExpandedPaddingBottom="20dp"
-        app:boxExpandedPaddingTop="20dp"
-        app:boxPaddingLeft="16dp"
-        app:boxPaddingRight="16dp"
         app:boxStrokeColor="@color/black"
         app:boxStrokeWidth="1dp"
         app:errorEnabled="true"
         app:hintAnimationEnabled="false"
         app:hintEnabled="false">
 
-        <android.support.design.widget.TextInputEditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/text_input_edit_text"
             android:layout_width="match_parent"
             android:inputType=""
             android:layout_height="wrap_content" />
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/helper"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

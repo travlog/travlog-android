@@ -2,12 +2,12 @@ package com.travlog.android.apps.ui.widgets
 
 import android.content.Context
 import android.graphics.Rect
-import android.support.design.widget.BottomSheetBehavior
-import android.support.design.widget.CoordinatorLayout
-import android.support.v7.widget.Toolbar
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import androidx.appcompat.widget.Toolbar
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 
 class HandleableBottomSheetBehavior<V : View> : BottomSheetBehavior<V> {
 

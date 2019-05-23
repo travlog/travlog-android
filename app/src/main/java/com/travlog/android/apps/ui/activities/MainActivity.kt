@@ -2,11 +2,10 @@ package com.travlog.android.apps.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
-import com.jakewharton.rxbinding2.view.RxView
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.jakewharton.rxbinding3.view.clicks
 import com.travlog.android.apps.R
 import com.travlog.android.apps.libs.BaseActivity
-import com.travlog.android.apps.libs.qualifiers.RequiresActivityViewModel
 import com.travlog.android.apps.models.Note
 import com.travlog.android.apps.ui.IntentKey.NOTE
 import com.travlog.android.apps.ui.adapters.NoteAdapter
@@ -16,7 +15,6 @@ import com.travlog.android.apps.viewmodels.MainViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.a_main.*
 
-@RequiresActivityViewModel(MainViewModel::class)
 class MainActivity : BaseActivity<MainViewModel>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,15 +34,15 @@ class MainActivity : BaseActivity<MainViewModel>() {
             val adapter = NoteAdapter(this)
             recycler_view.adapter = adapter
 
-            RxView.clicks(add_note)
+            add_note.clicks()
                     .compose(bindToLifecycle())
                     .subscribe { showPostActivity() }
 
-            RxView.clicks(menu)
+            menu.clicks()
                     .compose(bindToLifecycle())
                     .subscribe { showMainMenuBottomSheet() }
 
-            RxView.clicks(my_info)
+            my_info.clicks()
                     .compose(bindToLifecycle())
                     .subscribe {
                         Intent(this@MainActivity, MyPageActivity::class.java).apply {

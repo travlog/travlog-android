@@ -1,7 +1,7 @@
 package com.travlog.android.apps.ui.viewholders
 
-import android.support.v7.widget.RecyclerView
 import android.view.View
+import androidx.recyclerview.widget.RecyclerView
 import com.travlog.android.apps.R
 import com.travlog.android.apps.libs.utils.DateTimeUtils
 import com.travlog.android.apps.models.Note

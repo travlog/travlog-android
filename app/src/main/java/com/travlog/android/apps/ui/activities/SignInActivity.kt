@@ -8,19 +8,17 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.Scopes
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.common.api.Scope
-import com.jakewharton.rxbinding2.view.RxView
-import com.jakewharton.rxbinding2.widget.RxTextView
+import com.jakewharton.rxbinding3.view.clicks
+import com.jakewharton.rxbinding3.widget.textChanges
 import com.travlog.android.apps.R
 import com.travlog.android.apps.libs.ActivityRequestCodes.SIGN_IN_WITH_GOOGLE
 import com.travlog.android.apps.libs.ActivityRequestCodes.SIGN_UP_FLOW
 import com.travlog.android.apps.libs.BaseActivity
-import com.travlog.android.apps.libs.qualifiers.RequiresActivityViewModel
 import com.travlog.android.apps.viewmodels.SignInViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.a_sign_in.*
 import timber.log.Timber
 
-@RequiresActivityViewModel(SignInViewModel::class)
 class SignInActivity : BaseActivity<SignInViewModel>() {
 
     private var googleApiClient: GoogleApiClient? = null
@@ -36,36 +34,36 @@ class SignInActivity : BaseActivity<SignInViewModel>() {
                 .requestScopes(Scope(Scopes.EMAIL))
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .build().let {
-                    googleApiClient = GoogleApiClient.Builder(this)
-                            .enableAutoManage(this) { Timber.d("onConnectionFailed: %s", it.errorMessage) }
-                            .addApi(Auth.GOOGLE_SIGN_IN_API, it)
-                            .build()
+//                    googleApiClient = GoogleApiClient.Builder(this)
+//                            .enableAutoManage(this) { Timber.d("onConnectionFailed: %s", it.errorMessage) }
+//                            .addApi(Auth.GOOGLE_SIGN_IN_API, it)
+//                            .build()
                 }
 
-        RxView.clicks(this.close_button)
+        close_button.clicks()
                 .compose(bindToLifecycle())
                 .subscribe { this.back() }
 
-        RxView.clicks(this.sign_in_with_google_button)
+        sign_in_with_google_button.clicks()
                 .compose(bindToLifecycle())
                 .subscribe { this.startSignInWithGoogleActivity() }
 
         viewModel?.apply {
-            RxTextView.textChanges(login_id)
+            login_id.textChanges()
                     .map { it.toString() }
                     .compose(bindToLifecycle())
                     .subscribe(inputs::loginId)
 
-            RxTextView.textChanges(password)
+            password.textChanges()
                     .map { it.toString() }
                     .compose(bindToLifecycle())
                     .subscribe(inputs::password)
 
-            RxView.clicks(sign_in_button)
+            sign_in_button.clicks()
                     .compose(bindToLifecycle())
                     .subscribe { inputs.signInClick() }
 
-            RxView.clicks(sign_up_button)
+            sign_up_button.clicks()
                     .compose(bindToLifecycle())
                     .subscribe { startSignUp() }
 

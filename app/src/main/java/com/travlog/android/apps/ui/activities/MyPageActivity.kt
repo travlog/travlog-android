@@ -5,16 +5,14 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import com.bumptech.glide.request.RequestOptions.circleCropTransform
-import com.jakewharton.rxbinding2.view.RxView
+import com.jakewharton.rxbinding3.view.clicks
 import com.travlog.android.apps.R
 import com.travlog.android.apps.libs.BaseActivity
 import com.travlog.android.apps.libs.glide.GlideApp
-import com.travlog.android.apps.libs.qualifiers.RequiresActivityViewModel
 import com.travlog.android.apps.viewmodels.MyPageViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.a_my_page.*
 
-@RequiresActivityViewModel(MyPageViewModel::class)
 class MyPageActivity : BaseActivity<MyPageViewModel>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,7 +22,7 @@ class MyPageActivity : BaseActivity<MyPageViewModel>() {
         setSupportActionBar(toolbar)
         setDisplayHomeAsUpEnabled(true)
 
-        RxView.clicks(this.username)
+        username.clicks()
                 .compose(bindToLifecycle())
                 .subscribe { this.startSetUserNameActivity() }
 

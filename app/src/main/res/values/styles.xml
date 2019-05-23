@@ -11,10 +11,10 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
-        <item name="colorPrimaryLight">@color/primary_light</item>
+        <!--<item name="colorPrimaryLight">@color/primary_light</item>-->
         <item name="colorSecondary">@color/secondary</item>
-        <item name="colorSecondaryDark">@color/secondary_dark</item>
-        <item name="colorSecondaryLight">@color/secondary_light</item>
+        <!--<item name="colorSecondaryDark">@color/secondary_dark</item>-->
+        <!--<item name="colorSecondaryLight">@color/secondary_light</item>-->
         <item name="colorAccent">@color/secondary</item>
 
         <item name="android:statusBarColor">@color/status_bar</item>

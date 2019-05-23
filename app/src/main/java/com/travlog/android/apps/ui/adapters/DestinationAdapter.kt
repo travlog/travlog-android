@@ -1,8 +1,8 @@
 package com.travlog.android.apps.ui.adapters
 
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.travlog.android.apps.R
 import com.travlog.android.apps.models.Destination
 import com.travlog.android.apps.ui.viewholders.DestinationViewHolder

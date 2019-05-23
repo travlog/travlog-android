@@ -3,21 +3,17 @@ package com.travlog.android.apps.ui.activities
 import android.content.Intent
 import android.os.Bundle
 import android.util.Pair
-import android.view.Menu
-import android.view.MenuItem
-import com.jakewharton.rxbinding2.view.RxView
-import com.jakewharton.rxbinding2.widget.RxTextView
+import com.jakewharton.rxbinding3.view.clicks
+import com.jakewharton.rxbinding3.widget.textChanges
 import com.travlog.android.apps.R
 import com.travlog.android.apps.libs.ActivityRequestCodes.DESTINATION
 import com.travlog.android.apps.libs.BaseActivity
-import com.travlog.android.apps.libs.qualifiers.RequiresActivityViewModel
 import com.travlog.android.apps.libs.utils.TransitionUtils.slideInFromLeft
 import com.travlog.android.apps.ui.adapters.DestinationAdapter
 import com.travlog.android.apps.viewmodels.PostNoteViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.a_post_note.*
 
-@RequiresActivityViewModel(PostNoteViewModel::class)
 class PostNoteActivity : BaseActivity<PostNoteViewModel>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,16 +29,16 @@ class PostNoteActivity : BaseActivity<PostNoteViewModel>() {
             val destinationsAdapter = DestinationAdapter(this)
             destination_recycler.adapter = destinationsAdapter
 
-            RxTextView.textChanges(title_edit)
+            title_edit.textChanges()
                     .map { it.toString() }
                     .compose(bindToLifecycle())
                     .subscribe(inputs::title)
 
-            RxView.clicks(add_destination)
+            add_destination.clicks()
                     .compose(bindToLifecycle())
                     .subscribe { showDestinationActivity() }
 
-            RxView.clicks(save_button)
+            save_button.clicks()
                     .compose(bindToLifecycle())
                     .subscribe { inputs.saveClick() }
 

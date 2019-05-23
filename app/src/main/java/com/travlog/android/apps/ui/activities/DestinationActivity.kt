@@ -3,15 +3,14 @@ package com.travlog.android.apps.ui.activities
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
-import android.support.design.widget.BottomSheetBehavior
 import android.util.Pair
 import android.view.View
-import com.jakewharton.rxbinding2.view.RxView
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.jakewharton.rxbinding3.view.clicks
 import com.savvi.rangedatepicker.CalendarPickerView
 import com.travlog.android.apps.R
 import com.travlog.android.apps.libs.ActivityRequestCodes.SEARCH_LOCATION
 import com.travlog.android.apps.libs.BaseActivity
-import com.travlog.android.apps.libs.qualifiers.RequiresActivityViewModel
 import com.travlog.android.apps.libs.utils.TransitionUtils.slideInFromLeft
 import com.travlog.android.apps.ui.IntentKey.DESTINATION
 import com.travlog.android.apps.ui.widgets.HandleableBottomSheetBehavior
@@ -23,7 +22,6 @@ import org.joda.time.DateTime
 import java.text.SimpleDateFormat
 import java.util.*
 
-@RequiresActivityViewModel(DestinationViewModel::class)
 class DestinationActivity : BaseActivity<DestinationViewModel>() {
 
     var bottomSheetCalendar: HandleableBottomSheetBehavior<View>? = null
@@ -68,11 +66,12 @@ class DestinationActivity : BaseActivity<DestinationViewModel>() {
                 }
             })
 
-            RxView.clicks(location_button)
+            location_button.clicks()
                     .compose(bindToLifecycle())
                     .subscribe { showSearchLocationActivity() }
 
-            Observable.merge(RxView.clicks(start_date), RxView.clicks(end_date))
+
+            Observable.merge(start_date.clicks(), end_date.clicks())
                     .compose(bindToLifecycle())
                     .subscribe {
                         calendar_view.scrollToDate(currentDateTime.toDate()).run {
@@ -80,7 +79,7 @@ class DestinationActivity : BaseActivity<DestinationViewModel>() {
                         }
                     }
 
-            RxView.clicks(save_button)
+            save_button.clicks()
                     .compose(bindToLifecycle())
                     .subscribe { inputs.saveClick() }
 

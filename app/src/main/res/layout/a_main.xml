@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,24 +10,24 @@
         android:id="@id/header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingBottom="28dp"
-        android:paddingEnd="32dp"
         android:paddingStart="32dp"
         android:paddingTop="28dp"
+        android:paddingEnd="32dp"
+        android:paddingBottom="28dp"
         android:text="Travlog"
         android:textColor="@color/primary_light"
         android:textSize="44sp" />
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@id/bottom_coordinator"
         app:layout_constraintTop_toBottomOf="@id/header"
         tools:listitem="@layout/i_note" />
 
-    <android.support.design.widget.CoordinatorLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/bottom_coordinator"
         android:layout_width="match_parent"
         android:layout_height="128dp"
@@ -40,14 +40,13 @@
             android:layout_marginBottom="?actionBarSize"
             android:background="@drawable/divider_background" />
 
-        <android.support.design.bottomappbar.BottomAppBar
+        <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@id/bottom_app_bar"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
             android:layout_gravity="bottom"
             app:backgroundTint="@color/white"
             app:fabAlignmentMode="center"
-            app:fabAttached="true"
             app:title="MY TRAVLOG1">
 
             <android.support.v7.widget.AppCompatImageButton
@@ -65,9 +64,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:src="@drawable/ic_account_circle_primary_24dp" />
-        </android.support.design.bottomappbar.BottomAppBar>
+        </com.google.android.material.bottomappbar.BottomAppBar>
 
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/add_note"
             android:layout_width="wrap_content"
             android:layout_height="64dp"
@@ -79,5 +78,5 @@
             app:fabSize="normal"
             app:layout_anchor="@+id/bottom_app_bar"
             app:layout_anchorGravity="center_horizontal" />
-    </android.support.design.widget.CoordinatorLayout>
-</android.support.constraint.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

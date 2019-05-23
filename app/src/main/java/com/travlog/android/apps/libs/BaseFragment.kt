@@ -2,15 +2,12 @@ package com.travlog.android.apps.libs
 
 import android.content.Context
 import android.os.Bundle
-import android.support.annotation.CallSuper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import butterknife.Unbinder
+import androidx.annotation.CallSuper
 import com.travlog.android.apps.FragmentViewModel
-import com.travlog.android.apps.libs.qualifiers.RequiresFragmentViewModel
-import com.travlog.android.apps.libs.utils.BundleUtils.maybeGetBundle
-import com.trello.rxlifecycle2.components.support.RxFragment
+import com.trello.rxlifecycle3.components.support.RxFragment
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 
@@ -24,7 +21,7 @@ open class BaseFragment<ViewModelType : FragmentViewModel<*>> : RxFragment(), Fr
     }
 
     @CallSuper
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         Timber.d("onAttach %s", this.toString())
     }
@@ -33,7 +30,6 @@ open class BaseFragment<ViewModelType : FragmentViewModel<*>> : RxFragment(), Fr
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Timber.d("onCreate %s", this.toString())
-        assignViewModel(savedInstanceState)
     }
 
     @CallSuper
@@ -96,17 +92,6 @@ open class BaseFragment<ViewModelType : FragmentViewModel<*>> : RxFragment(), Fr
         activity?.apply {
             if (isFinishing) {
                 viewModel?.onDetach()
-            }
-        }
-    }
-
-    private fun assignViewModel(viewModelEnvelope: Bundle?) {
-        if (viewModel == null) {
-            val viewModelTypeClass = javaClass.getAnnotation(RequiresFragmentViewModel::class.java)?.value
-            if (viewModelTypeClass != null) {
-                viewModel = FragmentViewModelManager.instance.fetch(context!!,
-                        viewModelTypeClass,
-                        maybeGetBundle(viewModelEnvelope, VIEW_MODEL_KEY))
             }
         }
     }

@@ -3,11 +3,11 @@ package com.travlog.android.apps.libs
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.annotation.CallSuper
 import android.util.Pair
+import androidx.annotation.CallSuper
 import com.travlog.android.apps.libs.rx.Optional
 import com.travlog.android.apps.ui.data.ActivityResult
-import com.trello.rxlifecycle2.android.ActivityEvent
+import com.trello.rxlifecycle3.android.ActivityEvent
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
 import io.reactivex.disposables.CompositeDisposable
@@ -90,8 +90,8 @@ open class ActivityViewModel<ViewType : ActivityLifeCycleType>(environment: Envi
      */
     protected fun <T> bindToLifecycle(): ObservableTransformer<T, T> {
         return ObservableTransformer { source ->
-            source.takeUntil(this.view.switchMap { v -> v.lifecycle().map { Pair.create(v, it) } }
-                    .filter({ isFinished(it.first, it.second) }))
+            source.takeUntil(this.view.switchMap { v -> v.lifecycle().map<Pair<ViewType, ActivityEvent>> { Pair.create(v, it) } }
+                    .filter { isFinished(it.first, it.second) })
         }
     }
 

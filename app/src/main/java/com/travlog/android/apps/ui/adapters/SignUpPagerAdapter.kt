@@ -1,10 +1,9 @@
 package com.travlog.android.apps.ui.adapters
 
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentPagerAdapter
 import android.util.SparseArray
-
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
 import com.travlog.android.apps.ui.fragments.SignUpEmailFragment
 import com.travlog.android.apps.ui.fragments.SignUpPasswordFragment
 

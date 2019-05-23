@@ -53,13 +53,13 @@ android {
                     keyPassword System.getenv("ALIAS_PASS")
                 }
             } else {
-                Properties properties = new Properties()
-                properties.load(rootProject.file('release.properties').newDataInputStream())
-
-                storeFile rootProject.file('travlog.jks')
-                storePassword properties['KEYSTORE_PASS']
-                keyAlias properties['ALIAS_NAME']
-                keyPassword properties['ALIAS_PASS']
+//                Properties properties = new Properties()
+//                properties.load(rootProject.file('release.properties').newDataInputStream())
+//
+//                storeFile rootProject.file('travlog.jks')
+//                storePassword properties['KEYSTORE_PASS']
+//                keyAlias properties['ALIAS_NAME']
+//                keyPassword properties['ALIAS_PASS']
             }
         }
     }
@@ -84,6 +84,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     applicationVariants.all { variant ->
@@ -122,17 +131,16 @@ dependencies {
     }
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "com.android.support:appcompat-v7:$support"
-    implementation "com.android.support:design:$support"
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.core:core-ktx:1.0.2'
+    implementation 'com.google.android.material:material:1.1.0-alpha06'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0-alpha01'
 
-    implementation 'com.android.support:multidex:1.0.3'
-
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin"
-    implementation "org.jetbrains.kotlin:kotlin-reflect:1.2.41"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin"
 
     implementation 'com.facebook.stetho:stetho:1.5.0'
 
@@ -143,13 +151,14 @@ dependencies {
 
     implementation 'com.jakewharton.timber:timber:4.7.0'
 
-    implementation "io.reactivex.rxjava2:rxjava:2.1.12"
-    implementation "io.reactivex.rxjava2:rxkotlin:2.2.0"
-    implementation "com.trello.rxlifecycle2:rxlifecycle-android:$rxlifecycle2"
-    implementation "com.trello.rxlifecycle2:rxlifecycle-components:$rxlifecycle2"
-    implementation "com.jakewharton.rxbinding2:rxbinding:$rxbinding2"
-    implementation "com.jakewharton.rxbinding2:rxbinding-support-v4:$rxbinding2"
-    implementation "com.jakewharton.rxbinding2:rxbinding-design:$rxbinding2"
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.8'
+
+    implementation "com.trello.rxlifecycle3:rxlifecycle-kotlin:$rxlifecycle"
+    implementation "com.trello.rxlifecycle3:rxlifecycle-android-lifecycle-kotlin:$rxlifecycle"
+    implementation "com.trello.rxlifecycle3:rxlifecycle-components:$rxlifecycle"
+
+    implementation "com.jakewharton.rxbinding3:rxbinding-core:$rxbinding"
+    implementation "com.jakewharton.rxbinding3:rxbinding-viewpager:$rxbinding"
 
     implementation "com.jakewharton:butterknife:$butterknife"
     kapt "com.jakewharton:butterknife-compiler:$butterknife"
@@ -165,7 +174,7 @@ dependencies {
 
     implementation "com.github.bumptech.glide:glide:$glide"
     kapt "com.github.bumptech.glide:compiler:$glide"
-    implementation 'jp.wasabeef:glide-transformations:3.1.1'
+    implementation 'jp.wasabeef:glide-transformations:4.0.0'
 
     implementation 'com.github.arimorty:floatingsearchview:2.1.1'
     implementation 'com.wdullaer:materialdatetimepicker:3.5.0'

@@ -2,17 +2,15 @@ package com.travlog.android.apps.ui.activities
 
 import android.os.Bundle
 import android.util.Pair
-import com.jakewharton.rxbinding2.view.RxView
-import com.jakewharton.rxbinding2.widget.RxTextView
+import com.jakewharton.rxbinding3.view.clicks
+import com.jakewharton.rxbinding3.widget.textChanges
 import com.travlog.android.apps.R
 import com.travlog.android.apps.libs.BaseActivity
-import com.travlog.android.apps.libs.qualifiers.RequiresActivityViewModel
 import com.travlog.android.apps.libs.utils.TransitionUtils.slideInFromLeft
 import com.travlog.android.apps.viewmodels.SetUsernameViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.a_set_username.*
 
-@RequiresActivityViewModel(SetUsernameViewModel::class)
 class SetUsernameActivity : BaseActivity<SetUsernameViewModel>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,12 +20,12 @@ class SetUsernameActivity : BaseActivity<SetUsernameViewModel>() {
         setSupportActionBar(toolbar)
         setDisplayHomeAsUpEnabled(true)
 
-        RxTextView.textChanges(this.username_edit)
+        username_edit.textChanges()
                 .map { it.toString() }
                 .compose(bindToLifecycle())
                 .subscribe(viewModel!!.inputs::username)
 
-        RxView.clicks(this.done)
+        done.clicks()
                 .compose(bindToLifecycle())
                 .subscribe { viewModel!!.doneClick() }
 

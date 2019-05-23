@@ -2,12 +2,12 @@ package com.travlog.android.apps.ui.widgets
 
 import android.content.Context
 import android.content.res.ColorStateList
-import android.support.constraint.ConstraintLayout
 import android.text.Editable
 import android.util.AttributeSet
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.travlog.android.apps.R
 import kotlinx.android.synthetic.main.w_state_edit_text.view.*
 

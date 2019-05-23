@@ -6,18 +6,16 @@ import com.facebook.login.LoginManager
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.GoogleApiClient
-import com.jakewharton.rxbinding2.view.RxView
+import com.jakewharton.rxbinding3.view.clicks
 import com.travlog.android.apps.R
 import com.travlog.android.apps.libs.ActivityRequestCodes.SIGN_IN_WITH_GOOGLE
 import com.travlog.android.apps.libs.BaseActivity
-import com.travlog.android.apps.libs.qualifiers.RequiresActivityViewModel
 import com.travlog.android.apps.libs.utils.TransitionUtils.slideInFromLeft
 import com.travlog.android.apps.viewmodels.LinkedAccountsViewModel
 import kotlinx.android.synthetic.main.a_linked_accounts.*
 import timber.log.Timber
 import java.util.*
 
-@RequiresActivityViewModel(LinkedAccountsViewModel::class)
 class LinkedAccountsActivity : BaseActivity<LinkedAccountsViewModel>() {
 
     private var googleApiClient: GoogleApiClient? = null
@@ -34,17 +32,17 @@ class LinkedAccountsActivity : BaseActivity<LinkedAccountsViewModel>() {
                 .requestEmail()
                 .build()
 
-        googleApiClient = GoogleApiClient.Builder(this)
-                .enableAutoManage(this
-                ) { connectionResult -> Timber.d("onConnectionFailed: %s", connectionResult.errorMessage) }
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build()
+//        googleApiClient = GoogleApiClient.Builder(this)
+//                .enableAutoManage(this
+//                ) { connectionResult -> Timber.d("onConnectionFailed: %s", connectionResult.errorMessage) }
+//                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+//                .build()
 
-        RxView.clicks(this.facebook)
+        facebook.clicks()
                 .compose(bindToLifecycle())
                 .subscribe { LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("email", "public_profile")) }
 
-        RxView.clicks(this.google)
+        google.clicks()
                 .compose(bindToLifecycle())
                 .subscribe { this.startSignInWithGoogleActivity() }
     }

@@ -5,10 +5,9 @@ import android.os.Bundle
 import android.util.Pair
 import android.view.Menu
 import android.view.MenuItem
-import com.jakewharton.rxbinding2.view.RxView
+import com.jakewharton.rxbinding3.view.clicks
 import com.travlog.android.apps.R
 import com.travlog.android.apps.libs.BaseActivity
-import com.travlog.android.apps.libs.qualifiers.RequiresActivityViewModel
 import com.travlog.android.apps.libs.utils.TransitionUtils.slideInFromLeft
 import com.travlog.android.apps.models.Note
 import com.travlog.android.apps.ui.IntentKey.NOTE
@@ -17,7 +16,6 @@ import com.travlog.android.apps.viewmodels.NoteDetailsViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.a_note_details.*
 
-@RequiresActivityViewModel(NoteDetailsViewModel::class)
 class NoteDetailsActivity : BaseActivity<NoteDetailsViewModel>() {
 
     private lateinit var destinationAdapter: DestinationAdapter
@@ -34,7 +32,7 @@ class NoteDetailsActivity : BaseActivity<NoteDetailsViewModel>() {
             destinationAdapter = DestinationAdapter(this)
             recycler_view.adapter = destinationAdapter
 
-            RxView.clicks(delete_button)
+            delete_button.clicks()
                     .compose(bindToLifecycle())
                     .subscribe { inputs.deleteClick() }
 
