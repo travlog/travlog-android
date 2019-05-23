@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Pair
 import androidx.annotation.CallSuper
+import androidx.lifecycle.ViewModel
 import com.travlog.android.apps.libs.rx.Optional
 import com.travlog.android.apps.ui.data.ActivityResult
 import com.trello.rxlifecycle3.android.ActivityEvent
@@ -14,7 +15,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 
-open class ActivityViewModel<ViewType : ActivityLifeCycleType>(environment: Environment) {
+open class ActivityViewModel<ViewType : ActivityLifeCycleType>(environment: Environment) : ViewModel() {
 
     private val viewChange = PublishSubject.create<Optional<ViewType>>()
     private val view = viewChange.filter({ it.isNotEmpty }).map({ it.get() })

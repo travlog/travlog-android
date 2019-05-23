@@ -11,6 +11,9 @@ import com.google.android.gms.common.api.Scope
 import com.jakewharton.rxbinding3.view.clicks
 import com.jakewharton.rxbinding3.widget.textChanges
 import com.travlog.android.apps.R
+import com.travlog.android.apps.ViewModelFactory
+import com.travlog.android.apps.getAppInjector
+import com.travlog.android.apps.getViewModel
 import com.travlog.android.apps.libs.ActivityRequestCodes.SIGN_IN_WITH_GOOGLE
 import com.travlog.android.apps.libs.ActivityRequestCodes.SIGN_UP_FLOW
 import com.travlog.android.apps.libs.BaseActivity
@@ -18,12 +21,19 @@ import com.travlog.android.apps.viewmodels.SignInViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.a_sign_in.*
 import timber.log.Timber
+import javax.inject.Inject
 
 class SignInActivity : BaseActivity<SignInViewModel>() {
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
 
     private var googleApiClient: GoogleApiClient? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        getAppInjector().inject(this)
+        viewModel = getViewModel(viewModelFactory)
+
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.a_sign_in)
@@ -34,10 +44,10 @@ class SignInActivity : BaseActivity<SignInViewModel>() {
                 .requestScopes(Scope(Scopes.EMAIL))
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .build().let {
-//                    googleApiClient = GoogleApiClient.Builder(this)
-//                            .enableAutoManage(this) { Timber.d("onConnectionFailed: %s", it.errorMessage) }
-//                            .addApi(Auth.GOOGLE_SIGN_IN_API, it)
-//                            .build()
+                    googleApiClient = GoogleApiClient.Builder(this)
+                            .enableAutoManage(this) { Timber.d("onConnectionFailed: %s", it.errorMessage) }
+                            .addApi(Auth.GOOGLE_SIGN_IN_API, it)
+                            .build()
                 }
 
         close_button.clicks()

@@ -18,8 +18,9 @@ import com.travlog.android.apps.viewmodels.outputs.MainViewModelOutputs
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
+import javax.inject.Inject
 
-class MainViewModel(environment: Environment) : ActivityViewModel<MainActivity>(environment),
+class MainViewModel @Inject constructor(environment: Environment) : ActivityViewModel<MainActivity>(environment),
         MainViewModelInputs, MainViewModelOutputs, MainViewModelErrors, NoteAdapter.Delegate {
 
     private val apiClient: ApiClientType = environment.apiClient

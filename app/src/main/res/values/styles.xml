@@ -3,7 +3,7 @@
     <style name="TravlogTheme" parent="TravlogBaseTheme" />
 
     <!-- Base application theme. -->
-    <style name="TravlogBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="TravlogBaseTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!--<item name="android:windowNoTitle">true</item>-->
         <!--<item name="android:windowActionBar">false</item>-->
         <!--<item name="android:windowAnimationStyle">@null</item>-->

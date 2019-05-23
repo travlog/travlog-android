@@ -10,7 +10,7 @@ import timber.log.Timber
 
 class TravlogApplication : Application() {
 
-    private var component: ApplicationComponent? = null
+    private lateinit var component: ApplicationComponent
 
     override fun onCreate() {
         super.onCreate()
@@ -36,7 +36,7 @@ class TravlogApplication : Application() {
         Stetho.initializeWithDefaults(this)
     }
 
-    fun component(): ApplicationComponent? {
+    fun component(): ApplicationComponent {
         return this.component
     }
 }

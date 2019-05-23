@@ -34,9 +34,11 @@ import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.CompletableSubject
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
+import javax.inject.Inject
 
-class SignInViewModel
-constructor(environment: Environment) : ActivityViewModel<SignInActivity>(environment), SignInViewModelInputs, SignInViewModelOutputs, SignInViewModelErrors {
+class SignInViewModel @Inject constructor(environment: Environment
+) : ActivityViewModel<SignInActivity>(environment),
+        SignInViewModelInputs, SignInViewModelOutputs, SignInViewModelErrors {
 
     private val client: ApiClientType = environment.apiClient
     private val currentUser: CurrentUserType = environment.currentUser

@@ -32,11 +32,10 @@ class LinkedAccountsActivity : BaseActivity<LinkedAccountsViewModel>() {
                 .requestEmail()
                 .build()
 
-//        googleApiClient = GoogleApiClient.Builder(this)
-//                .enableAutoManage(this
-//                ) { connectionResult -> Timber.d("onConnectionFailed: %s", connectionResult.errorMessage) }
-//                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-//                .build()
+        googleApiClient = GoogleApiClient.Builder(this)
+                .enableAutoManage(this) { connectionResult -> Timber.d("onConnectionFailed: %s", connectionResult.errorMessage) }
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build()
 
         facebook.clicks()
                 .compose(bindToLifecycle())
