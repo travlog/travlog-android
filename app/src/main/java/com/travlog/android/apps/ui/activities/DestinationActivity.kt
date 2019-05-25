@@ -6,6 +6,7 @@ import android.util.Pair
 import android.view.View
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.jakewharton.rxbinding3.view.clicks
+import com.jakewharton.rxbinding3.widget.textChanges
 import com.savvi.rangedatepicker.CalendarPickerView
 import com.travlog.android.apps.R
 import com.travlog.android.apps.ViewModelFactory
@@ -58,6 +59,11 @@ class DestinationActivity : BaseActivity<DestinationViewModel>() {
         }
 
         viewModel?.apply {
+            location.textChanges()
+                    .map { it.toString().trim() }
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(::location)
+
             calendar_view.setOnDateSelectedListener(object : CalendarPickerView.OnDateSelectedListener {
 
                 override fun onDateSelected(date: Date?) {

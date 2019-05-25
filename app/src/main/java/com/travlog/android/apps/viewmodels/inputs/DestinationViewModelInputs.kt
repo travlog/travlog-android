@@ -4,6 +4,8 @@ import java.util.*
 
 interface DestinationViewModelInputs {
 
+    fun location(location: String)
+
     fun startDate(date: Date?)
 
     fun endDate(date: Date?)

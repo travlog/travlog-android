@@ -29,6 +29,7 @@ class DestinationViewModel @Inject constructor(environment: Environment
 ) : ActivityViewModel<DestinationActivity>(environment),
         DestinationViewModelInputs, DestinationViewModelOutputs, DestinationViewModelErrors {
 
+    private val location = PublishSubject.create<String>()
     private val startDate = PublishSubject.create<Optional<Date?>>()
     private val endDate = PublishSubject.create<Optional<Date?>>()
     private val saveClick = PublishSubject.create<Optional<Any>>()
@@ -77,6 +78,13 @@ class DestinationViewModel @Inject constructor(environment: Environment
 
         val destination = Destination()
         Observable.merge(
+                location.map { location ->
+                    destination.location = Location().apply {
+                        name = location
+                    }
+                    destination
+
+                },
                 predictionIntent.map {
                     val location = Location()
                     location.placeId = it.placeId
@@ -106,6 +114,10 @@ class DestinationViewModel @Inject constructor(environment: Environment
                 }
                 .compose(bindToLifecycle())
                 .subscribe { setResultAndBack.onNext(it) }
+    }
+
+    override fun location(location: String) {
+        this.location.onNext(location)
     }
 
     override fun startDate(date: Date?) {
