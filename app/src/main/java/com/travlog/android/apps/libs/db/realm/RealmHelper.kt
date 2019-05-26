@@ -37,8 +37,8 @@ object RealmHelper {
         }
     }
 
-    fun getNoteAsync(realm: Realm, id: String): Note {
-        return realm.where(Note::class.java).equalTo(FIELD_ID, id).findFirstAsync()
+    fun getNoteAsync(realm: Realm, id: String): Note? {
+        return realm.where(Note::class.java).equalTo(FIELD_ID, id).findFirst()
     }
 
     fun getAllNotesAsync(realm: Realm): RealmResults<Note> {

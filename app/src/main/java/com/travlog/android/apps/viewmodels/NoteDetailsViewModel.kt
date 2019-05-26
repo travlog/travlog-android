@@ -50,7 +50,7 @@ class NoteDetailsViewModel @Inject constructor(environment: Environment
 
     init {
         val noteIntent = intent()
-                .map { i -> i.getStringExtra(NOTE_ID) ?: "" }
+                .map { it.getStringExtra(NOTE_ID) ?: "" }
                 .map { RealmHelper.getNoteAsync(realm, it) }
 
         note
@@ -80,7 +80,7 @@ class NoteDetailsViewModel @Inject constructor(environment: Environment
         Observable.merge(
                 noteIntent,
                 noteIntent.switchMap { note -> this.note(note.id) }
-                        .doOnNext({ NoteEvent.getInstance().post(it) }),
+                        .doOnNext { NoteEvent.getInstance().post(it) },
                 NoteEvent.getInstance().observable
         )
                 .compose(bindToLifecycle())

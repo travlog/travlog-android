@@ -19,12 +19,12 @@ import timber.log.Timber
 open class ActivityViewModel<ViewType : ActivityLifeCycleType>(environment: Environment) : ViewModel() {
 
     private val viewChange = PublishSubject.create<Optional<ViewType>>()
-    private val view = viewChange.filter({ it.isNotEmpty }).map({ it.get() })
+    private val view = viewChange.filter { it.isNotEmpty }.map { it.get() }
     private val disposables = CompositeDisposable()
     private val activityResult = PublishSubject.create<ActivityResult>()
     private val intent = PublishSubject.create<Intent>()
 
-    protected lateinit var realm: Realm
+    protected val realm: Realm = Realm.getDefaultInstance()
 
     /**
      * Takes activity result data from the activity.
@@ -44,7 +44,7 @@ open class ActivityViewModel<ViewType : ActivityLifeCycleType>(environment: Envi
     fun onCreate(context: Context, savedInstanceState: Bundle?) {
         Timber.d("onCreate %s", this.toString())
         dropView()
-        realm = Realm.getDefaultInstance()
+//        realm = Realm.getDefaultInstance()
     }
 
     @CallSuper

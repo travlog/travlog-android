@@ -31,20 +31,22 @@ class EditNoteActivity : BaseActivity<EditNoteViewModel>() {
         setSupportActionBar(this.toolbar)
         setDisplayHomeAsUpEnabled(true)
 
-        title_edit.textChanges()
-                .map<String>({ it.toString() })
-                .compose(bindToLifecycle())
-                .subscribe({ viewModel!!.inputs.title(it) })
+        viewModel?.apply {
+            title_edit.textChanges()
+                    .map<String> { it.toString() }
+                    .compose(bindToLifecycle())
+                    .subscribe(inputs::title)
 
-        viewModel!!.outputs.setTitleText()
-                .compose(bindToLifecycle())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ this.setTitleText(it) })
+            outputs.setTitleText()
+                    .compose(bindToLifecycle())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(this@EditNoteActivity::setTitleText)
 
-        addDisposable(
-                viewModel!!.outputs.back()
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe({ this.back() }))
+            addDisposable(
+                    outputs.back()
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe { this@EditNoteActivity.back() })
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

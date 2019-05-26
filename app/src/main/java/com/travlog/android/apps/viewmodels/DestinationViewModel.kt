@@ -78,34 +78,39 @@ class DestinationViewModel @Inject constructor(environment: Environment
 
         val destination = Destination()
         Observable.merge(
-                location.map { location ->
-                    destination.location = Location().apply {
-                        name = location
-                    }
-                    destination
+                location
+                        .doOnNext { setSaveButtonEnabled.onNext(it.isNotEmpty()) }
+                        .map { location ->
+                            destination.location = Location().apply {
+                                name = location
+                            }
+                            destination
 
-                },
-                predictionIntent.map {
-                    val location = Location()
-                    location.placeId = it.placeId
-                    location.name = it.structuredFormatting.mainText
-                    destination.location = location
-                    destination
-                },
-                startDate.map {
-                    when {
-                        it.isEmpty -> destination.startDate = null
-                        else -> destination.startDate = it.get()
-                    }
-                    destination
-                },
-                endDate.map {
-                    when {
-                        it.isEmpty -> destination.endDate = null
-                        else -> destination.endDate = it.get()
-                    }
-                    destination
-                })
+                        },
+                predictionIntent
+                        .map {
+                            val location = Location()
+                            location.placeId = it.placeId
+                            location.name = it.structuredFormatting.mainText
+                            destination.location = location
+                            destination
+                        },
+                startDate
+                        .map {
+                            when {
+                                it.isEmpty -> destination.startDate = null
+                                else -> destination.startDate = it.get()
+                            }
+                            destination
+                        },
+                endDate
+                        .map {
+                            when {
+                                it.isEmpty -> destination.endDate = null
+                                else -> destination.endDate = it.get()
+                            }
+                            destination
+                        })
                 .compose<Destination>(takeWhen(saveClick))
                 .doOnNext {
                     it.id = RealmHelper.getAllDestinationsAsync(realm).size.toString()
