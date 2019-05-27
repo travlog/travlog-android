@@ -9,7 +9,8 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize" />
+        android:layout_height="?actionBarSize"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/title_input_layout"
@@ -17,9 +18,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_vertical_padding"
         android:hint="@string/hint_title"
-        android:paddingEnd="@dimen/activity_horizontal_padding"
         android:paddingStart="@dimen/activity_horizontal_padding"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+        android:paddingEnd="@dimen/activity_horizontal_padding"
+        app:boxBackgroundColor="@android:color/transparent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/title_edit"
@@ -29,6 +31,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@id/add_destination"
+        style="?borderlessButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -36,9 +39,9 @@
         android:minHeight="55dp"
         android:text="@string/add_destination"
         android:textAllCaps="true"
-        app:backgroundTint="@color/white"
+        android:textColor="@color/g7"
         app:icon="@drawable/ic_add_white_24dp"
-        app:iconTint="@color/black"
+        app:iconTint="@color/g7"
         app:layout_constraintTop_toBottomOf="@+id/title_input_layout" />
 
     <androidx.recyclerview.widget.RecyclerView

@@ -8,10 +8,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.jakewharton.rxbinding3.view.clicks
 import com.jakewharton.rxbinding3.widget.textChanges
 import com.savvi.rangedatepicker.CalendarPickerView
-import com.travlog.android.apps.R
-import com.travlog.android.apps.ViewModelFactory
-import com.travlog.android.apps.getAppInjector
-import com.travlog.android.apps.getViewModel
+import com.travlog.android.apps.*
 import com.travlog.android.apps.libs.ActivityRequestCodes.SEARCH_LOCATION
 import com.travlog.android.apps.libs.BaseActivity
 import com.travlog.android.apps.libs.utils.TransitionUtils.slideInFromLeft
@@ -90,6 +87,10 @@ class DestinationActivity : BaseActivity<DestinationViewModel>() {
 
             Observable.merge(start_date.clicks(), end_date.clicks())
                     .compose(bindToLifecycle())
+                    .doOnNext {
+                        // TODO: SearchLocationActivity 를 호출하지 않고 직접 텍스트를 입력받도록 하여 추가함
+                        hideKeyboard()
+                    }
                     .subscribe {
                         calendar_view.scrollToDate(currentDateTime.toDate()).run {
                             bottomSheetCalendar?.state = BottomSheetBehavior.STATE_EXPANDED
