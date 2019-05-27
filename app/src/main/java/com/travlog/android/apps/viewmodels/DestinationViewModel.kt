@@ -21,6 +21,7 @@ import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import org.joda.time.DateTime
+import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
@@ -79,13 +80,15 @@ class DestinationViewModel @Inject constructor(environment: Environment
         val destination = Destination()
         Observable.merge(
                 location
+                        .doOnNext{Timber.d("location: doOnNext")}
+                        .doOnError { Timber.e(it, "location: doOnError") }
                         .doOnNext { setSaveButtonEnabled.onNext(it.isNotEmpty()) }
                         .map { location ->
                             destination.location = Location().apply {
+                                placeId = RealmHelper.getAllLocationsAsync(this@DestinationViewModel.realm).size.toString()
                                 name = location
                             }
                             destination
-
                         },
                 predictionIntent
                         .map {

@@ -3,8 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/travlog-android.iml" filepath="$PROJECT_DIR$/travlog-android.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/travlog-android.iml" filepath="$PROJECT_DIR$/.idea/travlog-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/travlog-android.iml" filepath="$PROJECT_DIR$/travlog-android.iml" />
     </modules>
   </component>
 </project>

@@ -3,6 +3,7 @@ package com.travlog.android.apps.libs.db.realm
 import android.content.Context
 import com.travlog.android.apps.models.Destination
 import com.travlog.android.apps.models.Destination.Companion.FIELD_ID
+import com.travlog.android.apps.models.Location
 import com.travlog.android.apps.models.Note
 import com.travlog.android.apps.models.Note.Companion.FIELD_CREATED_AT
 import io.realm.Realm
@@ -59,6 +60,10 @@ object RealmHelper {
 
     fun getAllDestinationsAsync(realm: Realm): RealmResults<Destination> {
         return realm.where(Destination::class.java).findAllAsync()
+    }
+
+    fun getAllLocationsAsync(realm: Realm): RealmResults<Location> {
+        return realm.where(Location::class.java).findAllAsync()
     }
 
     fun deleteAllAsync() {

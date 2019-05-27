@@ -22,6 +22,7 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.a_destination.*
 import org.joda.time.DateTime
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -62,6 +63,7 @@ class DestinationActivity : BaseActivity<DestinationViewModel>() {
             location.textChanges()
                     .map { it.toString().trim() }
                     .observeOn(AndroidSchedulers.mainThread())
+                    .doOnError { Timber.e(it, "location: ") }
                     .subscribe(::location)
 
             calendar_view.setOnDateSelectedListener(object : CalendarPickerView.OnDateSelectedListener {

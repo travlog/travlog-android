@@ -56,6 +56,7 @@ class PostNoteViewModel @Inject constructor(environment: Environment
                 .switchMap {
                     RealmHelper.getDestinationAsync(realm, it)
                             .asFlowable<Destination>()
+                            .firstElement()
                             .toObservable()
                 }
 
