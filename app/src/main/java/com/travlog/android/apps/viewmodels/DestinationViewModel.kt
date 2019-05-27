@@ -85,7 +85,7 @@ class DestinationViewModel @Inject constructor(environment: Environment
                         .doOnNext { setSaveButtonEnabled.onNext(it.isNotEmpty()) }
                         .map { location ->
                             destination.location = Location().apply {
-                                placeId = RealmHelper.getAllLocationsAsync(this@DestinationViewModel.realm).size.toString()
+                                id = RealmHelper.getAllLocations(this@DestinationViewModel.realm).size.toString()
                                 name = location
                             }
                             destination
@@ -116,7 +116,7 @@ class DestinationViewModel @Inject constructor(environment: Environment
                         })
                 .compose<Destination>(takeWhen(saveClick))
                 .doOnNext {
-                    it.id = RealmHelper.getAllDestinationsAsync(realm).size.toString()
+                    it.id = RealmHelper.getAllDestinations(realm).size.toString()
 
                     RealmHelper.saveDestinationAsync(it)
                 }

@@ -54,7 +54,7 @@ class MainViewModel @Inject constructor(environment: Environment
 //                            .doAfterTerminate {
 //                            }
 //                }
-                .map { RealmHelper.getAllNotesAsync(realm) }
+                .map { RealmHelper.getAllNotes(realm) }
                 .compose(bindToLifecycle())
                 .subscribe { updateData.onNext(it) }
 

@@ -51,11 +51,14 @@ class NoteDetailsViewModel @Inject constructor(environment: Environment
     init {
         val noteIntent = intent()
                 .map { it.getStringExtra(NOTE_ID) ?: "" }
-                .map { RealmHelper.getNoteAsync(realm, it) }
+                .map { RealmHelper.getNote(realm, it) }
 
         note
                 .compose(bindToLifecycle())
-                .doOnNext { Timber.d("note? %s", it) }
+                .doOnNext {
+                    Timber.d("note? %s", it)
+                    it.destinations.forEach { Timber.d("destination? $it, location? ${it.location}") }
+                }
                 .subscribe { setNote(it) }
 
         note

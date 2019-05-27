@@ -26,6 +26,7 @@ import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.CompletableSubject
 import io.reactivex.subjects.PublishSubject
+import timber.log.Timber
 import javax.inject.Inject
 
 @SuppressLint("CheckResult")
@@ -54,10 +55,10 @@ class PostNoteViewModel @Inject constructor(environment: Environment
                 .filter { it.resultCode == RESULT_OK }
                 .map { it.intent?.getStringExtra(IntentKey.DESTINATION_ID) ?: "" }
                 .switchMap {
-                    RealmHelper.getDestinationAsync(realm, it)
-                            .asFlowable<Destination>()
-                            .firstElement()
-                            .toObservable()
+                    RealmHelper.getDestination(realm, it)
+                            ?.asFlowable<Destination>()
+                            ?.firstElement()
+                            ?.toObservable()
                 }
 
         destinationObservable
@@ -74,11 +75,12 @@ class PostNoteViewModel @Inject constructor(environment: Environment
                     note
                 },
                 destinationObservable.map {
+                    Timber.d("destination? $it, location? ${it.location}")
                     note.destinations.add(it)
                     note
                 })
                 .compose<Note>(takeWhen(saveClick))
-                .doOnNext { it.id = RealmHelper.getAllNotesAsync(realm).size.toString() }
+                .doOnNext { it.id = RealmHelper.getAllNotes(realm).size.toString() }
                 .doOnNext { RealmHelper.saveNoteAsync(it) }
 //                .switchMap {
 //                    this.post(it)

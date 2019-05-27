@@ -45,7 +45,7 @@ class EditNoteViewModel @Inject constructor(environment: Environment
         intent()
                 .compose(bindToLifecycle())
                 .map { i -> i.getStringExtra(NOTE_ID) ?: "" }
-                .map { RealmHelper.getNoteAsync(realm, it) }
+                .map { RealmHelper.getNote(realm, it) }
                 .doOnNext { this.note = it }
                 .map { it.title }
                 .subscribe { setTitleText.onNext(it) }

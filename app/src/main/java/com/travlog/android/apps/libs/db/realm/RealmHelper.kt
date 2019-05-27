@@ -38,14 +38,14 @@ object RealmHelper {
         }
     }
 
-    fun getNoteAsync(realm: Realm, id: String): Note? {
+    fun getNote(realm: Realm, id: String): Note? {
         return realm.where(Note::class.java).equalTo(FIELD_ID, id).findFirst()
     }
 
-    fun getAllNotesAsync(realm: Realm): RealmResults<Note> {
-        Timber.d("getAllNotesAsync: ")
+    fun getAllNotes(realm: Realm): RealmResults<Note> {
+        Timber.d("getAllNotes: ")
 
-        return realm.where(Note::class.java).findAllAsync().sort(FIELD_CREATED_AT, Sort.DESCENDING)
+        return realm.where(Note::class.java).findAll().sort(FIELD_CREATED_AT, Sort.DESCENDING)
     }
 
     fun saveDestinationAsync(destination: Destination) {
@@ -54,16 +54,16 @@ object RealmHelper {
         }
     }
 
-    fun getDestinationAsync(realm: Realm, id: String): Destination {
-        return realm.where(Destination::class.java).equalTo(FIELD_ID, id).findFirstAsync()
+    fun getDestination(realm: Realm, id: String): Destination? {
+        return realm.where(Destination::class.java).equalTo(FIELD_ID, id).findFirst()
     }
 
-    fun getAllDestinationsAsync(realm: Realm): RealmResults<Destination> {
-        return realm.where(Destination::class.java).findAllAsync()
+    fun getAllDestinations(realm: Realm): RealmResults<Destination> {
+        return realm.where(Destination::class.java).findAll()
     }
 
-    fun getAllLocationsAsync(realm: Realm): RealmResults<Location> {
-        return realm.where(Location::class.java).findAllAsync()
+    fun getAllLocations(realm: Realm): RealmResults<Location> {
+        return realm.where(Location::class.java).findAll()
     }
 
     fun deleteAllAsync() {
