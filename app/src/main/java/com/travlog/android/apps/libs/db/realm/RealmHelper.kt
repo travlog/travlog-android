@@ -17,28 +17,29 @@ object RealmHelper {
     fun init(context: Context) {
         Realm.init(context)
 
-        val configuration = RealmConfiguration.Builder()
+        RealmConfiguration.Builder()
                 .deleteRealmIfMigrationNeeded()
                 .build()
-        Realm.setDefaultConfiguration(configuration)
+                .let {
+                    Realm.setDefaultConfiguration(it)
+                }
     }
 
     fun saveNoteAsync(note: Note) {
         Timber.d("saveNoteAsync: ${note.title}")
 
-        Realm.getDefaultInstance().apply {
-            executeTransaction { it.insertOrUpdate(note) }
-                    .apply {
-                        close()
-                    }
-
-//            executeTransactionAsync(
-//                    Realm.Transaction { it.insertOrUpdate(note) },
-//                    Realm.Transaction.OnSuccess { close() })
-        }
+        Realm.getDefaultInstance()
+                .apply {
+                    executeTransaction { it.insertOrUpdate(note) }
+                            .apply {
+                                close()
+                            }
+                }
     }
 
     fun getNote(realm: Realm, id: String): Note? {
+        Timber.d("getNote: $id")
+
         return realm.where(Note::class.java).equalTo(FIELD_ID, id).findFirst()
     }
 
@@ -49,28 +50,44 @@ object RealmHelper {
     }
 
     fun saveDestinationAsync(destination: Destination) {
-        Realm.getDefaultInstance().apply {
-            executeTransaction { it.insertOrUpdate(destination) }.apply { close() }
-        }
+        Timber.d("saveDestinationAsync: ${destination}")
+
+        Realm.getDefaultInstance()
+                .apply {
+                    executeTransaction { it.insertOrUpdate(destination) }
+                            .apply {
+                                close()
+                            }
+                }
     }
 
     fun getDestination(realm: Realm, id: String): Destination? {
+        Timber.d("getDestination: $id")
+
         return realm.where(Destination::class.java).equalTo(FIELD_ID, id).findFirst()
     }
 
     fun getAllDestinations(realm: Realm): RealmResults<Destination> {
+        Timber.d("getAllDestinations: ")
+
         return realm.where(Destination::class.java).findAll()
     }
 
     fun getAllLocations(realm: Realm): RealmResults<Location> {
+        Timber.d("getAllLocations: ")
+
         return realm.where(Location::class.java).findAll()
     }
 
     fun deleteAllAsync() {
         Timber.d("deleteAllAsync: ")
-        val realm = Realm.getDefaultInstance()
-        realm.executeTransactionAsync(
-                Realm.Transaction { it.deleteAll() },
-                Realm.Transaction.OnSuccess { realm.close() })
+
+        Realm.getDefaultInstance()
+                .apply {
+                    executeTransactionAsync { it.deleteAll() }
+                            .apply {
+                                close()
+                            }
+                }
     }
 }
