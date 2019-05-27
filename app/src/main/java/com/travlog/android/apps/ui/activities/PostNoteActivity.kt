@@ -63,6 +63,11 @@ class PostNoteActivity : BaseActivity<PostNoteViewModel>() {
                     .compose(bindToLifecycle())
                     .subscribe { showDestinationActivity() }
 
+            memo.textChanges()
+                    .map { it.toString() }
+                    .compose(bindToLifecycle())
+                    .subscribe(inputs::memo)
+
             save_button.clicks()
                     .compose(bindToLifecycle())
                     .subscribe { inputs.saveClick() }

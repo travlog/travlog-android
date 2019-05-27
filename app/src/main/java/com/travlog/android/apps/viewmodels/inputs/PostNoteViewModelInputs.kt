@@ -20,5 +20,7 @@ interface PostNoteViewModelInputs {
 
     fun title(title: String)
 
+    fun memo(memo: String)
+
     fun saveClick()
 }

@@ -174,6 +174,8 @@ class SignInViewModel @Inject constructor(environment: Environment
     }
 
     private fun clearFacebookSession(e: FacebookException) {
+        Timber.w(e, "clearFacebookSession: ")
+
         LoginManager.getInstance().logOut()
     }
 

@@ -42,7 +42,6 @@ import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.CompletableSubject
 import io.reactivex.subjects.PublishSubject
-import timber.log.Timber
 import javax.inject.Inject
 
 @SuppressLint("CheckResult")
@@ -53,6 +52,7 @@ class PostNoteViewModel @Inject constructor(environment: Environment
     private val apiClient: ApiClientType = environment.apiClient
 
     private val title = PublishSubject.create<String>()
+    private val memo = PublishSubject.create<String>()
     private val saveClick = PublishSubject.create<Optional<*>>()
 
     private val setSaveButtonEnabled = BehaviorSubject.create<Boolean>()
@@ -91,8 +91,11 @@ class PostNoteViewModel @Inject constructor(environment: Environment
                     note
                 },
                 destinationObservable.map {
-                    Timber.d("destination? $it, location? ${it.location}")
                     note.destinations.add(it)
+                    note
+                },
+                memo.map {
+                    note.memo = it
                     note
                 })
                 .compose<Note>(takeWhen(saveClick))
@@ -127,6 +130,8 @@ class PostNoteViewModel @Inject constructor(environment: Environment
                     .toObservable()
 
     override fun title(title: String) = this.title.onNext(title)
+
+    override fun memo(memo: String) = this.memo.onNext(memo)
 
     override fun saveClick() = this.saveClick.onNext(Optional<Any>(null))
 

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2019 Travlog. All rights reserved.
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -110,7 +109,8 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:paddingHorizontal="24dp"
-            android:paddingVertical="@dimen/activity_vertical_padding">
+            android:paddingVertical="@dimen/activity_vertical_padding"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -123,7 +123,8 @@
                     android:text="@string/sunday"
                     app:layout_constraintEnd_toStartOf="@+id/monday"
                     app:layout_constraintHorizontal_chainStyle="spread_inside"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/monday"
@@ -131,7 +132,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/monday"
                     app:layout_constraintEnd_toStartOf="@+id/tuesday"
-                    app:layout_constraintStart_toEndOf="@+id/sunday" />
+                    app:layout_constraintStart_toEndOf="@+id/sunday"
+                    app:layout_constraintTop_toTopOf="@+id/sunday" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tuesday"
@@ -139,7 +141,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/tuesday"
                     app:layout_constraintEnd_toStartOf="@+id/wednesday"
-                    app:layout_constraintStart_toEndOf="@+id/monday" />
+                    app:layout_constraintStart_toEndOf="@+id/monday"
+                    app:layout_constraintTop_toTopOf="@+id/sunday" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/wednesday"
@@ -147,7 +150,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/wednesday"
                     app:layout_constraintEnd_toStartOf="@+id/thursday"
-                    app:layout_constraintStart_toEndOf="@+id/tuesday" />
+                    app:layout_constraintStart_toEndOf="@+id/tuesday"
+                    app:layout_constraintTop_toTopOf="@+id/sunday" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/thursday"
@@ -155,7 +159,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/thursday"
                     app:layout_constraintEnd_toStartOf="@+id/friday"
-                    app:layout_constraintStart_toEndOf="@+id/wednesday" />
+                    app:layout_constraintStart_toEndOf="@+id/wednesday"
+                    app:layout_constraintTop_toTopOf="@+id/sunday" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/friday"
@@ -163,7 +168,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/friday"
                     app:layout_constraintEnd_toStartOf="@+id/saturday"
-                    app:layout_constraintStart_toEndOf="@+id/thursday" />
+                    app:layout_constraintStart_toEndOf="@+id/thursday"
+                    app:layout_constraintTop_toTopOf="@+id/sunday" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/saturday"
@@ -171,7 +177,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/saturday"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/friday" />
+                    app:layout_constraintStart_toEndOf="@+id/friday"
+                    app:layout_constraintTop_toTopOf="@+id/sunday" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.appbar.AppBarLayout>
 

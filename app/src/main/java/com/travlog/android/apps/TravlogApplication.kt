@@ -37,9 +37,9 @@ class TravlogApplication : Application() {
         this.component = DaggerApplicationComponent.builder()
                 .applicationModule(ApplicationModule(this))
                 .build()
-        component()!!.inject(this)
+        component().inject(this)
 
-        Crashlytics.setString("git-sha", component!!.environment().build.sha())
+        Crashlytics.setString("git-sha", component.environment().build.sha())
         AppEventsLogger.activateApp(this)
 
         RealmHelper.init(this)

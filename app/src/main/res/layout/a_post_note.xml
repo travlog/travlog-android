@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2019 Travlog. All rights reserved.
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,45 +27,70 @@
         android:layout_height="?actionBarSize"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/title_input_layout"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_vertical_padding"
-        android:hint="@string/hint_title"
-        android:paddingStart="@dimen/activity_horizontal_padding"
-        android:paddingEnd="@dimen/activity_horizontal_padding"
-        app:boxBackgroundColor="@android:color/transparent"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingTop="@dimen/activity_horizontal_padding"
+        android:paddingBottom="@dimen/activity_horizontal_padding"
+        app:layout_constraintBottom_toTopOf="@id/save_button"
         app:layout_constraintTop_toBottomOf="@id/toolbar">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/title_edit"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_height="wrap_content">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@id/add_destination"
-        style="?borderlessButtonStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:gravity="center_vertical"
-        android:minHeight="55dp"
-        android:text="@string/add_destination"
-        android:textAllCaps="true"
-        android:textColor="@color/g7"
-        app:icon="@drawable/ic_add_white_24dp"
-        app:iconTint="@color/g7"
-        app:layout_constraintTop_toBottomOf="@+id/title_input_layout" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/title_input_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_title"
+                android:paddingStart="@dimen/activity_horizontal_padding"
+                android:paddingEnd="@dimen/activity_horizontal_padding"
+                app:boxBackgroundColor="@android:color/transparent"
+                app:layout_constraintTop_toTopOf="parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@id/destination_recycler"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintTop_toBottomOf="@id/add_destination"
-        tools:listitem="@layout/i_destination" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/title_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@id/add_destination"
+                style="?borderlessButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_padding"
+                android:gravity="center_vertical"
+                android:minHeight="55dp"
+                android:text="@string/add_destination"
+                android:textAllCaps="true"
+                android:textColor="@color/g7"
+                app:icon="@drawable/ic_add_white_24dp"
+                app:iconTint="@color/g7"
+                app:layout_constraintTop_toBottomOf="@+id/title_input_layout" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@id/destination_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/add_destination"
+                tools:listitem="@layout/i_destination" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@id/memo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/activity_horizontal_padding"
+                android:layout_marginTop="@dimen/activity_vertical_padding"
+                android:layout_marginEnd="@dimen/activity_horizontal_padding"
+                android:hint="@string/memo"
+                app:layout_constraintTop_toBottomOf="@id/destination_recycler" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.button.MaterialButton
         android:id="@id/save_button"
