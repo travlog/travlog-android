@@ -95,7 +95,7 @@ class PostNoteActivity : BaseActivity<PostNoteViewModel>() {
     }
 
     private fun showDestinationActivity() =
-            Intent(this, DestinationActivity::class.java).let {
+            Intent(this, PostDestinationActivity::class.java).let {
                 startActivityForResult(it, DESTINATION)
                 overridePendingTransition(R.anim.slide_in_right, R.anim.fade_out_slide_out_left)
             }

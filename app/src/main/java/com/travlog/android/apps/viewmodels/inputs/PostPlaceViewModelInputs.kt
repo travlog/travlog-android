@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
-package com.travlog.android.apps.viewmodels.errors
+package com.travlog.android.apps.viewmodels.inputs
 
-interface DestinationViewModelErrors
+interface PostPlaceViewModelInputs {
+
+    fun place(place: String)
+
+    fun saveClick()
+}

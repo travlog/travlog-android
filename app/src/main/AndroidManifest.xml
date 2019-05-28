@@ -114,7 +114,7 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".ui.activities.DestinationActivity"
+            android:name=".ui.activities.PostDestinationActivity"
             android:label=""
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
 
@@ -122,6 +122,8 @@
             android:name=".ui.activities.SearchLocationActivity"
             android:theme="@style/TravlogTheme.SearchLocation"
             android:windowSoftInputMode="stateAlwaysVisible" />
+
+        <activity android:name=".ui.activities.PostPlaceActivity" />
     </application>
 
 </manifest>

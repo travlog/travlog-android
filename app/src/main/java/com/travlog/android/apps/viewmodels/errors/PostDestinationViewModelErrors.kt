@@ -14,17 +14,6 @@
  * limitations under the License.
  */
 
-package com.travlog.android.apps.viewmodels.inputs
+package com.travlog.android.apps.viewmodels.errors
 
-import java.util.*
-
-interface DestinationViewModelInputs {
-
-    fun location(location: String)
-
-    fun startDate(date: Date?)
-
-    fun endDate(date: Date?)
-
-    fun saveClick()
-}
+interface PostDestinationViewModelErrors

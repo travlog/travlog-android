@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-package com.travlog.android.apps.libs
+package com.travlog.android.apps.ui.viewholders
 
-object ActivityRequestCodes {
+import android.view.View
+import androidx.recyclerview.widget.RecyclerView
+import com.travlog.android.apps.models.Place
 
-    const val SIGN_UP_FLOW = 5120
-    const val SIGN_IN_WITH_GOOGLE = 5121
-    const val EDIT_DESTINATION = 5122
-    const val SEARCH_LOCATION = 5123
-    const val DESTINATION = 5124
-    const val PLACE = 5123
+class PlaceViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+    fun bindData(place: Place) {
+
+    }
 }

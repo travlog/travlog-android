@@ -29,18 +29,19 @@ import com.travlog.android.apps.libs.ActivityRequestCodes.SEARCH_LOCATION
 import com.travlog.android.apps.libs.BaseActivity
 import com.travlog.android.apps.libs.utils.TransitionUtils.slideInFromLeft
 import com.travlog.android.apps.ui.IntentKey.DESTINATION_ID
+import com.travlog.android.apps.ui.adapters.PlaceAdapter
 import com.travlog.android.apps.ui.widgets.HandleableBottomSheetBehavior
-import com.travlog.android.apps.viewmodels.DestinationViewModel
+import com.travlog.android.apps.viewmodels.PostDestinationViewModel
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import kotlinx.android.synthetic.main.a_destination.*
+import kotlinx.android.synthetic.main.a_post_destination.*
 import org.joda.time.DateTime
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
-class DestinationActivity : BaseActivity<DestinationViewModel>() {
+class PostDestinationActivity : BaseActivity<PostDestinationViewModel>() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -53,7 +54,7 @@ class DestinationActivity : BaseActivity<DestinationViewModel>() {
 
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.a_destination)
+        setContentView(R.layout.a_post_destination)
 
         setSupportActionBar(toolbar)
         setDisplayHomeAsUpEnabled(true)
@@ -71,6 +72,8 @@ class DestinationActivity : BaseActivity<DestinationViewModel>() {
 
             calendar_view.scrollToDate(it.toDate())
         }
+
+        val adapter = PlaceAdapter()
 
         viewModel?.apply {
             location.textChanges()
@@ -129,6 +132,10 @@ class DestinationActivity : BaseActivity<DestinationViewModel>() {
             outputs.setEndDateText()
                     .compose(bindToLifecycle())
                     .subscribe { setEndDateText(it) }
+
+            outputs.addPlace()
+                    .compose(bindToLifecycle())
+                    .subscribe { adapter.addData(it) }
 
             outputs.setSaveButtonEnabled()
                     .compose(bindToLifecycle())

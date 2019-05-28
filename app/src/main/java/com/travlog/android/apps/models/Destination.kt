@@ -16,6 +16,7 @@
 
 package com.travlog.android.apps.models
 
+import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import java.util.*
@@ -28,6 +29,7 @@ open class Destination : RealmObject() {
     var endDate: Date? = null
     var location: Location? = null
     var order: Int = 0
+    var places: RealmList<Place> = RealmList()
 
     companion object {
         const val FIELD_ID = "id"

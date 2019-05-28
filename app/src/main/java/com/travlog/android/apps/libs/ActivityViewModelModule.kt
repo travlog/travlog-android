@@ -79,8 +79,8 @@ abstract class ActivityViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(DestinationViewModel::class)
-    internal abstract fun destinationViewModel(viewModel: DestinationViewModel): ViewModel
+    @ViewModelKey(PostDestinationViewModel::class)
+    internal abstract fun postDestinationViewModel(viewModel: PostDestinationViewModel): ViewModel
 
     @Binds
     @IntoMap

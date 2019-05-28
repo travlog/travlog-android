@@ -18,6 +18,7 @@ package com.travlog.android.apps.viewmodels
 
 import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
+import com.travlog.android.apps.libs.ActivityRequestCodes.PLACE
 import com.travlog.android.apps.libs.ActivityRequestCodes.SEARCH_LOCATION
 import com.travlog.android.apps.libs.ActivityViewModel
 import com.travlog.android.apps.libs.Environment
@@ -27,51 +28,66 @@ import com.travlog.android.apps.libs.rx.transformers.Transformers.takeWhen
 import com.travlog.android.apps.libs.utils.DateTimeUtils
 import com.travlog.android.apps.models.Destination
 import com.travlog.android.apps.models.Location
+import com.travlog.android.apps.models.Place
 import com.travlog.android.apps.models.Prediction
+import com.travlog.android.apps.ui.IntentKey.PLACE_ID
 import com.travlog.android.apps.ui.IntentKey.PREDICTION
-import com.travlog.android.apps.ui.activities.DestinationActivity
-import com.travlog.android.apps.viewmodels.errors.DestinationViewModelErrors
-import com.travlog.android.apps.viewmodels.inputs.DestinationViewModelInputs
-import com.travlog.android.apps.viewmodels.outputs.DestinationViewModelOutputs
+import com.travlog.android.apps.ui.activities.PostDestinationActivity
+import com.travlog.android.apps.viewmodels.errors.PostDestinationViewModelErrors
+import com.travlog.android.apps.viewmodels.inputs.PostDestinationViewModelInputs
+import com.travlog.android.apps.viewmodels.outputs.PostDestinationViewModelOutputs
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import org.joda.time.DateTime
-import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
 @SuppressLint("CheckResult")
-class DestinationViewModel @Inject constructor(environment: Environment
-) : ActivityViewModel<DestinationActivity>(environment),
-        DestinationViewModelInputs, DestinationViewModelOutputs, DestinationViewModelErrors {
+class PostDestinationViewModel @Inject constructor(environment: Environment
+) : ActivityViewModel<PostDestinationActivity>(environment),
+        PostDestinationViewModelInputs, PostDestinationViewModelOutputs, PostDestinationViewModelErrors {
 
     private val location = PublishSubject.create<String>()
     private val startDate = PublishSubject.create<Optional<Date?>>()
     private val endDate = PublishSubject.create<Optional<Date?>>()
-    private val saveClick = PublishSubject.create<Optional<Any>>()
+    private val saveClick = PublishSubject.create<Any>()
 
     private val setLocationText = BehaviorSubject.create<String>()
     private val setStartDateText = BehaviorSubject.create<String>()
     private val setEndDateText = BehaviorSubject.create<String>()
+    private val addPlace = BehaviorSubject.create<Place>()
     private val setSaveButtonEnabled = BehaviorSubject.create<Boolean>()
     private val setResultAndBack = BehaviorSubject.create<Destination>()
 
-    val inputs: DestinationViewModelInputs = this
-    val outputs: DestinationViewModelOutputs = this
-    val errors: DestinationViewModelErrors = this
+    val inputs: PostDestinationViewModelInputs = this
+    val outputs: PostDestinationViewModelOutputs = this
+    val errors: PostDestinationViewModelErrors = this
 
     init {
         val predictionIntent: Observable<Prediction> = activityResult()
-                .filter { it.requestCode == SEARCH_LOCATION }
-                .filter { it.resultCode == RESULT_OK }
+                .filter { it.requestCode == SEARCH_LOCATION && it.resultCode == RESULT_OK }
                 .map { it.intent?.getParcelableExtra(PREDICTION) as Prediction }
                 .doOnNext { setSaveButtonEnabled.onNext(true) }
+
+        val placeObservable = activityResult()
+                .filter { it.requestCode == PLACE && it.resultCode == RESULT_OK }
+                .map { it.intent?.getStringExtra(PLACE_ID) ?: "" }
+                .switchMap {
+                    RealmHelper.getPlace(realm, it)
+                            ?.asFlowable<Place>()
+                            ?.firstElement()
+                            ?.toObservable()
+                }
 
         predictionIntent
                 .map { it.structuredFormatting.mainText }
                 .compose(bindToLifecycle())
                 .subscribe(setLocationText)
+
+        placeObservable
+                .compose(bindToLifecycle())
+                .subscribe(addPlace)
 
         startDate
                 .map {
@@ -93,43 +109,38 @@ class DestinationViewModel @Inject constructor(environment: Environment
                 .compose(bindToLifecycle())
                 .subscribe(setEndDateText)
 
+        location.map { it.isNotEmpty() }
+                .compose(bindToLifecycle())
+                .subscribe(setSaveButtonEnabled)
+
         val destination = Destination()
         Observable.merge(
-                location
-                        .doOnNext{Timber.d("location: doOnNext")}
-                        .doOnError { Timber.e(it, "location: doOnError") }
-                        .doOnNext { setSaveButtonEnabled.onNext(it.isNotEmpty()) }
-                        .map { location ->
-                            destination.location = Location().apply {
-                                id = RealmHelper.getAllLocations(this@DestinationViewModel.realm).size.toString()
-                                name = location
-                            }
-                            destination
-                        },
-                predictionIntent
-                        .map {
-                            val location = Location()
-                            location.placeId = it.placeId
-                            location.name = it.structuredFormatting.mainText
-                            destination.location = location
-                            destination
-                        },
-                startDate
-                        .map {
-                            when {
-                                it.isEmpty -> destination.startDate = null
-                                else -> destination.startDate = it.get()
-                            }
-                            destination
-                        },
-                endDate
-                        .map {
-                            when {
-                                it.isEmpty -> destination.endDate = null
-                                else -> destination.endDate = it.get()
-                            }
-                            destination
-                        })
+                location.doOnNext {
+                    destination.location = Location().apply {
+                        id = RealmHelper.getAllLocations(this@PostDestinationViewModel.realm).size.toString()
+                        name = it
+                    }
+                },
+                predictionIntent.doOnNext {
+                    val location = Location()
+                    location.placeId = it.placeId
+                    location.name = it.structuredFormatting.mainText
+                    destination.location = location
+                },
+                startDate.doOnNext {
+                    when {
+                        it.isEmpty -> destination.startDate = null
+                        else -> destination.startDate = it.get()
+                    }
+                },
+                endDate.doOnNext {
+                    when {
+                        it.isEmpty -> destination.endDate = null
+                        else -> destination.endDate = it.get()
+                    }
+                }
+        )
+                .map { destination }
                 .compose<Destination>(takeWhen(saveClick))
                 .doOnNext {
                     it.id = RealmHelper.getAllDestinations(realm).size.toString()
@@ -140,29 +151,15 @@ class DestinationViewModel @Inject constructor(environment: Environment
                 .subscribe { setResultAndBack.onNext(it) }
     }
 
-    override fun location(location: String) {
-        this.location.onNext(location)
-    }
-
-    override fun startDate(date: Date?) {
-        startDate.onNext(Optional(date))
-    }
-
-    override fun endDate(date: Date?) {
-        endDate.onNext(Optional(date))
-    }
-
-    override fun saveClick() {
-        saveClick.onNext(Optional(null))
-    }
+    override fun location(location: String) = this.location.onNext(location)
+    override fun startDate(date: Date?) = startDate.onNext(Optional(date))
+    override fun endDate(date: Date?) = endDate.onNext(Optional(date))
+    override fun saveClick() = saveClick.onNext(0)
 
     override fun setLocationText(): Observable<String> = setLocationText
-
     override fun setStartDateText(): Observable<String> = setStartDateText
-
     override fun setEndDateText(): Observable<String> = setEndDateText
-
+    override fun addPlace(): Observable<Place> = addPlace
     override fun setSaveButtonEnabled(): Observable<Boolean> = setSaveButtonEnabled
-
     override fun setResultAndBack(): Observable<Destination> = setResultAndBack
 }

@@ -21,6 +21,7 @@ object IntentKey {
     const val NOTE = "com.travlog.android.apps.intent_note"
     const val NOTE_ID = "com.travlog.android.apps.intent_note_id"
     const val PREDICTION = "com.travlog.android.apps.intent_prediction"
-    const val DESTINATION = "con.travlog.android.apps_intent_destination"
-    const val DESTINATION_ID = "con.travlog.android.apps_intent_destination_id"
+    const val DESTINATION = "com.travlog.android.apps_intent_destination"
+    const val DESTINATION_ID = "com.travlog.android.apps_intent_destination_id"
+    const val PLACE_ID = "com.travlog.android.apps_intent_place_id"
 }

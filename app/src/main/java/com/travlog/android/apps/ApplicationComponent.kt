@@ -39,8 +39,9 @@ interface ApplicationComponent {
     fun inject(activity: EditNoteActivity)
     fun inject(activity: SearchLocationActivity)
     fun inject(activity: SettingsActivity)
-    fun inject(activity: DestinationActivity)
+    fun inject(activity: PostDestinationActivity)
     fun inject(activity: SignInActivity)
     fun inject(activity: SetUsernameActivity)
     fun inject(activity: PostNoteActivity)
+    fun inject(activity: PostPlaceActivity)
 }

@@ -22,6 +22,7 @@ import com.travlog.android.apps.models.Destination.Companion.FIELD_ID
 import com.travlog.android.apps.models.Location
 import com.travlog.android.apps.models.Note
 import com.travlog.android.apps.models.Note.Companion.FIELD_CREATED_AT
+import com.travlog.android.apps.models.Place
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import io.realm.RealmResults
@@ -99,6 +100,30 @@ object RealmHelper {
         Timber.d("getAllLocations: ")
 
         return realm.where(Location::class.java).findAll()
+    }
+
+    fun getAllPlaces(realm: Realm): RealmResults<Place> {
+        Timber.d("getAllPlaces: ")
+
+        return realm.where(Place::class.java).findAll()
+    }
+
+    fun savePlaceAsync(place: Place) {
+        Timber.d("savePlaceAsync: $place")
+
+        Realm.getDefaultInstance()
+                .apply {
+                    executeTransaction { it.insertOrUpdate(place) }
+                            .apply {
+                                close()
+                            }
+                }
+    }
+
+    fun getPlace(realm: Realm, id: String): Place? {
+        Timber.d("getPlace: $id")
+
+        return realm.where(Place::class.java).equalTo(FIELD_ID, id).findFirst()
     }
 
     fun deleteAllAsync() {

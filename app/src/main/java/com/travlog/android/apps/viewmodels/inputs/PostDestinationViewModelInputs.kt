@@ -14,20 +14,17 @@
  * limitations under the License.
  */
 
-package com.travlog.android.apps.viewmodels.outputs
+package com.travlog.android.apps.viewmodels.inputs
 
-import com.travlog.android.apps.models.Destination
-import io.reactivex.Observable
+import java.util.*
 
-interface DestinationViewModelOutputs {
+interface PostDestinationViewModelInputs {
 
-    fun setLocationText(): Observable<String>
+    fun location(location: String)
 
-    fun setStartDateText(): Observable<String>
+    fun startDate(date: Date?)
 
-    fun setEndDateText(): Observable<String>
+    fun endDate(date: Date?)
 
-    fun setSaveButtonEnabled(): Observable<Boolean>
-
-    fun setResultAndBack(): Observable<Destination>
+    fun saveClick()
 }
