@@ -21,15 +21,16 @@ import android.os.Bundle
 import android.util.Pair
 import android.view.Menu
 import android.view.MenuItem
+import androidx.databinding.DataBindingUtil
 import com.jakewharton.rxbinding3.view.clicks
 import com.travlog.android.apps.R
 import com.travlog.android.apps.ViewModelFactory
+import com.travlog.android.apps.databinding.ANoteDetailsBinding
 import com.travlog.android.apps.getAppInjector
 import com.travlog.android.apps.getViewModel
 import com.travlog.android.apps.libs.BaseActivity
 import com.travlog.android.apps.libs.utils.TransitionUtils.slideInFromLeft
 import com.travlog.android.apps.models.Note
-import com.travlog.android.apps.ui.IntentKey.NOTE
 import com.travlog.android.apps.ui.IntentKey.NOTE_ID
 import com.travlog.android.apps.ui.adapters.DestinationAdapter
 import com.travlog.android.apps.viewmodels.NoteDetailsViewModel
@@ -50,23 +51,26 @@ class NoteDetailsActivity : BaseActivity<NoteDetailsViewModel>() {
 
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.a_note_details).run {
-            setSupportActionBar(toolbar)
-            setDisplayHomeAsUpEnabled(true)
-        }
+        val binding = DataBindingUtil.setContentView<ANoteDetailsBinding>(this, R.layout.a_note_details)
+                .apply {
+                    setSupportActionBar(toolbar)
+                    setDisplayHomeAsUpEnabled(true)
+                }
 
         viewModel?.apply {
             destinationAdapter = DestinationAdapter(this)
-            recycler_view.adapter = destinationAdapter
+                    .apply {
+                        recycler_view.adapter = this
+                    }
 
             delete_button.clicks()
                     .compose(bindToLifecycle())
                     .subscribe { inputs.deleteClick() }
 
-            outputs.setTitleText()
+            outputs.setNote()
                     .compose(bindToLifecycle())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe { setTitleText(it) }
+                    .subscribe(binding::setNote)
 
             outputs.updateDestinations()
                     .compose(bindToLifecycle())
@@ -74,10 +78,10 @@ class NoteDetailsActivity : BaseActivity<NoteDetailsViewModel>() {
                     .doOnNext { destinationAdapter.clearData() }
                     .subscribe { destinationAdapter.updateData(it) }
 
-            outputs.showEditNoteActivity()
+            outputs.showEditNote()
                     .compose(bindToLifecycle())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe { showEditNoteActivity(it) }
+                    .subscribe(::showEditNoteActivity)
 
             addDisposable(
                     outputs.finish()
@@ -102,10 +106,6 @@ class NoteDetailsActivity : BaseActivity<NoteDetailsViewModel>() {
                 else -> super.onOptionsItemSelected(item)
             }
         }
-    }
-
-    private fun setTitleText(title: String) {
-        this.note_title.text = title
     }
 
     private fun showEditNoteActivity(note: Note) =

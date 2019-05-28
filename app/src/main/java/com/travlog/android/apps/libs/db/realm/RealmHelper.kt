@@ -46,7 +46,13 @@ object RealmHelper {
 
         Realm.getDefaultInstance()
                 .apply {
-                    executeTransaction { it.insertOrUpdate(note) }
+                    executeTransaction {
+                        note.destinations.forEachIndexed { index, destination ->
+                            destination.order = index
+                        }
+
+                        it.insertOrUpdate(note)
+                    }
                             .apply {
                                 close()
                             }
@@ -66,7 +72,7 @@ object RealmHelper {
     }
 
     fun saveDestinationAsync(destination: Destination) {
-        Timber.d("saveDestinationAsync: ${destination}")
+        Timber.d("saveDestinationAsync: $destination")
 
         Realm.getDefaultInstance()
                 .apply {

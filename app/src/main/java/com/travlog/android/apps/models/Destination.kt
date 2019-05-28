@@ -27,8 +27,10 @@ open class Destination : RealmObject() {
     var startDate: Date? = null
     var endDate: Date? = null
     var location: Location? = null
+    var order: Int = 0
 
     companion object {
         const val FIELD_ID = "id"
+        const val FIELD_ORDER = "order"
     }
 }

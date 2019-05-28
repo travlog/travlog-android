@@ -27,6 +27,7 @@ import com.travlog.android.apps.libs.rx.transformers.Transformers.neverApiError
 import com.travlog.android.apps.libs.rx.transformers.Transformers.neverError
 import com.travlog.android.apps.libs.rx.transformers.Transformers.takeWhen
 import com.travlog.android.apps.models.Destination
+import com.travlog.android.apps.models.Destination.Companion.FIELD_ORDER
 import com.travlog.android.apps.models.Note
 import com.travlog.android.apps.services.ApiClientType
 import com.travlog.android.apps.ui.IntentKey.NOTE_ID
@@ -41,7 +42,6 @@ import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.CompletableSubject
 import io.reactivex.subjects.PublishSubject
-import timber.log.Timber
 import javax.inject.Inject
 
 @SuppressLint("CheckResult")
@@ -55,7 +55,7 @@ class NoteDetailsViewModel @Inject constructor(environment: Environment
     private val editClick = PublishSubject.create<Optional<*>>()
     private val deleteClick = PublishSubject.create<Optional<*>>()
 
-    private val setTitleText = BehaviorSubject.create<String>()
+    private val setNote = BehaviorSubject.create<Note>()
     private val updateDestinations = BehaviorSubject.create<List<Destination>>()
     private val showEditNoteActivity = BehaviorSubject.create<Note>()
     private val finish = CompletableSubject.create()
@@ -71,11 +71,8 @@ class NoteDetailsViewModel @Inject constructor(environment: Environment
 
         note
                 .compose(bindToLifecycle())
-                .doOnNext {
-                    Timber.d("note? %s", it)
-                    it.destinations.forEach { Timber.d("destination? $it, location? ${it.location}") }
-                }
-                .subscribe { setNote(it) }
+                .doOnNext { updateDestinations.onNext(it.destinations.sort(FIELD_ORDER)) }
+                .subscribe(setNote)
 
         note
                 .compose<Note>(takeWhen(editClick))
@@ -106,11 +103,6 @@ class NoteDetailsViewModel @Inject constructor(environment: Environment
                 .subscribe(note)
     }
 
-    private fun setNote(note: Note) {
-        setTitleText.onNext(note.title)
-        updateDestinations.onNext(note.destinations)
-    }
-
     private fun deleteSuccess(noteId: String) {
         // TODO: 2018. 5. 12. note not found error 발생 시에도 delete 성공과 똑같이 처리한다
         DeleteNoteEvent.getInstance().post(noteId)
@@ -129,11 +121,11 @@ class NoteDetailsViewModel @Inject constructor(environment: Environment
                     .compose(neverError())
                     .toObservable()
 
-    override fun setTitleText(): Observable<String> = setTitleText
+    override fun setNote(): Observable<Note> = setNote
 
     override fun updateDestinations(): Observable<List<Destination>> = updateDestinations
 
-    override fun showEditNoteActivity(): Observable<Note> = showEditNoteActivity
+    override fun showEditNote(): Observable<Note> = showEditNoteActivity
 
     override fun finish(): Completable = finish
 
