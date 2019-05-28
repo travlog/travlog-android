@@ -43,13 +43,15 @@ class EditNoteActivity : BaseActivity<EditNoteViewModel>() {
 
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.a_post_note)
-        setSupportActionBar(this.toolbar)
-        setDisplayHomeAsUpEnabled(true)
+        setContentView(R.layout.a_post_note).apply {
+            setSupportActionBar(toolbar)
+            setDisplayHomeAsUpEnabled(true)
+        }
 
         viewModel?.apply {
             title_edit.textChanges()
-                    .map<String> { it.toString() }
+                    .skip(1)
+                    .map { it.toString() }
                     .compose(bindToLifecycle())
                     .subscribe(inputs::title)
 
@@ -65,10 +67,11 @@ class EditNoteActivity : BaseActivity<EditNoteViewModel>() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_save, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
+    override fun onCreateOptionsMenu(menu: Menu): Boolean =
+            menuInflater.inflate(R.menu.menu_save, menu)
+                    .run {
+                        super.onCreateOptionsMenu(menu)
+                    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.menu_save) {
@@ -78,11 +81,10 @@ class EditNoteActivity : BaseActivity<EditNoteViewModel>() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun setTitleText(title: String) {
-        this.title_edit.setText(title)
-    }
+    private fun setTitleText(title: String) =
+            title_edit.setText(title).apply {
+                title_edit.setSelection(title.length)
+            }
 
-    override fun exitTransition(): Pair<Int, Int>? {
-        return slideInFromLeft()
-    }
+    override fun exitTransition(): Pair<Int, Int>? = slideInFromLeft()
 }

@@ -55,7 +55,7 @@ class PostNoteActivity : BaseActivity<PostNoteViewModel>() {
             destination_recycler.adapter = destinationsAdapter
 
             title_edit.textChanges()
-                    .map { it.toString() }
+                    .map { it.toString().trim() }
                     .compose(bindToLifecycle())
                     .subscribe(inputs::title)
 

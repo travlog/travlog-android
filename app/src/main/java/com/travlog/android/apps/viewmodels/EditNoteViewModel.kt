@@ -36,6 +36,7 @@ import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.CompletableSubject
 import io.reactivex.subjects.PublishSubject
+import io.realm.Realm
 import javax.inject.Inject
 
 @SuppressLint("CheckResult")
@@ -68,7 +69,15 @@ class EditNoteViewModel @Inject constructor(environment: Environment
 
         title
                 .compose(bindToLifecycle())
-                .subscribe { note!!.title = it }
+                .subscribe { title ->
+                    Realm.getDefaultInstance()
+                            .apply {
+                                executeTransaction { note?.title = title }
+                                        .apply {
+                                            close()
+                                        }
+                            }
+                }
 
         saveClick
                 .switchMap {
