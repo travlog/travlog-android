@@ -42,12 +42,15 @@ import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.CompletableSubject
 import io.reactivex.subjects.PublishSubject
+import io.realm.RealmChangeListener
+import timber.log.Timber
 import javax.inject.Inject
 
 @SuppressLint("CheckResult")
 class NoteDetailsViewModel @Inject constructor(environment: Environment
 ) : ActivityViewModel<NoteDetailsActivity>(environment),
-        NoteViewModelInputs, NoteViewModelOutputs, NoteViewModelErrors, DestinationAdapter.Delegate {
+        NoteViewModelInputs, NoteViewModelOutputs, NoteViewModelErrors,
+        RealmChangeListener<Note>, DestinationAdapter.Delegate {
 
     private val apiClient: ApiClientType = environment.apiClient
 
@@ -67,12 +70,16 @@ class NoteDetailsViewModel @Inject constructor(environment: Environment
     init {
         val noteIntent = intent()
                 .map { it.getStringExtra(NOTE_ID) ?: "" }
-                .map { RealmHelper.getNote(realm, it) }
-
-        note
-                .compose(bindToLifecycle())
-                .doOnNext { updateDestinations.onNext(it.destinations.sort(FIELD_ORDER)) }
-                .subscribe(setNote)
+                .switchMap {
+                    RealmHelper.getNote(realm, it)
+                            ?.asFlowable<Note>()
+                            ?.toObservable()
+                }
+                .doOnNext {
+                    setNote.onNext(it)
+                    updateDestinations.onNext(it.destinations.sort(FIELD_ORDER))
+                }
+                .doOnNext { it?.addChangeListener(this) }
 
         note
                 .compose<Note>(takeWhen(editClick))
@@ -101,6 +108,10 @@ class NoteDetailsViewModel @Inject constructor(environment: Environment
         )
                 .compose(bindToLifecycle())
                 .subscribe(note)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 
     private fun deleteSuccess(noteId: String) {
@@ -135,5 +146,12 @@ class NoteDetailsViewModel @Inject constructor(environment: Environment
 
     override fun destinationViewHolderItemClick(viewHolder: DestinationViewHolder, destination: Destination) {
 //        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onChange(note: Note) {
+        Timber.d("onChange: ${note.title}")
+
+        setNote.onNext(note)
+        updateDestinations.onNext(note.destinations.sort(FIELD_ORDER))
     }
 }
