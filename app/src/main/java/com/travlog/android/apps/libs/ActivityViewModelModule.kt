@@ -91,4 +91,14 @@ abstract class ActivityViewModelModule {
     @IntoMap
     @ViewModelKey(PostNoteViewModel::class)
     internal abstract fun postNoteViewModel(viewModel: PostNoteViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(PostPlaceViewModel::class)
+    internal abstract fun postPlaceViewModel(viewModel: PostPlaceViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(DestinationDetailsViewModel::class)
+    internal abstract fun destinationDetailsViewModel(viewModel: DestinationDetailsViewModel): ViewModel
 }

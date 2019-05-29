@@ -23,8 +23,6 @@ import io.reactivex.Observable
 interface PostNoteViewModelOutputs {
 
     fun setSaveButtonEnabled(): Observable<Boolean>
-
     fun addDestination(): Observable<Destination>
-
     fun setResultAndBack(): Completable
 }

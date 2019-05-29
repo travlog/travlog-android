@@ -14,13 +14,7 @@
  * limitations under the License.
  */
 
-package com.travlog.android.apps.viewmodels.outputs
+package com.travlog.android.apps.viewmodels.errors
 
-import com.travlog.android.apps.models.Place
-import io.reactivex.Observable
-
-interface PostPlaceViewModelOutputs {
-
-    fun setSaveButtonEnabled(): Observable<Boolean>
-    fun setResultAndBack(): Observable<Place>
+interface DestinationDetailsViewModelErrors {
 }

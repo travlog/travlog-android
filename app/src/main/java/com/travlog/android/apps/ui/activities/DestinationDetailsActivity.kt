@@ -16,22 +16,21 @@
 
 package com.travlog.android.apps.ui.activities
 
-import android.content.Intent
 import android.os.Bundle
-import com.jakewharton.rxbinding3.view.clicks
-import com.jakewharton.rxbinding3.widget.textChanges
+import androidx.databinding.DataBindingUtil
 import com.travlog.android.apps.R
 import com.travlog.android.apps.ViewModelFactory
+import com.travlog.android.apps.databinding.ADestinationDetailsBinding
 import com.travlog.android.apps.getAppInjector
 import com.travlog.android.apps.getViewModel
 import com.travlog.android.apps.libs.BaseActivity
-import com.travlog.android.apps.ui.IntentKey.PLACE_ID
-import com.travlog.android.apps.viewmodels.PostPlaceViewModel
+import com.travlog.android.apps.ui.adapters.PlaceAdapter
+import com.travlog.android.apps.viewmodels.DestinationDetailsViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
-import kotlinx.android.synthetic.main.a_post_place.*
+import kotlinx.android.synthetic.main.a_destination_details.*
 import javax.inject.Inject
 
-class PostPlaceActivity : BaseActivity<PostPlaceViewModel>() {
+class DestinationDetailsActivity : BaseActivity<DestinationDetailsViewModel>() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -42,36 +41,26 @@ class PostPlaceActivity : BaseActivity<PostPlaceViewModel>() {
 
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.a_post_place).apply {
-            setSupportActionBar(toolbar)
-            setDisplayHomeAsUpEnabled(true)
+        val binding = DataBindingUtil.setContentView<ADestinationDetailsBinding>(this, R.layout.a_destination_details)
+                .apply {
+                    setSupportActionBar(toolbar)
+                    setDisplayHomeAsUpEnabled(true)
+                }
+
+        val adapter = PlaceAdapter().apply {
+            recycler_view.adapter = this
         }
 
         viewModel?.apply {
-            place.textChanges()
-                    .map { it.toString().trim() }
+            outputs.setDestination()
                     .compose(bindToLifecycle())
-                    .subscribe(inputs::place)
+                    .subscribe(binding::setDestination)
 
-            save_button.clicks()
-                    .compose(bindToLifecycle())
-                    .subscribe { inputs.saveClick() }
-
-            outputs.setSaveButtonEnabled()
+            outputs.updatePlaceData()
                     .compose(bindToLifecycle())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(this@PostPlaceActivity::setSaveButtonEnabled)
-
-            outputs.setResultAndBack()
-                    .compose(bindToLifecycle())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .map { Intent().apply { putExtra(PLACE_ID, it.id) } }
-                    .doOnNext { setResult(RESULT_OK, it) }
-                    .subscribe { back() }
+                    .doOnNext { adapter.clearData() }
+                    .subscribe { adapter.updateData(it) }
         }
-    }
-
-    private fun setSaveButtonEnabled(enabled: Boolean) {
-        save_button.isEnabled = enabled
     }
 }

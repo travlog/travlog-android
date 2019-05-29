@@ -47,7 +47,8 @@ import javax.inject.Inject
 @SuppressLint("CheckResult")
 class PostNoteViewModel @Inject constructor(environment: Environment
 ) : ActivityViewModel<PostNoteActivity>(environment),
-        PostNoteViewModelInputs, PostNoteViewModelOutputs, PostNoteViewModelErrors, DestinationAdapter.Delegate {
+        PostNoteViewModelInputs, PostNoteViewModelOutputs, PostNoteViewModelErrors,
+        DestinationAdapter.Delegate {
 
     private val apiClient: ApiClientType = environment.apiClient
 
@@ -130,18 +131,13 @@ class PostNoteViewModel @Inject constructor(environment: Environment
                     .toObservable()
 
     override fun title(title: String) = this.title.onNext(title)
-
     override fun memo(memo: String) = this.memo.onNext(memo)
-
     override fun saveClick() = this.saveClick.onNext(Optional<Any>(null))
+    override fun destinationViewHolderItemClick(viewHolder: DestinationViewHolder,
+                                                destination: Destination) {
+    }
 
     override fun setSaveButtonEnabled(): Observable<Boolean> = setSaveButtonEnabled
-
     override fun addDestination(): Observable<Destination> = addDestination
-
     override fun setResultAndBack(): Completable = setResultAndBack
-
-    override fun destinationViewHolderItemClick(viewHolder: DestinationViewHolder, destination: Destination) {
-//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 }

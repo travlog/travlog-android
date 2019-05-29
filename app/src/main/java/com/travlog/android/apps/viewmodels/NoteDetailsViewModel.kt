@@ -56,11 +56,13 @@ class NoteDetailsViewModel @Inject constructor(environment: Environment
 
     private val note = PublishSubject.create<Note>()
     private val editClick = PublishSubject.create<Optional<*>>()
+    private val destinationItemClick = PublishSubject.create<Destination>()
     private val deleteClick = PublishSubject.create<Optional<*>>()
 
     private val setNote = BehaviorSubject.create<Note>()
     private val updateDestinations = BehaviorSubject.create<List<Destination>>()
     private val showEditNoteActivity = BehaviorSubject.create<Note>()
+    private val showDestinationDetails: Observable<Destination>
     private val finish = CompletableSubject.create()
 
     val inputs: NoteViewModelInputs = this
@@ -68,6 +70,8 @@ class NoteDetailsViewModel @Inject constructor(environment: Environment
     val errors: NoteViewModelErrors = this
 
     init {
+        showDestinationDetails = destinationItemClick
+
         val noteIntent = intent()
                 .map { it.getStringExtra(NOTE_ID) ?: "" }
                 .switchMap {
@@ -132,21 +136,17 @@ class NoteDetailsViewModel @Inject constructor(environment: Environment
                     .compose(neverError())
                     .toObservable()
 
-    override fun setNote(): Observable<Note> = setNote
-
-    override fun updateDestinations(): Observable<List<Destination>> = updateDestinations
-
-    override fun showEditNote(): Observable<Note> = showEditNoteActivity
-
-    override fun finish(): Completable = finish
-
     override fun editClick() = this.editClick.onNext(Optional<Any>(null))
-
     override fun deleteClick() = this.deleteClick.onNext(Optional<Any>(null))
+    override fun destinationViewHolderItemClick(viewHolder: DestinationViewHolder,
+                                                destination: Destination) =
+            destinationItemClick.onNext(destination)
 
-    override fun destinationViewHolderItemClick(viewHolder: DestinationViewHolder, destination: Destination) {
-//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun setNote(): Observable<Note> = setNote
+    override fun updateDestinations(): Observable<List<Destination>> = updateDestinations
+    override fun showEditNote(): Observable<Note> = showEditNoteActivity
+    override fun showDestinationDetails(): Observable<Destination> = showDestinationDetails
+    override fun finish(): Completable = finish
 
     override fun onChange(note: Note) {
         Timber.d("onChange: ${note.title}")

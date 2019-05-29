@@ -19,10 +19,14 @@ package com.travlog.android.apps.models
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 
-class Place: RealmObject() {
+open class Place : RealmObject() {
 
     @PrimaryKey
     var id = ""
     var name = ""
     var order = 0
+
+    companion object {
+        const val FIELD_ORDER = "order"
+    }
 }

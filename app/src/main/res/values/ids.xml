@@ -35,6 +35,7 @@
     <item name="forgot_password_button" type="id" />
     <item name="sign_up_button" type="id" />
 
+    <item name="title" type="id" />
     <item name="profile_picture" type="id" />
     <item name="name" type="id" />
     <item name="username" type="id" />
@@ -84,4 +85,5 @@
     <item name="save_button" type="id" />
     <item name="destination_recycler" type="id" />
     <item name="place" type="id" />
+    <item name="add_place" type="id" />
 </resources>

@@ -23,5 +23,5 @@ object ActivityRequestCodes {
     const val EDIT_DESTINATION = 5122
     const val SEARCH_LOCATION = 5123
     const val DESTINATION = 5124
-    const val PLACE = 5123
+    const val PLACE = 5125
 }

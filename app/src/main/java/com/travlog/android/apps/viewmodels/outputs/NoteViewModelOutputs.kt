@@ -25,10 +25,8 @@ import io.reactivex.Observable
 interface NoteViewModelOutputs {
 
     fun setNote(): Observable<Note>
-
     fun updateDestinations(): Observable<List<Destination>>
-
     fun showEditNote(): Observable<Note>
-
+    fun showDestinationDetails(): Observable<Destination>
     fun finish(): Completable
 }

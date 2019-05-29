@@ -16,13 +16,14 @@
 
 package com.travlog.android.apps.ui.viewholders
 
-import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import com.travlog.android.apps.databinding.ItemPlaceBinding
 import com.travlog.android.apps.models.Place
 
-class PlaceViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class PlaceViewHolder(private val binding: ItemPlaceBinding
+) : RecyclerView.ViewHolder(binding.root) {
 
     fun bindData(place: Place) {
-
+        binding.place = place
     }
 }

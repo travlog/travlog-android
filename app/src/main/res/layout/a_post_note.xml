@@ -78,7 +78,7 @@
                 android:layout_marginTop="8dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintTop_toBottomOf="@id/add_destination"
-                tools:listitem="@layout/i_destination" />
+                tools:listitem="@layout/item_destination" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@id/memo"

@@ -44,4 +44,5 @@ interface ApplicationComponent {
     fun inject(activity: SetUsernameActivity)
     fun inject(activity: PostNoteActivity)
     fun inject(activity: PostPlaceActivity)
+    fun inject(activity: DestinationDetailsActivity)
 }

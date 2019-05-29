@@ -114,6 +114,7 @@ class PostDestinationViewModel @Inject constructor(environment: Environment
                 .subscribe(setSaveButtonEnabled)
 
         val destination = Destination()
+
         Observable.merge(
                 location.doOnNext {
                     destination.location = Location().apply {
@@ -149,6 +150,10 @@ class PostDestinationViewModel @Inject constructor(environment: Environment
                 }
                 .compose(bindToLifecycle())
                 .subscribe { setResultAndBack.onNext(it) }
+
+        placeObservable
+                .compose(bindToLifecycle())
+                .subscribe { destination.places.add(it) }
     }
 
     override fun location(location: String) = this.location.onNext(location)

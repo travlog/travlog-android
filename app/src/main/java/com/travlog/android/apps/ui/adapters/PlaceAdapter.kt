@@ -18,8 +18,10 @@ package com.travlog.android.apps.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.travlog.android.apps.R
+import com.travlog.android.apps.databinding.ItemPlaceBinding
 import com.travlog.android.apps.models.Place
 import com.travlog.android.apps.ui.viewholders.PlaceViewHolder
 
@@ -28,9 +30,13 @@ class PlaceAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val places = ArrayList<Place>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
-            PlaceViewHolder(LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_place, parent, false))
-
+            LayoutInflater.from(parent.context)
+                    .let { inflater ->
+                        DataBindingUtil.inflate<ItemPlaceBinding>(inflater, R.layout.item_place, parent, false)
+                                .let { binding ->
+                                    PlaceViewHolder(binding)
+                                }
+                    }
 
     override fun getItemCount(): Int = places.size
 
@@ -42,4 +48,15 @@ class PlaceAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     .apply {
                         notifyDataSetChanged()
                     }
+
+    fun updateData(places: List<Place>) =
+            this.places.addAll(places)
+                    .apply {
+                        notifyDataSetChanged()
+                    }
+
+    fun clearData() = places.clear()
+            .apply {
+                notifyDataSetChanged()
+            }
 }

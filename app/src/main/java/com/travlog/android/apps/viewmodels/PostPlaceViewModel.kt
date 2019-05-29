@@ -39,17 +39,22 @@ class PostPlaceViewModel @Inject constructor(environment: Environment
     private val place = PublishSubject.create<String>()
     private val saveClick = PublishSubject.create<Any>()
 
+    private val setSaveButtonEnabled = BehaviorSubject.create<Boolean>()
     private val setResultAndBack = BehaviorSubject.create<Place>()
 
     val inputs: PostPlaceViewModelInputs = this
     val outputs: PostPlaceViewModelOutputs = this
 
     init {
+        place.map { it.isNotEmpty() }
+                .compose(bindToLifecycle())
+                .subscribe(setSaveButtonEnabled)
+
         place
                 .compose<String>(takeWhen(saveClick))
                 .map {
                     Place().apply {
-                        id = RealmHelper.getAllPlaces(realm).size.toString()
+                        id = RealmHelper.getAllPlaces(this@PostPlaceViewModel.realm).size.toString()
                         name = it
                     }
                 }
@@ -61,5 +66,6 @@ class PostPlaceViewModel @Inject constructor(environment: Environment
     override fun place(place: String) = this.place.onNext(place)
     override fun saveClick() = saveClick.onNext(0)
 
+    override fun setSaveButtonEnabled(): Observable<Boolean> = setSaveButtonEnabled
     override fun setResultAndBack(): Observable<Place> = setResultAndBack
 }

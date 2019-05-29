@@ -123,7 +123,15 @@
             android:theme="@style/TravlogTheme.SearchLocation"
             android:windowSoftInputMode="stateAlwaysVisible" />
 
-        <activity android:name=".ui.activities.PostPlaceActivity" />
+        <activity
+            android:name=".ui.activities.PostPlaceActivity"
+            android:label=""
+            android:windowSoftInputMode="adjustResize|stateAlwaysVisible" />
+
+        <activity
+            android:name=".ui.activities.DestinationDetailsActivity"
+            android:label=""
+            android:windowSoftInputMode="stateAlwaysHidden" />
     </application>
 
 </manifest>

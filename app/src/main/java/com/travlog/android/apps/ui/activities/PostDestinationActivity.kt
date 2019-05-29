@@ -25,6 +25,7 @@ import com.jakewharton.rxbinding3.view.clicks
 import com.jakewharton.rxbinding3.widget.textChanges
 import com.savvi.rangedatepicker.CalendarPickerView
 import com.travlog.android.apps.*
+import com.travlog.android.apps.libs.ActivityRequestCodes.PLACE
 import com.travlog.android.apps.libs.ActivityRequestCodes.SEARCH_LOCATION
 import com.travlog.android.apps.libs.BaseActivity
 import com.travlog.android.apps.libs.utils.TransitionUtils.slideInFromLeft
@@ -74,6 +75,9 @@ class PostDestinationActivity : BaseActivity<PostDestinationViewModel>() {
         }
 
         val adapter = PlaceAdapter()
+                .apply {
+                    recycler_view.adapter = this
+                }
 
         viewModel?.apply {
             location.textChanges()
@@ -103,7 +107,6 @@ class PostDestinationActivity : BaseActivity<PostDestinationViewModel>() {
                     .compose(bindToLifecycle())
                     .subscribe { showSearchLocationActivity() }
 
-
             Observable.merge(start_date.clicks(), end_date.clicks())
                     .compose(bindToLifecycle())
                     .doOnNext {
@@ -115,6 +118,10 @@ class PostDestinationActivity : BaseActivity<PostDestinationViewModel>() {
                             bottomSheetCalendar?.state = BottomSheetBehavior.STATE_EXPANDED
                         }
                     }
+
+            add_place.clicks()
+                    .compose(bindToLifecycle())
+                    .subscribe { showPostPlaceActivity() }
 
             save_button.clicks()
                     .compose(bindToLifecycle())
@@ -154,6 +161,12 @@ class PostDestinationActivity : BaseActivity<PostDestinationViewModel>() {
                 bottomSheetCalendar?.state == BottomSheetBehavior.STATE_EXPANDED ->
                     bottomSheetCalendar?.state = BottomSheetBehavior.STATE_COLLAPSED
                 else -> super.onBackPressed()
+            }
+
+    private fun showPostPlaceActivity() =
+            Intent(this, PostPlaceActivity::class.java).apply {
+                startActivityForResult(this, PLACE)
+                overridePendingTransition(R.anim.slide_in_right, R.anim.fade_out_slide_out_left)
             }
 
     private fun setLocationText(location: String) {

@@ -18,8 +18,10 @@ package com.travlog.android.apps.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.travlog.android.apps.R
+import com.travlog.android.apps.databinding.ItemDestinationBinding
 import com.travlog.android.apps.models.Destination
 import com.travlog.android.apps.ui.viewholders.DestinationViewHolder
 
@@ -34,8 +36,13 @@ class DestinationAdapter(private val delegate: Delegate) : RecyclerView.Adapter<
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
-            DestinationViewHolder(LayoutInflater.from(parent.context)
-                    .inflate(R.layout.i_destination, parent, false), delegate)
+            LayoutInflater.from(parent.context)
+                    .let { inflater ->
+                        DataBindingUtil.inflate<ItemDestinationBinding>(inflater, R.layout.item_destination, parent, false)
+                                .let { binding ->
+                                    DestinationViewHolder(binding, delegate)
+                                }
+                    }
 
     override fun getItemCount(): Int = destinations.size
 

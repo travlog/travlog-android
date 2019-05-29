@@ -30,7 +30,9 @@ import com.travlog.android.apps.getAppInjector
 import com.travlog.android.apps.getViewModel
 import com.travlog.android.apps.libs.BaseActivity
 import com.travlog.android.apps.libs.utils.TransitionUtils.slideInFromLeft
+import com.travlog.android.apps.models.Destination
 import com.travlog.android.apps.models.Note
+import com.travlog.android.apps.ui.IntentKey.DESTINATION_ID
 import com.travlog.android.apps.ui.IntentKey.NOTE_ID
 import com.travlog.android.apps.ui.adapters.DestinationAdapter
 import com.travlog.android.apps.viewmodels.NoteDetailsViewModel
@@ -83,6 +85,11 @@ class NoteDetailsActivity : BaseActivity<NoteDetailsViewModel>() {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(::showEditNoteActivity)
 
+            outputs.showDestinationDetails()
+                    .compose(bindToLifecycle())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(::showDestinationDetailsActivity)
+
             addDisposable(
                     outputs.finish()
                             .observeOn(AndroidSchedulers.mainThread())
@@ -111,6 +118,12 @@ class NoteDetailsActivity : BaseActivity<NoteDetailsViewModel>() {
     private fun showEditNoteActivity(note: Note) =
             Intent(this, EditNoteActivity::class.java).let {
                 it.putExtra(NOTE_ID, note.id)
+                startActivityWithTransition(it, R.anim.slide_in_right, R.anim.fade_out_slide_out_left)
+            }
+
+    private fun showDestinationDetailsActivity(destination: Destination) =
+            Intent(this, DestinationDetailsActivity::class.java).let {
+                it.putExtra(DESTINATION_ID, destination.id)
                 startActivityWithTransition(it, R.anim.slide_in_right, R.anim.fade_out_slide_out_left)
             }
 

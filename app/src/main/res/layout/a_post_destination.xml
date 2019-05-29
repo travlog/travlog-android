@@ -82,6 +82,29 @@
             app:layout_constraintTop_toBottomOf="@id/location_button" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@id/add_place"
+            style="?borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_padding"
+            android:gravity="center_vertical"
+            android:minHeight="55dp"
+            android:text="@string/add_place"
+            android:textAllCaps="true"
+            android:textColor="@color/g7"
+            app:icon="@drawable/ic_add_white_24dp"
+            app:iconTint="@color/g7"
+            app:layout_constraintTop_toBottomOf="@id/start_date" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@id/add_place" />
+
+        <com.google.android.material.button.MaterialButton
             android:id="@id/save_button"
             android:layout_width="match_parent"
             android:layout_height="55dp"
