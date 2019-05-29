@@ -50,6 +50,10 @@ object RealmHelper {
                     executeTransaction {
                         note.destinations.forEachIndexed { index, destination ->
                             destination.order = index
+
+                            destination.places.forEachIndexed { index, place ->
+                                place.order = index
+                            }
                         }
 
                         it.insertOrUpdate(note)
