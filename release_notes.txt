@@ -1,5 +1,5 @@
-Beta (v0.0.4) - Released on 2018-06-14
+Beta (v0.0.4) - Released on 2019-05-30
 
-• Bug Fixes
+• Enhancements
 
-- 노트 작성 및 상세 화면에서 Destination 클릭 시 앱이 죽는 오류가 수정되었습니다
+- 오프라인 모드를 지원하기 위해 로그인이 잠시 사라졌습니다.
