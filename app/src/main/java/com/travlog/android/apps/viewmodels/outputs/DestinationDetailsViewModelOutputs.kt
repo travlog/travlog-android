@@ -18,10 +18,12 @@ package com.travlog.android.apps.viewmodels.outputs
 
 import com.travlog.android.apps.models.Destination
 import com.travlog.android.apps.models.Place
+import io.reactivex.Completable
 import io.reactivex.Observable
 
 interface DestinationDetailsViewModelOutputs {
 
     fun setDestination(): Observable<Destination>
     fun updatePlaceData(): Observable<List<Place>>
+    fun finish(): Completable
 }

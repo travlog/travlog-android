@@ -71,6 +71,8 @@ object RealmHelper {
     }
 
     fun deleteNote(id: String) {
+        Timber.d("deleteNote: $id")
+
         Realm.getDefaultInstance()
                 .apply {
                     executeTransaction {
@@ -106,6 +108,23 @@ object RealmHelper {
         Timber.d("getDestination: $id")
 
         return realm.where(Destination::class.java).equalTo(FIELD_ID, id).findFirst()
+    }
+
+    fun deleteDestination(id: String) {
+        Timber.d("deleteDestination: $id")
+
+        Realm.getDefaultInstance()
+                .apply {
+                    executeTransaction {
+                        it.where(Destination::class.java)
+                                .equalTo(FIELD_ID, id)
+                                .findAll()
+                                .deleteAllFromRealm()
+                    }
+                            .apply {
+                                close()
+                            }
+                }
     }
 
     fun getAllDestinations(realm: Realm): RealmResults<Destination> {

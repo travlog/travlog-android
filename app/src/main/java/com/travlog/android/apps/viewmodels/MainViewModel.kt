@@ -70,7 +70,12 @@ class MainViewModel @Inject constructor(environment: Environment
 //                            .doAfterTerminate {
 //                            }
 //                }
-                .map { RealmHelper.getAllNotes(realm) }
+                .switchMap {
+                    RealmHelper.getAllNotes(realm)
+                            .asFlowable()
+                            .toObservable()
+                }
+                .filter { it.isLoaded && it.isValid }
                 .compose(bindToLifecycle())
                 .subscribe { updateData.onNext(it) }
 

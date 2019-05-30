@@ -42,7 +42,6 @@ import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.CompletableSubject
 import io.reactivex.subjects.PublishSubject
-import io.realm.RealmChangeListener
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -50,7 +49,7 @@ import javax.inject.Inject
 class NoteDetailsViewModel @Inject constructor(environment: Environment
 ) : ActivityViewModel<NoteDetailsActivity>(environment),
         NoteViewModelInputs, NoteViewModelOutputs, NoteViewModelErrors,
-        RealmChangeListener<Note>, DestinationAdapter.Delegate {
+        DestinationAdapter.Delegate {
 
     private val apiClient: ApiClientType = environment.apiClient
 
@@ -84,7 +83,6 @@ class NoteDetailsViewModel @Inject constructor(environment: Environment
                     setNote.onNext(it)
                     updateDestinations.onNext(it.destinations.sort(FIELD_ORDER))
                 }
-                .doOnNext { it?.addChangeListener(this) }
 
         note
                 .compose<Note>(takeWhen(editClick))
@@ -151,14 +149,14 @@ class NoteDetailsViewModel @Inject constructor(environment: Environment
     override fun showDestinationDetails(): Observable<Destination> = showDestinationDetails
     override fun finish(): Completable = finish
 
-    override fun onChange(note: Note) {
-        if (!note.isLoaded && !note.isValid) {
-            return
-        }
-
-        Timber.d("onChange: ${note.title}")
-
-        setNote.onNext(note)
-        updateDestinations.onNext(note.destinations.sort(FIELD_ORDER))
-    }
+//    override fun onChange(note: Note) {
+//        if (!note.isLoaded && !note.isValid) {
+//            return
+//        }
+//
+//        Timber.d("onChange: ${note.title}")
+//
+//        setNote.onNext(note)
+//        updateDestinations.onNext(note.destinations.sort(FIELD_ORDER))
+//    }
 }

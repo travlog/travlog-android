@@ -20,6 +20,7 @@ import android.annotation.SuppressLint
 import com.travlog.android.apps.libs.ActivityViewModel
 import com.travlog.android.apps.libs.Environment
 import com.travlog.android.apps.libs.db.realm.RealmHelper
+import com.travlog.android.apps.libs.rx.transformers.Transformers.takeWhen
 import com.travlog.android.apps.models.Destination
 import com.travlog.android.apps.models.Place
 import com.travlog.android.apps.models.Place.Companion.FIELD_ORDER
@@ -28,8 +29,11 @@ import com.travlog.android.apps.ui.activities.DestinationDetailsActivity
 import com.travlog.android.apps.viewmodels.errors.DestinationDetailsViewModelErrors
 import com.travlog.android.apps.viewmodels.inputs.DestinationDetailsViewModelInputs
 import com.travlog.android.apps.viewmodels.outputs.DestinationDetailsViewModelOutputs
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.CompletableSubject
+import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 @SuppressLint("CheckResult")
@@ -37,23 +41,36 @@ class DestinationDetailsViewModel @Inject constructor(environment: Environment
 ) : ActivityViewModel<DestinationDetailsActivity>(environment), DestinationDetailsViewModelInputs,
         DestinationDetailsViewModelOutputs, DestinationDetailsViewModelErrors {
 
+    private val deleteClick = PublishSubject.create<Any>()
+
     private val setDestination = BehaviorSubject.create<Destination>()
     private val updatePlaceData = BehaviorSubject.create<List<Place>>()
+    private val finish = CompletableSubject.create()
 
     val inputs: DestinationDetailsViewModelInputs = this
     val outputs: DestinationDetailsViewModelOutputs = this
     val errors: DestinationDetailsViewModelErrors = this
 
     init {
-        intent()
+        val destination = intent()
                 .map { it.getStringExtra(DESTINATION_ID) ?: "" }
                 .switchMap {
                     RealmHelper.getDestination(realm, it)
                             ?.asFlowable<Destination>()
                             ?.toObservable()
                 }
+                .filter { it.isLoaded && it.isValid }
+
+        destination
                 .compose(bindToLifecycle())
                 .subscribe(::setDestination)
+
+        destination
+                .compose<Destination>(takeWhen(deleteClick))
+                .map { it.id }
+                .doOnNext(RealmHelper::deleteDestination)
+                .compose(bindToLifecycle())
+                .subscribe { finish.onComplete() }
     }
 
     private fun setDestination(destination: Destination) {
@@ -61,6 +78,9 @@ class DestinationDetailsViewModel @Inject constructor(environment: Environment
         updatePlaceData.onNext(destination.places.sort(FIELD_ORDER))
     }
 
+    override fun deleteClick() = deleteClick.onNext(0)
+
     override fun setDestination(): Observable<Destination> = setDestination
     override fun updatePlaceData(): Observable<List<Place>> = updatePlaceData
+    override fun finish(): Completable = finish
 }

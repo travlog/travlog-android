@@ -84,6 +84,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
             outputs.updateData()
                     .compose(bindToLifecycle())
                     .observeOn(AndroidSchedulers.mainThread())
+                    .doOnNext { adapter.clearData() }
                     .subscribe { adapter.updateData(it) }
 
             outputs.showNoteDetailsActivity()
@@ -96,10 +97,10 @@ class MainActivity : BaseActivity<MainViewModel>() {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe { adapter.updateNote(it) }
 
-            outputs.deleteNote()
-                    .compose(bindToLifecycle())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe { adapter.deleteData(it) }
+//            outputs.deleteNote()
+//                    .compose(bindToLifecycle())
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .subscribe { adapter.deleteData(it) }
 
             this.loadMore()
         }

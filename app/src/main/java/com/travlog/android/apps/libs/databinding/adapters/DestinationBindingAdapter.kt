@@ -28,8 +28,11 @@ object DestinationBindingAdapter {
 
     @JvmStatic
     @BindingAdapter("mediumDate")
-    fun mediumDate(textView: TextView, date: Date) {
-        textView.text = DateTimeUtils.mediumDate(DateTime(date))
+    fun mediumDate(textView: TextView, date: Date?) {
+        textView.text = when (date) {
+            null -> ""
+            else -> DateTimeUtils.mediumDate(DateTime(date))
+        }
     }
 
     @JvmStatic

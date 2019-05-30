@@ -18,6 +18,7 @@ package com.travlog.android.apps.ui.activities
 
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
+import com.jakewharton.rxbinding3.view.clicks
 import com.travlog.android.apps.R
 import com.travlog.android.apps.ViewModelFactory
 import com.travlog.android.apps.databinding.ADestinationDetailsBinding
@@ -52,6 +53,10 @@ class DestinationDetailsActivity : BaseActivity<DestinationDetailsViewModel>() {
         }
 
         viewModel?.apply {
+            delete_button.clicks()
+                    .compose(bindToLifecycle())
+                    .subscribe { inputs.deleteClick() }
+
             outputs.setDestination()
                     .compose(bindToLifecycle())
                     .subscribe(binding::setDestination)
@@ -61,6 +66,11 @@ class DestinationDetailsActivity : BaseActivity<DestinationDetailsViewModel>() {
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnNext { adapter.clearData() }
                     .subscribe { adapter.updateData(it) }
+
+            addDisposable(
+                    outputs.finish()
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe { back() })
         }
     }
 }
