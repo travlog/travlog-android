@@ -51,20 +51,22 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@id/recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toTopOf="@id/delete_button"
             app:layout_constraintTop_toBottomOf="@id/note_title"
             tools:listitem="@layout/item_destination" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@id/memo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_vertical_padding"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
             android:text="@{note.memo}"
-            app:layout_constraintTop_toBottomOf="@id/recycler_view" />
+            app:layout_constraintTop_toBottomOf="@id/recycler_view"
+            tools:text="memo" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@id/delete_button"
