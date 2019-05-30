@@ -21,7 +21,6 @@ import com.travlog.android.apps.libs.ActivityViewModel
 import com.travlog.android.apps.libs.Environment
 import com.travlog.android.apps.libs.db.realm.RealmHelper
 import com.travlog.android.apps.libs.rx.Optional
-import com.travlog.android.apps.libs.rx.bus.DeleteNoteEvent
 import com.travlog.android.apps.libs.rx.bus.NoteEvent
 import com.travlog.android.apps.libs.rx.transformers.Transformers.neverApiError
 import com.travlog.android.apps.libs.rx.transformers.Transformers.neverError
@@ -53,7 +52,6 @@ class MainViewModel @Inject constructor(environment: Environment
     private val updateData = BehaviorSubject.create<List<Note>>()
     private val showNoteDetailsActivity: Observable<Note>
     private val updateNote: Observable<Note>
-    private val deleteNote: Observable<String>
 
     val inputs: MainViewModelInputs = this
     val outputs: MainViewModelOutputs = this
@@ -80,8 +78,6 @@ class MainViewModel @Inject constructor(environment: Environment
                 .subscribe { updateData.onNext(it) }
 
         updateNote = NoteEvent.getInstance().observable
-
-        deleteNote = DeleteNoteEvent.getInstance().observable
     }
 
     private fun notes(): Observable<List<Note>> =
@@ -101,8 +97,6 @@ class MainViewModel @Inject constructor(environment: Environment
     override fun showNoteDetailsActivity(): Observable<Note> = showNoteDetailsActivity
 
     override fun updateNotes(): Observable<Note> = updateNote
-
-    override fun deleteNote(): Observable<String> = deleteNote
 
     override fun noteViewHolderItemClick(viewHolder: NoteViewHolder, note: Note) = noteItemClick.onNext(note)
 }

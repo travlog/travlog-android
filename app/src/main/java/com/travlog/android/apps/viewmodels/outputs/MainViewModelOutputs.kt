@@ -24,12 +24,7 @@ import io.reactivex.Observable
 interface MainViewModelOutputs {
 
     fun updateData(): Observable<List<Note>>
-
     fun showNoteDetailsActivity(): Observable<Note>
-
     fun clearNotes(): Observable<Optional<*>>
-
     fun updateNotes(): Observable<Note>
-
-    fun deleteNote(): Observable<String>
 }

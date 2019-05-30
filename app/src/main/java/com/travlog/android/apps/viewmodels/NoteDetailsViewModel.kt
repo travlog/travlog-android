@@ -21,7 +21,6 @@ import com.travlog.android.apps.libs.ActivityViewModel
 import com.travlog.android.apps.libs.Environment
 import com.travlog.android.apps.libs.db.realm.RealmHelper
 import com.travlog.android.apps.libs.rx.Optional
-import com.travlog.android.apps.libs.rx.bus.DeleteNoteEvent
 import com.travlog.android.apps.libs.rx.bus.NoteEvent
 import com.travlog.android.apps.libs.rx.transformers.Transformers.neverApiError
 import com.travlog.android.apps.libs.rx.transformers.Transformers.neverError
@@ -42,7 +41,6 @@ import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.CompletableSubject
 import io.reactivex.subjects.PublishSubject
-import timber.log.Timber
 import javax.inject.Inject
 
 @SuppressLint("CheckResult")
@@ -103,7 +101,7 @@ class NoteDetailsViewModel @Inject constructor(environment: Environment
 //                            }
 //                }
                 .compose(bindToLifecycle())
-                .subscribe(this::deleteSuccess)
+                .subscribe { finish.onComplete() }
 
         Observable.merge(
                 noteIntent,
@@ -117,12 +115,6 @@ class NoteDetailsViewModel @Inject constructor(environment: Environment
 
     override fun onDestroy() {
         super.onDestroy()
-    }
-
-    private fun deleteSuccess(noteId: String) {
-        // TODO: 2018. 5. 12. note not found error 발생 시에도 delete 성공과 똑같이 처리한다
-        DeleteNoteEvent.getInstance().post(noteId)
-        finish.onComplete()
     }
 
     private fun note(noteId: String): Observable<Note> =
