@@ -70,6 +70,20 @@ object RealmHelper {
         return realm.where(Note::class.java).equalTo(FIELD_ID, id).findFirst()
     }
 
+    fun deleteNote(id: String) {
+        Realm.getDefaultInstance()
+                .apply {
+                    executeTransaction {
+                        it.where(Note::class.java).equalTo(FIELD_ID, id)
+                                .findAll()
+                                .deleteAllFromRealm()
+                    }
+                            .apply {
+                                close()
+                            }
+                }
+    }
+
     fun getAllNotes(realm: Realm): RealmResults<Note> {
         Timber.d("getAllNotes: ")
 

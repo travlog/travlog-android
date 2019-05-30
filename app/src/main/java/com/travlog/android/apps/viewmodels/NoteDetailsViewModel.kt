@@ -79,6 +79,7 @@ class NoteDetailsViewModel @Inject constructor(environment: Environment
                             ?.asFlowable<Note>()
                             ?.toObservable()
                 }
+                .filter { it.isLoaded && it.isValid }
                 .doOnNext {
                     setNote.onNext(it)
                     updateDestinations.onNext(it.destinations.sort(FIELD_ORDER))
@@ -92,15 +93,17 @@ class NoteDetailsViewModel @Inject constructor(environment: Environment
 
         note
                 .compose<Note>(takeWhen(deleteClick))
-                .switchMap {
-                    this.delete(it.id)
-                            .doOnSubscribe {
-
-                            }
-                            .doAfterTerminate {
-
-                            }
-                }
+                .map { it.id }
+                .doOnNext(RealmHelper::deleteNote)
+//                .switchMap {
+//                    this.delete(it.id)
+//                            .doOnSubscribe {
+//
+//                            }
+//                            .doAfterTerminate {
+//
+//                            }
+//                }
                 .compose(bindToLifecycle())
                 .subscribe(this::deleteSuccess)
 
@@ -149,6 +152,10 @@ class NoteDetailsViewModel @Inject constructor(environment: Environment
     override fun finish(): Completable = finish
 
     override fun onChange(note: Note) {
+        if (!note.isLoaded && !note.isValid) {
+            return
+        }
+
         Timber.d("onChange: ${note.title}")
 
         setNote.onNext(note)
